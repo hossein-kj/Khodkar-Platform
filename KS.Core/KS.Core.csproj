@@ -1,0 +1,586 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\LibSassHost.Native.win-x86.1.1.9\build\LibSassHost.Native.win-x86.props" Condition="Exists('..\packages\LibSassHost.Native.win-x86.1.1.9\build\LibSassHost.Native.win-x86.props')" />
+  <Import Project="..\packages\LibSassHost.Native.win-x64.1.1.9\build\LibSassHost.Native.win-x64.props" Condition="Exists('..\packages\LibSassHost.Native.win-x64.1.1.9\build\LibSassHost.Native.win-x64.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DFE95DA5-CE80-4F56-903C-468DD2CA150E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KS.Core</RootNamespace>
+    <AssemblyName>KS.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Configuration, Version=4.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Configuration.4.0.1\lib\net45\Autofac.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.CommonServiceLocator, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.CommonServiceLocator.5.0.0\lib\net45\Autofac.Extras.CommonServiceLocator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.Owin.4.0.1\lib\net45\Autofac.Integration.Mvc.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.4.2.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.4.1.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.Autoprefixer, Version=1.9.206.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.Autoprefixer.1.9.206\lib\net40\BundleTransformer.Autoprefixer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.CoffeeScript, Version=1.9.204.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.CoffeeScript.1.9.204\lib\net40\BundleTransformer.CoffeeScript.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.Core, Version=1.9.171.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.Core.1.9.171\lib\net40\BundleTransformer.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.Handlebars, Version=1.9.178.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.Handlebars.1.9.178\lib\net40\BundleTransformer.Handlebars.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.Hogan, Version=1.9.160.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.Hogan.1.9.160\lib\net40\BundleTransformer.Hogan.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.Less, Version=1.9.205.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.Less.1.9.205\lib\net40\BundleTransformer.Less.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.SassAndScss, Version=1.9.202.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.SassAndScss.1.9.202.1\lib\net40\BundleTransformer.SassAndScss.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BundleTransformer.TypeScript, Version=1.9.201.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>..\packages\BundleTransformer.TypeScript.1.9.201\lib\net40\BundleTransformer.TypeScript.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.3\lib\net47\CommonServiceLocator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Contrib.WebApi, Version=1.0.10.25, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Contrib.WebApi.1.0.10.25\lib\net45\Elmah.Contrib.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JavaScriptEngineSwitcher.Core, Version=2.4.10.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.Core.2.4.10\lib\net45\JavaScriptEngineSwitcher.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JavaScriptEngineSwitcher.Msie, Version=2.4.18.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
+      <HintPath>..\packages\JavaScriptEngineSwitcher.Msie.2.4.18\lib\net45\JavaScriptEngineSwitcher.Msie.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LibSassHost, Version=1.1.9.0, Culture=neutral, PublicKeyToken=3e24e88796a38e46, processorArchitecture=MSIL">
+      <HintPath>..\packages\LibSassHost.1.1.9\lib\net45\LibSassHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LiteDB, Version=4.1.2.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.2\lib\net40\LiteDB.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.8.3\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.8.3\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MsieJavaScriptEngine, Version=2.2.8.0, Culture=neutral, PublicKeyToken=a3a2846a37ac0d3e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MsieJavaScriptEngine.2.2.8\lib\net45\MsieJavaScriptEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\Dll\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework">
+      <HintPath>..\Dll\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.8.3\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.7.0\lib\net45\System.Web.Http.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeManager\Base\BaseSourceControl.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\BaseCodeTemplate.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\ICodeTemplate.cs" />
+    <Compile Include="CodeManager\Base\ISourceControl.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\BaseDebugger.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\BaseUnitTester.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\ICompiler.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\BaseCompiler.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\IDebugger.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Base\IUnitTester.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Compiler.cs" />
+    <Compile Include="CodeManager\Os\DotNet\Debugger.cs" />
+    <Compile Include="CodeManager\Os\DotNet\UnitTester.cs" />
+    <Compile Include="Data\Contexts\Oracle\Base\BaseOracleHelper.cs" />
+    <Compile Include="Data\Contexts\Oracle\Base\IOracleHelper.cs" />
+    <Compile Include="Data\Contexts\Oracle\OracleHelper.cs" />
+    <Compile Include="Data\Contexts\SqlServer\Base\BaseSqlHelper.cs" />
+    <Compile Include="Data\Contexts\SqlServer\Base\ISqlHelper.cs" />
+    <Compile Include="DependencyProvider\AutoFacModule\CacheModule.cs" />
+    <Compile Include="CacheProvider\Adapters\IDefaultCacheAdapter.cs" />
+    <Compile Include="CacheProvider\Adapters\NoCacheAdapter.cs" />
+    <Compile Include="CacheProvider\Adapters\ICacheAdapter.cs" />
+    <Compile Include="CacheProvider\Adapters\DefaultCacheAdapter.cs" />
+    <Compile Include="CacheProvider\Adapters\BaseCacheAdapter.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\IBundleManager.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\BaseCompressManager.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\BaseBundleManager.cs" />
+    <Compile Include="CodeManager\BrowsersCode\BundleManager.cs" />
+    <Compile Include="CodeManager\BrowsersCode\CompressManager.cs" />
+    <Compile Include="CodeManager\BrowsersCode\CodeTemplate.cs" />
+    <Compile Include="CodeManager\BrowsersCode\Base\ICompressManager.cs" />
+    <Compile Include="CodeManager\DataBase\Base\BaseDataBaseManager.cs" />
+    <Compile Include="CodeManager\DataBase\CustomDataTableConverter.cs" />
+    <Compile Include="CodeManager\DataBase\DataBaseManager.cs" />
+    <Compile Include="CodeManager\DataBase\Base\IDataBaseManager.cs" />
+    <Compile Include="CodeManager\SourceControl.cs" />
+    <Compile Include="CoockieProvider\Adapters\BaseCookieAdapter.cs" />
+    <Compile Include="CoockieProvider\Adapters\DefaultCookieAdapter.cs" />
+    <Compile Include="CoockieProvider\Adapters\ICookieAdapter.cs" />
+    <Compile Include="CoockieProvider\CookieManager.cs" />
+    <Compile Include="CoockieProvider\Adapters\IDefaultCookieAdapter.cs" />
+    <Compile Include="CacheProvider\CacheManager.cs" />
+    <Compile Include="Data\Contexts\Base\BaseDataBaseContextManager.cs" />
+    <Compile Include="Data\Contexts\Base\IDataBaseContextManager.cs" />
+    <Compile Include="EntityFramework\Base\BaseMigration.cs" />
+    <Compile Include="EntityFramework\Config\Oracle\OracleBatchRunner.cs" />
+    <Compile Include="EntityFramework\Config\HistoryContextConfiguration.cs" />
+    <Compile Include="DependencyProvider\Adapters\DependencyAdapter.cs" />
+    <Compile Include="DependencyProvider\Adapters\BaseDependencyAdapter.cs" />
+    <Compile Include="DependencyProvider\Adapters\IDependencyAdapter.cs" />
+    <Compile Include="DependencyProvider\DependencyManager.cs" />
+    <Compile Include="EntityFramework\IMigration.cs" />
+    <Compile Include="EntityFramework\Migration.cs" />
+    <Compile Include="EntityFramework\RemoteMigration.cs" />
+    <Compile Include="Exceptions\DllAlreadyCompiledException.cs" />
+    <Compile Include="Exceptions\CheckOutCodeException.cs" />
+    <Compile Include="Exceptions\CheckOutRecordException.cs" />
+    <Compile Include="Exceptions\CodeTemplateException.cs" />
+    <Compile Include="Data\Contexts\DataBaseContextManager.cs" />
+    <Compile Include="Data\Contexts\SqlServer\SqlHelper.cs" />
+    <Compile Include="Exceptions\DataConcurrencyException.cs" />
+    <Compile Include="Exceptions\DefaultsLanguageFoundException.cs" />
+    <Compile Include="Exceptions\InvalidAccessTreeDirectoryRoleException.cs" />
+    <Compile Include="Exceptions\DevelopServerException.cs" />
+    <Compile Include="Exceptions\InvalidLoginException.cs" />
+    <Compile Include="Exceptions\KhodkarInvalidException.cs" />
+    <Compile Include="Exceptions\BundleCompileException.cs" />
+    <Compile Include="Exceptions\PageNotFoundException.cs" />
+    <Compile Include="Exceptions\PageTemporaryInaccessibleException.cs" />
+    <Compile Include="FileSystemProvide\Base\BaseFileSystemManager.cs" />
+    <Compile Include="FileSystemProvide\Base\BaseZipManager.cs" />
+    <Compile Include="FileSystemProvide\Base\BaseFilesHandler.cs" />
+    <Compile Include="FileSystemProvide\Base\IImageManager.cs" />
+    <Compile Include="FileSystemProvide\Base\IFileSystemManager.cs" />
+    <Compile Include="FileSystemProvide\Base\BaseImageManager.cs" />
+    <Compile Include="FileSystemProvide\Base\IZipManager.cs" />
+    <Compile Include="FileSystemProvide\Uploader\FilesHandler.cs" />
+    <Compile Include="FileSystemProvide\Base\IFilesHandler.cs" />
+    <Compile Include="FileSystemProvide\Uploader\ImageHandler.cs" />
+    <Compile Include="GlobalVarioable\Config.cs" />
+    <Compile Include="GlobalVarioable\Enumeration.cs" />
+    <Compile Include="Hubs\NotificationHub.cs" />
+    <Compile Include="Localization\Adapters\DefaultLanguageAdapter.cs" />
+    <Compile Include="Localization\Adapters\ILanguageAdapter.cs" />
+    <Compile Include="Localization\Adapters\BaseLanguageAdapter.cs" />
+    <Compile Include="Localization\LanguageManager.cs" />
+    <Compile Include="Log\ActionLogManager.cs" />
+    <Compile Include="Log\Base\BaseActionLogManager.cs" />
+    <Compile Include="Log\Base\IActionLogManager.cs" />
+    <Compile Include="Log\Elmah\Base\IElmahErrorLogManager.cs" />
+    <Compile Include="Log\Elmah\Base\IErrorLogManager.cs" />
+    <Compile Include="Log\Elmah\Base\ElmahErrorLogManager.cs" />
+    <Compile Include="Log\ErrorLogManager.cs" />
+    <Content Include="Log\WebApiExceptionLogger.cs.txt" />
+    <Compile Include="Log\Job\SyncLogLiteDb.cs" />
+    <Compile Include="Model\ContentManagement\ITree.cs" />
+    <Compile Include="Model\Develop\CompileOption.cs" />
+    <Compile Include="Model\Develop\DebugInfo.cs" />
+    <Compile Include="Model\Develop\MigrationCode.cs" />
+    <Compile Include="Model\Develop\MigrationInfo.cs" />
+    <Compile Include="Model\FileSystem\JsonFiles.cs" />
+    <Compile Include="Model\FileSystem\ViewDataUploadFilesResult.cs" />
+    <Compile Include="Model\Log\ActionLog.cs" />
+    <Compile Include="Model\Core\Aspect.cs" />
+    <Compile Include="Model\Develop\BrowsersCodeInfo.cs" />
+    <Compile Include="Model\Develop\BundleDependency.cs" />
+    <Compile Include="Model\Core\CacheItem.cs" />
+    <Compile Include="Model\Develop\SourceControlChange.cs" />
+    <Compile Include="Model\Develop\DebugUser.cs" />
+    <Compile Include="Model\Log\ExceptionLog.cs" />
+    <Compile Include="Model\Log\IActionLog.cs" />
+    <Compile Include="Model\Core\IAspect.cs" />
+    <Compile Include="Model\Log\ILogEntity.cs" />
+    <Compile Include="Model\ContentManagement\IWebPageCore.cs" />
+    <Compile Include="Model\ContentManagement\WebPageCore.cs" />
+    <Compile Include="Model\Security\Group.cs" />
+    <Compile Include="Owin\Middleware\ActionLogSpecialServicesMiddleware.cs" />
+    <Compile Include="Owin\Middleware\ActionLogMiddleware.cs" />
+    <Compile Include="Owin\Middleware\LanguageAndCultureMiddleware.cs" />
+    <Compile Include="Owin\Middleware\ScriptsDebugePathMiddleware.cs" />
+    <Compile Include="Owin\Middleware\WebPageMiddleware.cs" />
+    <Compile Include="Security\Adapters\IDefaultCurrentUserAdapter.cs" />
+    <Compile Include="Security\Adapters\ICurrentUserAdapter.cs" />
+    <Compile Include="Security\Adapters\DefaultCurrentUserAdapter.cs" />
+    <Compile Include="Security\Adapters\BaseCurrentUserAdapter.cs" />
+    <Compile Include="Security\Adapters\DefaultAuthorizeAdapter.cs" />
+    <Compile Include="Security\Adapters\BaseAuthorizeAdapter.cs" />
+    <Compile Include="Security\Adapters\IDefaultAuthorizeAdapter.cs" />
+    <Compile Include="Security\Adapters\IAuthorizeAdapter.cs" />
+    <Compile Include="Security\AuthorizeManager.cs" />
+    <Compile Include="Security\IAccessRole.cs" />
+    <Compile Include="Security\CurrentUserManager.cs" />
+    <Compile Include="Service References\DevelopServer\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SignalR\INotificationManager.cs" />
+    <Compile Include="SignalR\NotificationManager.cs" />
+    <Compile Include="UI\Attribute\Odata\AuthorizeByLogOfODataServiceAttribute.cs" />
+    <None Include="Service References\DevelopServer\configuration91.svcinfo" />
+    <None Include="Service References\DevelopServer\configuration.svcinfo" />
+    <None Include="Service References\DevelopServer\KS.Core.DevelopServer.MigrationCode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DevelopServer\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="UI\Attribute\WebApi\LogAndCheckCacheOfServiceAttribute - Copy.txt" />
+    <Compile Include="UI\Attribute\Odata\LogOfODataServiceAttribute.cs" />
+    <Compile Include="UI\Attribute\WebApi\ExceptionFilterAttribute.cs" />
+    <Compile Include="UI\Configuration\IWebConfigManager.cs" />
+    <Compile Include="UI\Setting\Adapters\DefaultSettingsAdapter.cs" />
+    <Compile Include="UI\Setting\Adapters\IDefaultSettingsAdapter.cs" />
+    <Compile Include="UI\Setting\Settings .cs" />
+    <Compile Include="UI\Setting\Adapters\BaseSettingsAdapter.cs" />
+    <Compile Include="UI\Setting\Adapters\ISettingsAdapter.cs" />
+    <Compile Include="Model\Core\KeyValue.cs" />
+    <Compile Include="Model\Develop\WebConfigSetting.cs" />
+    <Compile Include="UI\Configuration\WebConfigManager.cs" />
+    <Compile Include="SessionProvider\Base\BaseSessionManager.cs" />
+    <Compile Include="UI\Attribute\WebApi\AuthorizeByLogAndCheckCacheOfServiceAttribute.cs" />
+    <Content Include="UI\Attribute\WebApi\AuthorizeAndLogAndCheckCacheOfServiceAttribute.cs.txt" />
+    <Compile Include="UI\Attribute\WebApi\LogAndCheckCacheOfServiceAttribute.cs" />
+    <Compile Include="UI\Attribute\Mvc\LogMainEntryServiceAttribute.cs" />
+    <Compile Include="Security\Handlers\AuthorizePagesPath\AuthorizePagesPathAsynchOperation.cs" />
+    <Compile Include="Security\Handlers\AuthorizePagesPath\AuthorizePagesPathAsyncHandler.cs" />
+    <Content Include="Security\Handlers\AuthorizeScriptsDebugePath\AuthorizeScriptsDebugePathHandler.cs.txt" />
+    <Compile Include="Security\Handlers\AuthorizeScriptsDebugePath\AuthorizeScriptsDebugePathAsyncHandler.cs" />
+    <Compile Include="Utility\Adapters\DefaultCalendar.cs" />
+    <Compile Include="Utility\Adapters\ICalendar.cs" />
+    <Compile Include="Utility\Adapters\IDefaultCalendar.cs" />
+    <Compile Include="Security\Handlers\AuthorizeScriptsDebugePath\AuthorizeScriptsDebugePathAsynchOperation.cs" />
+    <Compile Include="Utility\StringExtensions.cs" />
+    <Compile Include="Utility\Helper.cs" />
+    <Content Include="Exceptions\PageResourcesNotFoundException.cs.txt" />
+    <Compile Include="FileSystemProvide\FileSystemManager.cs" />
+    <Compile Include="FileSystemProvide\ZipManager.cs" />
+    <Compile Include="FileSystemProvide\ImageManager.cs" />
+    <Compile Include="Model\Develop\BundleOption.cs" />
+    <Compile Include="Model\FileSystem\UnZipOprationInfo.cs" />
+    <Compile Include="Model\FileSystem\ZipInfo.cs" />
+    <Compile Include="Model\FileSystem\ZipOprationInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ApplicationPasswordHasher.cs" />
+    <Compile Include="Security\SecureGuid.cs" />
+    <Compile Include="SessionProvider\SessionManager.cs" />
+    <Compile Include="SessionProvider\Base\ISessionManager.cs" />
+    <Compile Include="UI\Attribute\Odata\EnableDynamicQueryableAttribute.cs" />
+    <Compile Include="UI\OdataQuery\DynamicQueryValidator.cs" />
+    <Compile Include="UI\CaptchaImage.cs" />
+    <Content Include="libsass.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\DevelopServer\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevelopServer\KS.Server.Exceptions.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevelopServer\KS.Server.Model.Migration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevelopServer\service.wsdl" />
+    <None Include="Service References\DevelopServer\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevelopServer\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\DevelopServer\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\LibSassHost.Native.win-x64.1.1.9\build\LibSassHost.Native.win-x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibSassHost.Native.win-x64.1.1.9\build\LibSassHost.Native.win-x64.props'))" />
+    <Error Condition="!Exists('..\packages\LibSassHost.Native.win-x86.1.1.9\build\LibSassHost.Native.win-x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibSassHost.Native.win-x86.1.1.9\build\LibSassHost.Native.win-x86.props'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

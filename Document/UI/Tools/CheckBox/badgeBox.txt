@@ -1,0 +1,15 @@
+<div class="container">
+	<div class="row text-center">
+        <br>
+        <br>
+        <h1>Badgebox: CSS only checkbox badge!</h1>
+        <h2>Works on Bootstrap 2.3.2 and up</h2>
+        <br>
+		<label for="default" class="btn btn-default">Default <input type="checkbox" id="default" class="badgebox"><span class="badge">&check;</span></label>
+        <label for="primary" class="btn btn-primary">Primary <input type="checkbox" id="primary" class="badgebox"><span class="badge">&check;</span></label>
+        <label for="info" class="btn btn-info">Info <input type="checkbox" id="info" class="badgebox"><span class="badge">&check;</span></label>
+        <label for="success" class="btn btn-success">Success <input type="checkbox" id="success" class="badgebox"><span class="badge">&check;</span></label>
+        <label for="warning" class="btn btn-warning">Warning <input type="checkbox" id="warning" class="badgebox"><span class="badge">&check;</span></label>
+        <label for="danger" class="btn btn-danger">Danger <input type="checkbox" id="danger" class="badgebox"><span class="badge">&check;</span></label>
+	</div>
+</div>

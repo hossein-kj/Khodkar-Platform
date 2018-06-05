@@ -1,0 +1,2 @@
+www.jqueryscript.netotherjQuery-Bootstrap-Based-Toast-Notification-Plugin-toaster.html
+https://github.com/scottoffen/jquery.toaster

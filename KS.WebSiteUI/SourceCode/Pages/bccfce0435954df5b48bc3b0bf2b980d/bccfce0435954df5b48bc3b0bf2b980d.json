@@ -1,0 +1,32 @@
+﻿{
+  "Id": 76,
+  "Html": "<div class=\"col-lg-12\">\n\n<div class=\"as-material-switch\" style=\"margin-top: 10px;\">\n<div><label class=\"control-label\">  وضعیت ثبت وقایع رویدادها </label> <input id=\"chkStatus\" name=\"chkStatus\" type=\"checkbox\" /> <label class=\"label-default as-label\" for=\"chkStatus\"> </label></div>\n</div>\n\n\n</div>\n  <br>\n <div class=\"text-center\">\n   <input id=\"btnToggleEnableLog\" class=\"btn  btn-primary\" type=\"button\" value=\"فعال / غیر فعال  (موقتی)  \" data-loading-text=\" در حال اجرا ...\" />\n</div>\n\n<p></p>\n<hr>\n <div class=\"text-center\">\n   <input id=\"btnBackUpActionLog\" class=\"btn  btn-primary\" type=\"button\" value=\"   پشتیبان گیریی و ساخت مجدد دیتابیس رویدادها  \" data-loading-text=\" در حال اجرا ...\" />\n</div>\n<p></p>\n<hr>\n <div class=\"text-center\">\n   <input id=\"btnBackUpErrorLog\" class=\"btn btn-primary\" type=\"button\" value=\"  پشتیبان گیریی و ساخت مجدد دیتابیس خطاها  \" data-loading-text=\" در حال اجرا ...\" />\n</div>",
+  "Url": "/fa/admin/develop/reports/manager",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "مدیریت گزارشات",
+  "Guid": "bccfce0435954df5b48bc3b0bf2b980d",
+  "Version": 20,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.develop_reports_ActionLog_ToggleEnableLog",
+    "$.asUrls.develop_reports_ActionLog_BackUp",
+    "$.asUrls.develop_reports_ErrorLog_BackUp",
+    "$.asUrls.develop_reports_ActionLog_LogStatus"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 16,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[]",
+  "Language": "fa",
+  "RowVersion": "AAAAAAADNao="
+}

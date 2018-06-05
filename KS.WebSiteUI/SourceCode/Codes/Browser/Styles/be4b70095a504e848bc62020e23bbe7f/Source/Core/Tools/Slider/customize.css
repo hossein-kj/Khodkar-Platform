@@ -1,0 +1,5 @@
+﻿/*#region customize layerslider*/
+.ls-fullwidth .ls-nav-prev, .ls-fullwidth .ls-nav-next {
+    z-index: 99 !important;
+}
+/*#endregion*/

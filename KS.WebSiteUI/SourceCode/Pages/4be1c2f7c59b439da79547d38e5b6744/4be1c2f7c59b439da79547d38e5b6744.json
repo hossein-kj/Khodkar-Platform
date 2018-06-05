@@ -1,0 +1,32 @@
+﻿{
+  "Id": 138,
+  "Html": "<form id=\"frmRoles\" role=\"form\" class=\"container-fluid\">\r\n     <br/>\r\n      <div id=\"divRoles\">\r\n    <label class=\"control-label\" >  Roles</label>\r\n    <br />\r\n     \r\n    <div class=\"container\">\r\n   \r\n        <div id=\"drpRoles\" style=\"float: left;\">\r\n        </div>\r\n    <input id=\"btnTranslator\" type=\"button\" style=\"float: left;margin-top: 6px;\" disabled=\"disabled\" class=\"btn btn-default disabled\" value=\"Translate\" />\r\n    </div>\r\n     \r\n                           <br/>\r\n      \r\n        <label class=\"control-label\">New</label>\r\n        <div class=\"as-material-switch container\">\r\n               <div style=\"float: left;\">\r\n            <input id=\"chkNew\" name=\"chkNew\" type=\"checkbox\" />\r\n            <label for=\"chkNew\" class=\"label-default as-label\">  </label>\r\n          </div>\r\n     </div>\r\n                  <br/>\r\n      \r\n        <label class=\"control-label\">Is Leadf ?</label>\r\n        <div class=\"as-material-switch container\">\r\n               <div style=\"float: left;\">\r\n            <input id=\"chkIsLeaf\" name=\"chkIsLeaf\" type=\"checkbox\" />\r\n            <label for=\"chkIsLeaf\" class=\"label-default as-label\">  </label>\r\n          </div>\r\n     </div>\r\n\r\n      <br />\r\n      \r\n    <div class=\"form-group\">\r\n        <label for=\"txtName\" class=\"control-label\" data-localize=\"title\"></label>\r\n\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-tags\"></i></span>\r\n            <input type=\"text\" class=\"form-control\" name=\"txtName\" id=\"txtName\" data-localize=\"title\" placeholder=\"\">\r\n        </div>\r\n\r\n    </div>\r\n    \r\n     <br>\r\n           <div class=\"form-group\">\r\n        <label for=\"txtParentId\" class=\"control-label\">Parent Id</label>\r\n\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-king\"></i></span>\r\n            <input type=\"text\" class=\"form-control\" name=\"txtParentId\" id=\"txtParentId\" style=\"direction: ltr;\"  placeholder=\"Parent Id\">\r\n        </div>\r\n    </div>\r\n         <br />\r\n                        <div class=\"form-group\">\r\n        <label for=\"txtRoleId\" class=\"control-label\">Role Id</label>\r\n\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-king\"></i></span>\r\n            <input type=\"text\" class=\"form-control\" name=\"txtRoleId\" id=\"txtRoleId\" style=\"direction: ltr;\"  placeholder=\"Role Id\">\r\n        </div>\r\n    </div>\r\n\r\n\r\n    <br />\r\n   \r\n            <div class=\"form-group\">\r\n        <label for=\"txtDescription\" class=\"control-label\">Description</label>\r\n\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-cog\"></i></span>\r\n            <textarea  class=\"form-control\" name=\"txtDescription\" id=\"txtDescription\">\r\n                </textarea>\r\n        </div>\r\n\r\n    </div>\r\n    <br>\r\n\r\n        <div class=\"form-group\">\r\n        <label for=\"txtOrder\" class=\"control-label\" >Order</label>\r\n\r\n        <div class=\"input-group\">\r\n            <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-tags\"></i></span>\r\n            <input type=\"number\" class=\"form-control\" name=\"txtOrder\" id=\"txtOrder\"  placeholder=\"1\">\r\n        </div>\r\n\r\n    </div>\r\n    <br/>\r\n \r\n\r\n        <br />\r\n  \r\n        <label for=\"drpViewRole\" class=\"control-label\" > View Role</label>\r\n    <br />\r\n    <div class=\"container\">\r\n\r\n        <div id=\"drpViewRole\" name=\"drpViewRole\" style=\"float: left;\">\r\n        </div>\r\n    </div>\r\n    <br />\r\n        <br />\r\n    <label for=\"drpAccessRole\" class=\"control-label\" >Access Role</label>\r\n    <br />\r\n    <div class=\"container\">\r\n\r\n        <div id=\"drpAccessRole\" name=\"drpAccessRole\" style=\"float: left;\">\r\n        </div>\r\n    </div>\r\n   </div>\r\n       <br />\r\n    <label for=\"drpModifyRole\" class=\"control-label\" >Modify Role </label>\r\n    <br />\r\n    <div class=\"container\">\r\n\r\n        <div id=\"drpModifyRole\" name=\"drpModifyRole\" style=\"float: left;\">\r\n        </div>\r\n    </div>\r\n           <br/>\r\n      \r\n        <label class=\"control-label\">Active</label>\r\n        <div class=\"as-material-switch container\">\r\n               <div style=\"float: left;\">\r\n            <input id=\"chkStatus\" name=\"chkStatus\" type=\"checkbox\" />\r\n            <label for=\"chkStatus\" class=\"label-default as-label\">  </label>\r\n          </div>\r\n     </div>\r\n        <br />\r\n        <div class=\"text-center\">\r\n            <input id=\"btnSave\" type=\"button\" class=\"btn btn-default\" data-localize=\"save\" />\r\n              <input id=\"btnDell\" type=\"button\" class=\"btn btn-danger\" data-localize=\"remove\" />\r\n        </div>\r\n\r\n</form>\r\n\r\n\r\n  ",
+  "Url": "/en/admin/security/roles",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "Roles Management",
+  "Guid": "4be1c2f7c59b439da79547d38e5b6744",
+  "Version": 3,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.security_Role_getAllByOtherLanguage",
+    "$.asUrls.security_Role_get",
+    "$.asUrls.security_Role_save",
+    "$.asUrls.security_Role_delete"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 16,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
+  "Language": "en",
+  "RowVersion": "AAAAAAADP9o="
+}

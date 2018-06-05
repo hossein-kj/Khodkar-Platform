@@ -1,0 +1,8 @@
+﻿{
+  "title": "صفحه تستی",
+  "url": "/fa/admin/develop/test/testpage",
+  "pageId": "ia5dc28d9b1604344ae863d23b388adb3",
+  "dependentModules": "[{\"url\":\"Pages/a5dc28d9b1604344ae863d23b388adb3.js?minVersion=25\"},{\"url\":\"asDropdown.js\"},{\"url\":\"asDropdown.css\"},{\"url\":\"asEditor.js\"},{\"url\":\"asOdataQueryBuilder.js\"}]",
+  "param": "{}",
+  "html": "<span style='display: none' id='ia5dc28d9b1604344ae863d23b388adb3'></span><div id=\"testService\"></div>\r\n <div id=\"drp_service\" style=\"float: left;\"></div>\r\n<div id=\"developTestPagePartial1\">hcfgghcgcvgcv</div>\r\n\r\n     <br/>\r\n     <div id=\"cmsWebForm_drp_service2\" style=\"float: left;\"></div>\r\n          <div>6546545641</div>\r\n         <br/>\r\n              <img data-srcset-base=\"/content/images/\" data-srcset-ext=\"/image.png\" data-srcset=\"hdpi 2000w, mdpi 1000w, ldpi 300w, ldpi\" style=\"width:100px;heigt:100px;\" >\r\n              \r\n              <div id=\"cmsWebForm_Html\">sdfcdsfcd</div>"
+}

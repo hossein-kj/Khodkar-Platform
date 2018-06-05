@@ -1,0 +1,78 @@
+/**
+ *
+ *	Item styles
+ *
+ *	================================================================
+ *
+ *	@since			1.4.0
+ *
+ */
+
+
+/**
+ *	=Links
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-item {
+
+	margin: 0 0 1px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+}
+
+.as-dropdown-item-rtl {
+    text-align:right;
+}
+
+
+/**
+ *	=Links
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-link {
+
+	background: @dropdown-item-bg;
+	color: @dropdown-item-color;
+	display: block;
+	text-decoration: none;
+	padding: @dropdown-item-spacing-v @dropdown-item-spacing-h;
+
+	&:hover {
+		background: @dropdown-item-hover-bg;
+		color: @dropdown-item-hover-color;
+		text-decoration: none;
+	}
+
+	// Icon
+	.as-dropdown-icon {
+		float: right;
+		margin-left: ( @dropdown-item-spacing-h / 2 );
+	}
+    	.as-dropdown-icon-rtl {
+		float: left;
+        margin-left: 0 !important
+	}
+
+}
+
+.as-dropdown-icon-rtl {
+		float: left;
+        margin-left: 0 !important
+	}
+
+// Focus
+.as-dropdown-focus .as-dropdown-link {
+	background: @dropdown-item-focus-bg;
+	color: @dropdown-item-focus-color;
+}
+
+// Selected
+.as-dropdown-selected .as-dropdown-link {
+	background: @dropdown-item-selected-bg;
+	text-decoration: none;
+	outline: 0;
+	color: @dropdown-item-selected-color;
+}

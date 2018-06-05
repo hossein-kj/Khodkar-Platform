@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{21FF474F-3502-4685-AA4D-75F08BA343C1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KS.ObjectiveModel</RootNamespace>
+    <AssemblyName>KS.ObjectiveModel</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="KS.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\KS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\BaseEntityObjective.cs" />
+    <Compile Include="Base\BaseEntityRelation.cs" />
+    <Compile Include="Base\BaseEntityWithoutAutoIdentityObjective.cs" />
+    <Compile Include="Base\BaseEntityWithoutRolesObjective.cs" />
+    <Compile Include="Base\BaseEntityWithoutUser.cs" />
+    <Compile Include="Base\IGroupObjective.cs" />
+    <Compile Include="Base\IKeyValuesObjective.cs" />
+    <Compile Include="Base\ITagObjective.cs" />
+    <Compile Include="Base\ITree.cs" />
+    <Compile Include="ContentManagement\CommentGroup.cs" />
+    <Compile Include="ContentManagement\CommentObjective.cs" />
+    <Compile Include="ContentManagement\EntityFileObjective.cs" />
+    <Compile Include="ContentManagement\EntityFilePathObjective.cs" />
+    <Compile Include="ContentManagement\EntityGroupObjective.cs" />
+    <Compile Include="ContentManagement\EntityMasterDataKeyValueObjective.cs" />
+    <Compile Include="ContentManagement\FileObjective.cs" />
+    <Compile Include="ContentManagement\FilePathObjective.cs" />
+    <Compile Include="ContentManagement\FilePathTag.cs" />
+    <Compile Include="ContentManagement\FileTag.cs" />
+    <Compile Include="ContentManagement\FileType.cs" />
+    <Compile Include="ContentManagement\Group.cs" />
+    <Compile Include="ContentManagement\KhodkarException.cs" />
+    <Compile Include="ContentManagement\LanguageAndCultureObjective.cs" />
+    <Compile Include="ContentManagement\LinkFile.cs" />
+    <Compile Include="ContentManagement\LinkFilePath.cs" />
+    <Compile Include="ContentManagement\LinkGroup.cs" />
+    <Compile Include="ContentManagement\LinkObjectiv.cs" />
+    <Compile Include="ContentManagement\LinkTag.cs" />
+    <Compile Include="ContentManagement\LinkType.cs" />
+    <Compile Include="ContentManagement\LocalFileObjective.cs" />
+    <Compile Include="ContentManagement\LocalFilePathObjective.cs" />
+    <Compile Include="ContentManagement\MasterDataKeyValueGroup.cs" />
+    <Compile Include="ContentManagement\MasterDataKeyValueObjective.cs" />
+    <Compile Include="ContentManagement\MasterDataKeyValueType.cs" />
+    <Compile Include="ContentManagement\MasterDataLocalKeyValueObjective.cs" />
+    <Compile Include="ContentManagement\Path.cs" />
+    <Compile Include="ContentManagement\Service.cs" />
+    <Compile Include="ContentManagement\Tag.cs" />
+    <Compile Include="ContentManagement\UserProfileObjective.cs" />
+    <Compile Include="ContentManagement\WebPageFile.cs" />
+    <Compile Include="ContentManagement\WebPageFilePath.cs" />
+    <Compile Include="ContentManagement\WebPageFrameWork.cs" />
+    <Compile Include="ContentManagement\WebPageObjective.cs" />
+    <Compile Include="ContentManagement\WebPageTemplate.cs" />
+    <Compile Include="ContentManagement\WebPageType.cs" />
+    <Compile Include="FileManagement\CreateDirectoryOprationInfo.cs" />
+    <Compile Include="FileManagement\DeleteOprationInfo.cs" />
+    <Compile Include="FileManagement\DiskInfo.cs" />
+    <Compile Include="FileManagement\DiskOprationInfo.cs" />
+    <Compile Include="FileManagement\RenameOprationInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ApplicationGroup.cs" />
+    <Compile Include="Security\ApplicationGroupRole.cs" />
+    <Compile Include="Security\ApplicationLocalGroup.cs" />
+    <Compile Include="Security\ApplicationLocalRole.cs" />
+    <Compile Include="Security\ApplicationQueryAuthrize.cs" />
+    <Compile Include="Security\ApplicationRole.cs" />
+    <Compile Include="Security\ApplicationUser.cs" />
+    <Compile Include="Security\ApplicationUserClaim.cs" />
+    <Compile Include="Security\ApplicationUserGroup.cs" />
+    <Compile Include="Security\ApplicationUserLogin.cs" />
+    <Compile Include="Security\ApplicationUserRole.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ContentManagement\CodeObjective.cs.txt" />
+    <Content Include="ContentManagement\Description.cs.txt" />
+    <Content Include="ContentManagement\FileKeyValue.cs.txt" />
+    <Content Include="ContentManagement\FilePathKeyValue.cs.txt" />
+    <Content Include="ContentManagement\HtmlTemplate.cs.txt" />
+    <Content Include="ContentManagement\LinkGroup.cs.txt" />
+    <Content Include="ContentManagement\LinkKeyValue.cs.txt" />
+    <Content Include="ContentManagement\LocalCodeObjective.cs.txt" />
+    <Content Include="ContentManagement\MasterDataKeyValueGroup.cs.txt" />
+    <Content Include="ContentManagement\WebPageKeyValue.cs.txt" />
+    <Content Include="Security\ApplicationTree.cs.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

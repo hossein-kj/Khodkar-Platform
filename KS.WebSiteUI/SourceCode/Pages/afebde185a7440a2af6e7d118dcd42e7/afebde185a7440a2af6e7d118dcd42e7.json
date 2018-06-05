@@ -1,0 +1,31 @@
+﻿{
+  "Id": 117,
+  "Html": "  <div id=\"win\" class=\"modal-content\">\n    <div class=\"modal-header\">\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n\n    <h4 class=\"modal-title\"> Remote download manager  </h4>\n</div>\n<div class=\"modal-body\">\n   <form id=\"frmRemoteDownloadManager\" role=\"form\" class=\"container-fluid\">\n       <br>\n\n       <div class=\"row\">\n        <label for=\"drpBaseUrl\" class=\"control-label\">Base Url </label>\n    <br />\n\n        <div id=\"drpBaseUrl\" name=\"drpBaseUrl\" style=\"float: left;\">\n    </div>\n</div>\n\n        <div class=\"form-group\">\n            <label for=\"txtUrl\" class=\"control-label\"> Url</label>\n         \n                <div class=\"input-group\">\n                    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-road\"></i></span>\n                    <input type=\"text\" class=\"form-control\" name=\"txtUrl\" id=\"txtUrl\" style=\"direction:ltr\">\n                </div>\n         \n        </div>\n      <br>\n       <div class=\"form-group\">\n            <label for=\"txtFileName\" class=\"control-label\">File Name For Storing</label>\n         \n                <div class=\"input-group\">\n                    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-road\"></i></span>\n                    <input type=\"text\" class=\"form-control\" name=\"txtFileName\" id=\"txtFileName\" style=\"direction:ltr\">\n                </div>\n         \n        </div>\n      <br>\n\n                <div class=\"form-group text-center\">\n            <span id=\"btnExecute\" class=\"btn btn-primary\"> Execute</span>\n  \n    </div>\n\n</form>\n\n\n                  </div>\n<div class=\"modal-footer\">\n\n</div>\n  \n</div>",
+  "Url": "/en/admin/fms/remote-download-manager",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "Remote download manager",
+  "Guid": "afebde185a7440a2af6e7d118dcd42e7",
+  "Version": 6,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.cms_masterDataKeyValue_GetByOtherLanguagesAndTypeId",
+    "$.asUrls.fms_downlodFromUrl",
+    "$.asUrls.cms_masterDataKeyValue_GetByOtherLanguageAndParentId"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 20,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
+  "Language": "en",
+  "RowVersion": "AAAAAAADPuQ="
+}

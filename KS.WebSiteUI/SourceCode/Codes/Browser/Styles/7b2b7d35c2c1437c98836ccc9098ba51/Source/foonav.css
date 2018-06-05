@@ -1,0 +1,329 @@
+/*!
+ * FooNav - A jQuery navigation menu.
+ * @version 0.0.6
+ * @link http://fooplugins.github.io/foonav/
+ * @copyright Steven Usher & Brad Vincent 2014
+ * @license Released under the MIT license.
+ */
+.fon-nav,
+.fon-nav-size,
+.fon-nav *,
+.fon-nav-size * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.fon-nav,
+.fon-nav-size {
+	font-family: "Segoe UI", "Helvetica", "Arial", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 22px;
+	word-spacing: normal;
+	letter-spacing: normal;
+	position: fixed;
+	overflow: visible;
+	min-height: 180px;
+	min-width: 150px;
+	padding: 10px;
+	z-index: 9999;
+}
+.fon-nav-size {
+	top: -3000px !important;
+	left: -3000px !important;
+	right: auto !important;
+	bottom: auto !important;
+}
+.fon-nav-inner {
+	overflow: hidden;
+	transition: width 0.3s ease, height 0.3s ease;
+}
+.fon-closed .fon-nav-inner {
+	transition: none;
+}
+
+.fon-buttons {
+	position: absolute;
+	min-width: 48px;
+	min-height: 48px;
+}
+
+.fon-button {
+	position: relative;
+	display: block;
+	min-width: 48px;
+	height: 48px;
+	line-height: 48px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	overflow: hidden;
+}
+
+.fon-button-top {
+	visibility: hidden;
+	height: 0;
+}
+
+.fon-button-top.fon-show {
+	visibility: visible;
+	height: 48px;
+}
+
+.fon-menu {
+	position: relative;
+	list-style-type: none;
+	padding: 0;
+	margin: 0 3px;
+}
+
+.fon-menu > li > .fon-menu {
+	display: none;
+}
+
+.fon-item {
+	display: block;
+	padding: 9px 12px;
+	margin: 3px 0;
+	position: relative;
+	text-decoration: none;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.fon-item-back,
+.fon-item-title {
+	margin-bottom: 10px;
+}
+
+.fon-item-icon {
+	margin-right: 10px;
+}
+
+/* Position */
+.fon-top-left,
+.fon-top-left > .fon-buttons,
+.fon-top-right,
+.fon-top-right > .fon-buttons {
+	top: 30px;
+}
+
+.fon-center-left,
+.fon-center-right {
+	top: 40%;
+}
+.fon-center-left > .fon-buttons,
+.fon-center-right > .fon-buttons {
+	top: 30px;
+}
+
+.fon-bottom-left,
+.fon-bottom-left > .fon-buttons,
+.fon-bottom-right,
+.fon-bottom-right > .fon-buttons {
+	bottom: 30px;
+}
+
+.fon-top-left,
+.fon-center-left,
+.fon-bottom-left {
+	left: -1000px;
+}
+
+.fon-top-left > .fon-buttons,
+.fon-center-left > .fon-buttons,
+.fon-bottom-left > .fon-buttons {
+	left: 100%;
+}
+
+.fon-top-right,
+.fon-center-right,
+.fon-bottom-right {
+	right: -1000px;
+}
+
+.fon-top-right > .fon-buttons,
+.fon-center-right > .fon-buttons,
+.fon-bottom-right > .fon-buttons {
+	right: 100%;
+}
+
+/* Shadow */
+.fon-closed.fon-shadow.fon-top-left,
+.fon-closed.fon-shadow.fon-center-left,
+.fon-closed.fon-shadow.fon-bottom-left,
+.fon-closed.fon-shadow.fon-top-right,
+.fon-closed.fon-shadow.fon-center-right,
+.fon-closed.fon-shadow.fon-bottom-right {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.fon-shadow.fon-top-left,
+.fon-shadow.fon-top-left > .fon-buttons,
+.fon-shadow.fon-center-left,
+.fon-shadow.fon-center-left > .fon-buttons,
+.fon-shadow.fon-bottom-left,
+.fon-shadow.fon-bottom-left > .fon-buttons {
+	-webkit-box-shadow: 2px 2px 2px rgba(50, 50, 50, 0.3);
+	-moz-box-shadow:    2px 2px 2px rgba(50, 50, 50, 0.3);
+	box-shadow:         2px 2px 2px rgba(50, 50, 50, 0.3);
+}
+
+.fon-shadow.fon-top-right,
+.fon-shadow.fon-top-right > .fon-buttons,
+.fon-shadow.fon-center-right,
+.fon-shadow.fon-center-right > .fon-buttons,
+.fon-shadow.fon-bottom-right,
+.fon-shadow.fon-bottom-right > .fon-buttons {
+	-webkit-box-shadow: -2px 2px 2px rgba(50, 50, 50, 0.3);
+	-moz-box-shadow:    -2px 2px 2px rgba(50, 50, 50, 0.3);
+	box-shadow:         -2px 2px 2px rgba(50, 50, 50, 0.3);
+}
+
+/* Rounded */
+.fon-rounded .fon-item {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.fon-rounded.fon-top-right,
+.fon-rounded.fon-top-right > .fon-buttons,
+.fon-rounded.fon-center-right,
+.fon-rounded.fon-center-right > .fon-buttons,
+.fon-rounded.fon-bottom-right,
+.fon-rounded.fon-bottom-right > .fon-buttons {
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+}
+
+.fon-rounded.fon-top-left,
+.fon-rounded.fon-top-left > .fon-buttons,
+.fon-rounded.fon-center-left,
+.fon-rounded.fon-center-left > .fon-buttons,
+.fon-rounded.fon-bottom-left,
+.fon-rounded.fon-bottom-left > .fon-buttons {
+	-webkit-border-top-right-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-moz-border-radius-bottomright: 6px;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+
+/* Border */
+.fon-item,
+.fon-nav,
+.fon-nav-size,
+.fon-nav > .fon-buttons {
+	border-style: solid;
+	border-width: 3px;
+	border-color: transparent;
+}
+
+.fon-top-right,
+.fon-top-right > .fon-buttons,
+.fon-center-right,
+.fon-center-right > .fon-buttons,
+.fon-bottom-right,
+.fon-bottom-right > .fon-buttons {
+	border-right: none;
+}
+
+.fon-top-left,
+.fon-top-left > .fon-buttons,
+.fon-center-left,
+.fon-center-left > .fon-buttons,
+.fon-bottom-left,
+.fon-bottom-left > .fon-buttons {
+	border-left: none;
+}
+
+/* Full Height */
+.fon-full-height {
+	top: 0;
+	bottom: 0;
+}
+
+.fon-full-height.fon-center-left > .fon-buttons,
+.fon-full-height.fon-center-right > .fon-buttons {
+	top: 45%;
+}
+
+.fon-full-height.fon-border.fon-nav {
+	border-top: none;
+	border-bottom: none;
+}
+
+.fon-full-height.fon-rounded.fon-nav {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+/* Transitions */
+.fon-button {
+	-webkit-transition-property: color, background-color, border-color, height, visibility;
+	-moz-transition-property: color, background-color, border-color, height, visibility;
+	-o-transition-property: color, background-color, border-color, height, visibility;
+	transition-property: color, background-color, border-color, height, visibility;
+	-webkit-transition-duration: 0.2s, 0.2s, 0.2s, 0.5s, 0.5s;
+	-moz-transition-duration: 0.2s, 0.2s, 0.2s, 0.5s, 0.5s;
+	-o-transition-duration: 0.2s, 0.2s, 0.2s, 0.5s, 0.5s;
+	transition-duration: 0.2s, 0.2s, 0.2s, 0.5s, 0.5s;
+	-webkit-transition-timing-function: ease-in, ease-in, ease-in, ease-in, ease-in;
+	-moz-transition-timing-function: ease-in, ease-in, ease-in, ease-in, ease-in;
+	-o-transition-timing-function: ease-in, ease-in, ease-in, ease-in, ease-in;
+	transition-timing-function: ease-in, ease-in, ease-in, ease-in, ease-in;
+}
+
+.fon-item {
+	-webkit-transition-property: color, background-color, border-color;
+	-moz-transition-property: color, background-color, border-color;
+	-o-transition-property: color, background-color, border-color;
+	transition-property: color, background-color, border-color;
+	-webkit-transition-duration: 0.2s, 0.2s, 0.2s;
+	-moz-transition-duration: 0.2s, 0.2s, 0.2s;
+	-o-transition-duration: 0.2s, 0.2s, 0.2s;
+	transition-duration: 0.2s, 0.2s, 0.2s;
+	-webkit-transition-timing-function: ease-in, ease-in, ease-in;
+	-moz-transition-timing-function: ease-in, ease-in, ease-in;
+	-o-transition-timing-function: ease-in, ease-in, ease-in;
+	transition-timing-function: ease-in, ease-in, ease-in;
+}
+
+/* On small screens set the size of the container and allow for scrolling through items. */
+@media only screen and (max-width : 640px) {
+	.fon-nav, .fon-nav-size {
+		width: calc(100% - 88px);
+		height: calc(100% - 100px);
+	}
+	.fon-nav.fon-top-left,
+	.fon-nav.fon-top-right,
+	.fon-nav.fon-center-left,
+	.fon-nav.fon-center-right,
+	.fon-nav.fon-bottom-left,
+	.fon-nav.fon-bottom-right {
+		top: 30px !important;
+	}
+	.fon-nav-inner {
+		overflow-y: auto;
+		max-width: 100%;
+		max-height: 100%;
+		transition-property: none;
+	}
+	.fon-item {
+		white-space: normal;
+	}
+}

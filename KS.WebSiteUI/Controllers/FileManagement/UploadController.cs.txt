@@ -1,0 +1,374 @@
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Hosting;
+using System.Web.Http;
+using KS.Core.FileSystemProvide.FlowUploader.FileSystem;
+using KS.Core.FileSystemProvide.FlowUploader.FlowJS;
+using KS.Core.Exceptions;
+using KS.Core.Localization;
+using KS.Core.GlobalVarioable;
+using KS.WebSiteUI.Controllers.Base;
+using Newtonsoft.Json.Linq;
+using KS.Core.Utility;
+
+//namespace KS.WebSiteUI.Controllers.FileManagement
+//{
+
+
+//    [RoutePrefix("fms")]
+//    public class UploadController : BaseAuthorizedWebApiController
+//    {
+//        private readonly Flow _flow;
+//        private readonly FlowFileSystem _fileSystem;
+
+//        public UploadController()
+//        {
+//            _fileSystem = new FlowFileSystem();
+//            //_fileSystem = new FlowFileSystem
+//            //{
+//            //    GetFilePathFunc = filePath => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", "/")}/{filePath}"
+//            //};
+
+//            _flow = new Flow(_fileSystem);
+//        }
+
+
+//        //[Route("{*filePath}")]
+//        //public async Task<HttpResponseMessage> GetFile(string filePath)
+//        //{
+//        //    if (string.IsNullOrWhiteSpace(filePath))
+//        //    {
+//        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid path");
+//        //    }
+
+//        //    if (!await _fileSystem.ExistsAsync(filePath).ConfigureAwait(false))
+//        //    {
+//        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "File not found");
+//        //    }
+
+//        //    var response = Request.CreateResponse(HttpStatusCode.OK);
+//        //    response.Content = new StreamContent(await _fileSystem.OpenReadAsync(filePath).ConfigureAwait(false));
+//        //    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+//        //    {
+//        //        FileName = filePath.Substring(filePath.LastIndexOf('/') + 1)
+//        //    };
+
+//        //    return response;
+//        //}
+
+//        [HttpPost]
+//        [Route("checkFileExistence")]
+//        public async Task<bool> Check(JObject data)
+//        {
+//            dynamic dataDto = data;
+//            string fileName = dataDto.FileName;
+//            string path = dataDto.Path;
+
+//            _fileSystem.GetFilePathFunc = filePath
+//               => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", " /")}";
+
+//            if (await _fileSystem.ExistsAsync(fileName))
+//                return false;
+//            //throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.FileAlreadyExist));
+//            return true;
+//        }
+
+//        [Route("upload/{path}")]
+//        public async Task<HttpResponseMessage> Get(string path)
+//        {
+//            var realPath = path.Replace(Config.UrlDelimeter, Helper.RootUrl);
+
+
+//            _flow.GetFilePathFunc = filePath
+//                => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", " /")}";
+
+
+//            var context = CreateContext();
+
+//            return await _flow.HandleRequest(context).ConfigureAwait(false);
+//        }
+
+//        [Route("upload/{path}")]
+//        public async Task<HttpResponseMessage> Post(string path)
+//        {
+//            try
+//            {
+//                var realPath = path.Replace(Config.UrlDelimeter, Helper.RootUrl);
+
+//            _flow.GetFilePathFunc = filePath
+//              => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", " /")}";
+
+//            var context = CreateContext();
+
+//                //upload token
+//                var content = Request.Content;
+//                string jsonContent = content.ReadAsStringAsync().Result;
+
+//            return await _flow.HandleRequest(context).ConfigureAwait(false);
+//            }
+//            catch (Exception ex)
+//            {
+
+//                throw ex;
+//            }
+//        }
+
+//        private FlowRequestContext CreateContext()
+//        {
+
+//            var temp = new FlowRequestContext(Request)
+//            {
+//                GetChunkFileNameFunc = parameters =>
+//                {
+//                    if (parameters.FlowChunkNumber != null)
+//                        return string.Format(
+//                            "{1}_{0}.chunk",
+//                            parameters.FlowIdentifier,
+//                            parameters.FlowChunkNumber.Value.ToString().PadLeft(8, '0'));
+//                    throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.UploadException));
+//                },
+//                GetChunkPathFunc = parameters => $"chunks/{parameters.FlowIdentifier}",
+//                GetFileNameFunc = parameters => parameters.FlowFilename,
+//                GetFilePathFunc = parameters => "",
+//                GetTempFileNameFunc = filePath => $"file_{Guid.NewGuid()}.tmp",
+//                GetTempPathFunc = () => $"temp",
+//                MaxFileSize = ulong.MaxValue
+//            };
+//            return temp;
+//        }
+//    }
+
+//}
+
+
+
+
+
+namespace KS.WebSiteUI.Controllers.FileManagement
+{
+
+
+    [RoutePrefix("fms")]
+    public class UploadController : ApiController
+    {
+        private readonly Flow _flow;
+        private readonly FlowFileSystem _fileSystem;
+
+        public UploadController()
+        {
+            _fileSystem = new FlowFileSystem
+            {
+                GetFilePathFunc = filePath => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", "/")}/{filePath}"
+            };
+
+            _flow = new Flow(_fileSystem);
+        }
+
+
+        //[Route("{*filePath}")]
+        //public async Task<HttpResponseMessage> GetFile(string filePath)
+        //{
+        //    if (string.IsNullOrWhiteSpace(filePath))
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid path");
+        //    }
+
+        //    if (!await _fileSystem.ExistsAsync(filePath).ConfigureAwait(false))
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "File not found");
+        //    }
+
+        //    var response = Request.CreateResponse(HttpStatusCode.OK);
+        //    response.Content = new StreamContent(await _fileSystem.OpenReadAsync(filePath).ConfigureAwait(false));
+        //    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+        //    {
+        //        FileName = filePath.Substring(filePath.LastIndexOf('/') + 1)
+        //    };
+
+        //    return response;
+        //}
+
+        [HttpPost]
+        [Route("checkFileExistence")]
+        public async Task<bool> Check(JObject data)
+        {
+            dynamic dataDto = data;
+            string fileName = dataDto.FileName;
+            string path = dataDto.Path;
+
+            if (await _fileSystem.ExistsAsync(fileName))
+                return false;
+            //throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.FileAlreadyExist));
+            return true;
+        }
+
+        [Route("upload/{path}")]
+        public async Task<HttpResponseMessage> Get(string path)
+        {
+            var context = CreateContext(path);
+
+            return await _flow.HandleRequest(context);
+        }
+
+        [Route("upload/{path}")]
+        public async Task<HttpResponseMessage> Post(string path)
+        {
+            try
+            {
+                var context = CreateContext(path);
+            
+                //upload token
+                //var content = Request.Content;
+                //string jsonContent = content.ReadAsStringAsync().Result;
+           
+            return await _flow.HandleRequest(context);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private FlowRequestContext CreateContext(string folderName)
+        {
+
+            var temp = new FlowRequestContext(Request)
+            {
+                GetChunkFileNameFunc = parameters =>
+                {
+                    if (parameters.FlowChunkNumber != null)
+                        return string.Format(
+                            "{1}_{0}.chunk",
+                            parameters.FlowIdentifier,
+                            parameters.FlowChunkNumber.Value.ToString().PadLeft(8, '0'));
+                    throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.UploadException));
+                },
+                GetChunkPathFunc = parameters => $"{folderName}/chunks/{parameters.FlowIdentifier}",
+                GetFileNameFunc = parameters => parameters.FlowFilename,
+                GetFilePathFunc = parameters => folderName,
+                GetTempFileNameFunc = filePath => $"file_{Guid.NewGuid()}.tmp",
+                GetTempPathFunc = () => $"{folderName}/temp",
+                MaxFileSize = ulong.MaxValue
+            };
+            return temp;
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+//namespace KS.WebSiteUI.Controllers.FileManagement
+//{
+
+
+//    [RoutePrefix("fms")]
+//    public class UploadController : ApiController
+//    {
+//        private readonly Flow _flow;
+//        private readonly FlowFileSystem _fileSystem;
+
+//        public UploadController()
+//        {
+//            _fileSystem = new FlowFileSystem
+//            {
+//                GetFilePathFunc = filePath => $"{HostingEnvironment.MapPath("~/files/temp").Replace("\\", "/")}/{filePath}"
+//            };
+
+//            _flow = new Flow(_fileSystem);
+//        }
+
+
+//        //[Route("{*filePath}")]
+//        //public async Task<HttpResponseMessage> GetFile(string filePath)
+//        //{
+//        //    if (string.IsNullOrWhiteSpace(filePath))
+//        //    {
+//        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid path");
+//        //    }
+
+//        //    if (!await _fileSystem.ExistsAsync(filePath).ConfigureAwait(false))
+//        //    {
+//        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "File not found");
+//        //    }
+
+//        //    var response = Request.CreateResponse(HttpStatusCode.OK);
+//        //    response.Content = new StreamContent(await _fileSystem.OpenReadAsync(filePath).ConfigureAwait(false));
+//        //    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+//        //    {
+//        //        FileName = filePath.Substring(filePath.LastIndexOf('/') + 1)
+//        //    };
+
+//        //    return response;
+//        //}
+
+//        [HttpGet]
+//        [Route("checkFileExistence/{fileName}/{path}")]
+//        public async Task<bool> Check(string fileName, string path)
+//        {
+//            if (await _fileSystem.ExistsAsync(fileName))
+//                return false;
+//            //throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.FileAlreadyExist));
+//            return true;
+//        }
+
+//        [Route("upload/{path}")]
+//        public async Task<HttpResponseMessage> Get(string path)
+//        {
+//            var context = CreateContext(path);
+
+//            return await _flow.HandleRequest(context).ConfigureAwait(false);
+//        }
+
+//        [Route("upload/{path}")]
+//        public async Task<HttpResponseMessage> Post(string path)
+//        {
+//            var context = CreateContext(path);
+//            try
+//            {
+//                //upload token
+//                var content = Request.Content;
+//                string jsonContent = content.ReadAsStringAsync().Result;
+//            }
+//            catch (Exception ex)
+//            {
+
+//                throw ex;
+//            }
+//            return await _flow.HandleRequest(context).ConfigureAwait(false);
+//        }
+
+//        private FlowRequestContext CreateContext(string folderName)
+//        {
+
+//            var temp = new FlowRequestContext(Request)
+//            {
+//                GetChunkFileNameFunc = parameters =>
+//                {
+//                    if (parameters.FlowChunkNumber != null)
+//                        return string.Format(
+//                            "{1}_{0}.chunk",
+//                            parameters.FlowIdentifier,
+//                            parameters.FlowChunkNumber.Value.ToString().PadLeft(8, '0'));
+//                    throw new KhodkarInvalidException(LanguageManager.GetExceptionMessage(ExceptionKey.UploadException));
+//                },
+//                GetChunkPathFunc = parameters => $"{folderName}/chunks/{parameters.FlowIdentifier}",
+//                GetFileNameFunc = parameters => parameters.FlowFilename,
+//                GetFilePathFunc = parameters => folderName,
+//                GetTempFileNameFunc = filePath => $"file_{Guid.NewGuid()}.tmp",
+//                GetTempPathFunc = () => $"{folderName}/temp",
+//                MaxFileSize = ulong.MaxValue
+//            };
+//            return temp;
+//        }
+//    }
+
+//}

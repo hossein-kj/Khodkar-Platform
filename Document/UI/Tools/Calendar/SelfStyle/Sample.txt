@@ -1,0 +1,16 @@
+$('#stylePopup').calendarsPicker({showOtherMonths: true, firstDay: 1, 
+    renderer: $.extend({}, $.calendarsPicker.weekOfYearRenderer, 
+        {picker: $.calendarsPicker.defaultRenderer.picker. 
+            replace(/\{link:clear\}/, '{button:clear}'). 
+            replace(/\{link:close\}/, '{button:close}')}), 
+    onShow: $.calendarsPicker.showStatus, showTrigger: '#calImg'}); 
+$('#styleInline').calendarsPicker({ 
+    monthsToShow: 2, showOtherMonths: true, firstDay: 1, 
+    renderer: $.calendarsPicker.weekOfYearRenderer, 
+    onShow: $.calendarsPicker.showStatus}); 
+ 
+$('#styleSelect').change(function() { 
+    $('#theme').attr('href', 'css/' + $(this).val()); 
+    setTimeout(function() { // Refresh 
+        $('.inlinePicker').calendarsPicker('option'); }, 0); 
+});

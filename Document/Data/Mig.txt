@@ -1,0 +1,14 @@
+
+
+Enable-Migrations -ContextTypeName KS.ObjectiveDataAccess.Contexts.SecurityContext -MigrationsDirectory:SecurityContextMigrations
+add-migration FirstTime -ConfigurationTypeName KS.ObjectiveDataAccess.SecurityContextMigrations.Configuration
+update-database -ConfigurationTypeName KS.ObjectiveDataAccess.SecurityContextMigrations.Configuration
+
+
+
+
+Enable-Migrations -ContextTypeName KS.ObjectiveDataAccess.Contexts.ContentManagementContext -MigrationsDirectory:ContentManagementDbContextMigrations
+add-migration FirstTime -ConfigurationTypeName KS.ObjectiveDataAccess.ContentManagementDbContextMigrations.Configuration
+update-database -ConfigurationTypeName KS.ObjectiveDataAccess.ContentManagementDbContextMigrations.Configuration
+
+

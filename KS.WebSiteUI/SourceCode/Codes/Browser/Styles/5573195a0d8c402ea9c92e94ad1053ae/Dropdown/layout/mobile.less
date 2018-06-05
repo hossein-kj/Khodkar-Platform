@@ -1,0 +1,76 @@
+/**
+ *
+ *	Mobile styles
+ *
+ *	================================================================
+ *
+ *	@since			1.4.0
+ *
+ */
+
+
+/**
+ *	=Overlay
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-overlay {
+	background: @dropdown-overlay-bg;
+	background: fade( @dropdown-overlay-bg, 50% );
+	opacity: 0;
+}
+
+
+/**
+ *	=Drawer
+ *	---------------------------------------------------------------- */
+
+@media all and (max-width: @dropdown-mobile-breakpoint) {
+
+	// Prevent page scrolling
+	.as-dropdown-is-open,
+	.as-dropdown-is-opening,
+	.as-dropdown-is-closing {
+		overflow: hidden;
+	}
+
+	// Menu position
+	.as-dropdown-menu-wrapper {
+		width: auto !important;
+		height: auto !important;
+		position: fixed !important;
+		top: @dropdown-mobile-spacing;
+		bottom: @dropdown-mobile-spacing;
+		left: @dropdown-mobile-spacing;
+		right: @dropdown-mobile-spacing;
+		margin: 0;
+		border: 0;
+	}
+
+	.as-dropdown-above,
+	.as-dropdown-below {
+
+		.as-dropdown-menu-wrapper {
+			top: @dropdown-mobile-spacing;
+			bottom: @dropdown-mobile-spacing;
+			margin: 0;
+		}
+
+	}
+
+	// Show mobile elements
+	.as-dropdown-header,
+	.as-dropdown-close,
+	.as-dropdown-title,
+	.as-dropdown.as-dropdown-open .as-dropdown-overlay {
+		display: block;
+	}
+
+}
+
+@media all and (min-width: (@dropdown-mobile-breakpoint + 1px) ) {
+
+	.as-dropdown-overlay {
+		display: none !important;
+	}
+
+}

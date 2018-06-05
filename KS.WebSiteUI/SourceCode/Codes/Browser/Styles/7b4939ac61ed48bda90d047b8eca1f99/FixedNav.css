@@ -1,0 +1,114 @@
+﻿/*#region Top Fixed Nav*/
+.as-fixed-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6);
+    -ms-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6);
+}
+
+.dropdown-menu-fa li > a {
+    text-align: right;
+}
+
+.navbar-fixed-top {
+    min-height: 75px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 50px; /*menu height*/
+    color: #000000;
+    /*font-family: 'A.Google' !important;*/
+}
+
+/*@media (max-width: 767px) {
+    .navbar-inverse .navbar-nav > li > a {
+        line-height: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}*/
+
+.navbar-inverse {
+    background-image: none;
+    border-right: none !important;
+    border-left: none;
+}
+
+    .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+        background-color: #FCFCFC;
+    }
+
+    .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        background-color: #FCFCFC;
+    }
+
+.dropdown-menu {
+    background-color: #FCFCFC;
+    -ms-opacity: 0.95;
+    opacity: 0.95;
+}
+
+    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+        background-color: #FCFCFC;
+        background-image: none;
+        color: #000000;
+    }
+
+.dropdown {
+    z-index: 1047;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #999999;
+}
+
+    .navbar-inverse .navbar-brand:hover {
+        color: #000000;
+    }
+
+
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #000000;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #000000;
+}
+
+    .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+        color: #000000;
+    }
+
+.dropdown-menu > li > a {
+    color: #333333;
+    /*font-family: 'A.Google' !important;*/
+}
+
+.navbar-inverse .navbar-nav > .dropdown > a .caret {
+    border-top-color: #999999;
+    border-bottom-color: #999999;
+}
+
+.navbar-inverse .navbar-nav > .dropdown > a:hover .caret {
+    border-top-color: #FFFFFF;
+    border-bottom-color: #FFFFFF;
+}
+
+.navbar {
+    position: relative;
+    margin-bottom: 0;
+}
+.as-nav {
+       /*background-color: #FCFCFC !important;z-index: 9998;*/
+           background-color: #FCFCFC !important;z-index: 1048;
+    padding-top: 85px;
+    /*margin-top: 100px;*/
+}
+
+/*#endregion Top Fixed Nav*/

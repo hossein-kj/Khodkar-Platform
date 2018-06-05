@@ -1,0 +1,10 @@
+﻿User-agent: *
+Disallow: /admin/
+Disallow: /ErrorPages/
+Disallow: /Content/
+Disallow: /Pages/
+Disallow: /Scripts/
+Disallow: /SourceCode/
+Disallow: /Files/
+# The sitemap must be an absolute URL
+#sitemap: http://mysite.com/sitemap.xml

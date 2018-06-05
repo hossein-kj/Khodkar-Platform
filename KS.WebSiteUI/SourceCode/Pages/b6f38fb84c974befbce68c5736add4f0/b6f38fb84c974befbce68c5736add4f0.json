@@ -1,0 +1,33 @@
+﻿{
+  "Id": 91,
+  "Html": " <div id=\"win\" class=\"modal-content\">\r\n    <div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\r\n\r\n    <h4 class=\"modal-title\">   مدیریت خروجی ها</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n   <table id=\"grvOutputs\" class=\"table table-condensed table-hover table-striped table-responsive\">\r\n    <thead>\r\n        <tr>\r\n<th class=\"col-lg-1\" data-header-align=\"right\" data-align=\"right\" data-column-id=\"Id\" data-type=\"numeric\">ردیف</th>\r\n <th data-header-align=\"center\" data-identifier=\"true\" data-align = \"left\" data-column-id=\"Name\" data-css-class=\"ltr-text\" data-header-css-class=\"col-lg-4 col-md-4 col-sm-6\" data-order=\"desc\">نام</th>\r\n       <th data-header-align=\"center\" data-align=\"center\" data-column-id=\"Size\">حجم</th>\r\n<th data-header-align=\"center\" data-align=\"center\" data-column-id=\"ModifieLocalDateTime\">تاریخ آخرین تغییرات</th>\r\n        </tr>\r\n    </thead>\r\n</table>\r\n \r\n\r\n        \r\n  \r\n</div>\r\n<div class=\"modal-footer\">\r\n  \r\n           <div id=\"divBtn\" class=\"text-center\">\r\n               <input id=\"btnPublish\" type=\"button\" class=\"btn btn-warning\"  value=\" انتشار \" />\r\n      \r\n            <input id=\"btnNew\" type=\"button\" class=\"btn btn-default\" value=\"   افزودن خروجی  \" />\r\n              <input id=\"btnDell\" type=\"button\" class=\"btn btn-danger\" data-loading-text=\" در حال اجرا ... \"  value=\"  حذف  \"  />\r\n                <input id=\"btnViewLog\" type=\"button\" class=\"btn btn-default\"  value=\" مشاهده گزارش ساخت \" />\r\n        </div>\r\n        <br/>\r\n        \r\n            <div style=\"display: none\">\r\n        \r\n                    <div id=\"winLog\">\r\n                                          <div class=\"modal-header as-handle\">\r\n                             <h4 class=\"modal-title\">گزارش ساخت </h4>\r\n                        </div>\r\n                    \r\n                <div class=\"modal-body\">\r\n                  <form role=\"form\" class=\"container-fluid\">\r\n\r\n                                <br>\r\n               \r\n                        <textarea  class=\"form-control ltr\" name=\"txtLog\" id=\"txtLog\"  style=\"height: 500px;direction: ltr;\"> </textarea>\r\n                    \r\n                                <br>\r\n                   \r\n                           </form>\r\n                <div class=\"modal-footer\">\r\n                <div class=\"form-group pull-right\">\r\n                    <div>\r\n                        <span id=\"btnCancel\" class=\"btn btn-primary\">انصراف</span>\r\n                    </div>\r\n              \r\n                </div>\r\n                   </div>\r\n             </div>\r\n                    </div>\r\n                       \r\n        </div>  \r\n</div>\r\n  \r\n</div>\r\n\r\n ",
+  "Url": "/fa/admin/develop/codes/os/dotnet/output-manager",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "مدیریت خروجی ها",
+  "Guid": "b6f38fb84c974befbce68c5736add4f0",
+  "Version": 31,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.develop_code_os_dotNet_publishDll",
+    "$.asUrls.develop_code_os_dotNet_dellOutputDll",
+    "$.asUrls.develop_code_os_dotNet_getOutputs",
+    "$.asUrls.develop_code_os_dotNet_addOutputDll",
+    "$.asUrls.develop_code_os_dotNet_viewDllBuildLog"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 20,
+  "HaveStyle": true,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asBootGrid.css?minversion=13\"},{\"url\":\"asBootGrid.js?minversion=13\"},{\"url\":\"asModal.css?minversion=46\"},{\"url\":\"asModal.js?minversion=46\"}]",
+  "Language": "fa",
+  "RowVersion": "AAAAAAADNaA="
+}

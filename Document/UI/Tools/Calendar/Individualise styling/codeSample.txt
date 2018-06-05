@@ -1,0 +1,2 @@
+$('#classPicker').calendarsPicker({ 
+    pickerClass: 'myPicker', showTrigger: '#calImg'});

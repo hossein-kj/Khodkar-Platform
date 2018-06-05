@@ -1,0 +1,32 @@
+﻿{
+  "Id": 136,
+  "Html": "<div class=\"col-lg-12\">\n\n<div class=\"as-material-switch\" style=\"margin-top: 10px;\">\n<div><label class=\"control-label\">Event logging status </label> <input id=\"chkStatus\" name=\"chkStatus\" type=\"checkbox\" /> <label class=\"label-default as-label\" for=\"chkStatus\"> </label></div>\n</div>\n\n\n</div>\n  <br>\n <div class=\"text-center\">\n   <input id=\"btnToggleEnableLog\" class=\"btn  btn-primary\" type=\"button\" value=\"Enable/Disable (Temporary)\" data-loading-text=\"Loading ...\" />\n</div>\n\n<p></p>\n<hr>\n <div class=\"text-center\">\n   <input id=\"btnBackUpActionLog\" class=\"btn  btn-primary\" type=\"button\" value=\"  Backup and rebuild the event database   \" data-loading-text=\"Loading ...\" />\n</div>\n<p></p>\n<hr>\n <div class=\"text-center\">\n   <input id=\"btnBackUpErrorLog\" class=\"btn btn-primary\" type=\"button\" value=\"Backup and Rebuild the Error Database\" data-loading-text=\"Loading ...\" />\n</div>",
+  "Url": "/en/admin/develop/reports/manager",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "Report Management",
+  "Guid": "6ec310a6f5e6431590c4d79083aa8d65",
+  "Version": 1,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.develop_reports_ActionLog_ToggleEnableLog",
+    "$.asUrls.develop_reports_ActionLog_BackUp",
+    "$.asUrls.develop_reports_ErrorLog_BackUp",
+    "$.asUrls.develop_reports_ActionLog_LogStatus"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 16,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[]",
+  "Language": "en",
+  "RowVersion": "AAAAAAADP7w="
+}

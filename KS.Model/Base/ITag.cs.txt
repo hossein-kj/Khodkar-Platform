@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+using KS.Model.ContentManagement;
+
+namespace KS.Model.Base
+{  
+    public interface ITag<T> where T:EntityMasterDataKeyValue
+    {
+        List<T> Tags { get; set; }
+    }
+}

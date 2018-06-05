@@ -1,0 +1,17 @@
+#listRender { font-size: 11px; } 
+#listRender .month { clear: left; border: none; 
+    border-right: 1px solid #ccc; text-align: center; } 
+#listRender .month div { float: left; width: 9.5em; 
+    padding-right: 0.5em; text-align: right; } 
+#listRender ul { float: left; margin: 0em; padding: 0em; 
+    list-style: none; overflow: hidden; } 
+#listRender ul.days { margin-left: 10em; text-align: center; } 
+#listRender ul.days span { background-color: #777; color: #fff; } 
+#listRender li { float: left; width: 1.75em; margin: 0em; border: 1px solid #aaa; } 
+#listRender li a { display: block; width: 100%; padding: 0.125em; 
+    background-color: #eee; color: #000; text-decoration: none; } 
+#listRender li span { display: block; width: 100%; padding: 0.125em; 
+    background-color: #fff; color: #888; } 
+#listRender li .weekend { background-color: #ddd; } 
+#listRender li .highlight { background-color: #f08080; } 
+#listRender li .selected { background-color: #777; }

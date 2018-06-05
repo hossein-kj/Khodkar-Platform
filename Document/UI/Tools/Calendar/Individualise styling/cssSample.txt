@@ -1,0 +1,2 @@
+.myPicker .calendars-month-header, 
+.myPicker .calendars-month-header select { background-color: #f00; }

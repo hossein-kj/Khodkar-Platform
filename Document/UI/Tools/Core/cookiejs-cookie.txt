@@ -1,0 +1,2 @@
+https://github.com/js-cookie/js-cookie
+https://github.com/ScottHamper/Cookies/blob/master/src/cookies.js

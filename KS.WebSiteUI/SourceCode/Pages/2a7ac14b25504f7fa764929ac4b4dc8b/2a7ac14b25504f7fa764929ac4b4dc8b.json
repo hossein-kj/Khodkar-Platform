@@ -1,0 +1,33 @@
+﻿{
+  "Id": 95,
+  "Html": "  <div id=\"win\" class=\"modal-content\">\n    <div class=\"modal-header\">\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n\n    <h4 class=\"modal-title\">اجرای یک Unit Test  </h4>\n</div>\n<div class=\"modal-body\">\n   <form id=\"frmUnitTest\" role=\"form\" class=\"container-fluid\">\n       <br>\n\n       <div class=\"row\">\n        <label for=\"drpUnitTestDll\" class=\"control-label\" style=\"float: right\">  انتخاب اسمبلی تست </label>\n    <br />\n\n        <div id=\"drpUnitTestDll\" name=\"drpUnitTestDll\" style=\"float: left;\">\n    </div>\n</div>\n<div id=\"divDllCodes\">\n<div class=\"row\">\n        <label for=\"drpDllCodes\" class=\"control-label\" style=\"float: right\"> انتخاب کد </label>\n    <br />\n\n        <div id=\"drpDllCodes\" name=\"drpDllCodes\" style=\"float: left;\">\n    </div>\n</div>\n</div>\n<div id=\"divDllVersions\">\n<div class=\"row\">\n        <label for=\"drpDllVersion\" class=\"control-label\" style=\"float: right\">  انتخاب نگارش</label>\n    <br />\n\n        <div id=\"drpDllVersion\" name=\"drpVersion\" style=\"float: left;\">\n    </div>\n</div>\n</div>\n<div id=\"divMethods\">\n<div class=\"row\">\n        <label for=\"drpMethods\" class=\"control-label\" style=\"float: right\">  انتخاب متد </label>\n    <br />\n\n        <div id=\"drpMethods\" name=\"drpMethods\" style=\"float: left;\">\n    </div>\n</div>\n</div>\n\n        <div class=\"form-group\">\n            <label for=\"txtParameterValue\" class=\"control-label\">  مقدار پارامتر</label>\n         \n                <div class=\"input-group\">\n                    <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-pencil\"></i></span>\n                    <input type=\"text\" class=\"form-control\" name=\"txtParameterValue\" id=\"txtParameterValue\" style=\"direction:ltr\">\n                </div>\n         \n        </div>\n      <br>\n\n                <div class=\"form-group text-center\">\n            <span id=\"btnExecute\" class=\"btn btn-primary\"> اجرا</span>\n  \n    </div>\n\n</form>\n\n\n                  </div>\n<div class=\"modal-footer\">\n\n</div>\n  \n</div>",
+  "Url": "/fa/admin/develop/codes/os/dotnet/unit-test-runner",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "اجرای یک Unit Test",
+  "Guid": "2a7ac14b25504f7fa764929ac4b4dc8b",
+  "Version": 20,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.develop_code_os_dotNet_getOutputVersionNumbers",
+    "$.asUrls.develop_code_os_dotNet_getDllByTypeId",
+    "$.asUrls.develop_code_os_dotNet_getNamespaceAndClassesAndMethodsByDllId",
+    "$.asUrls.develop_code_os_dotNet_runUnitTestMethod",
+    "$.asUrls.develop_code_os_dotNet_getUnitTestMethods"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 20,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asDropdown.js\"},{\"url\":\"asDropdown.css\"},{\"url\":\"asValidate.js\"},{\"url\":\"asValidate.css\"},{\"url\":\"asModal.css?minversion=46\"},{\"url\":\"asModal.js?minversion=46\"}]",
+  "Language": "fa",
+  "RowVersion": "AAAAAAADNaQ="
+}

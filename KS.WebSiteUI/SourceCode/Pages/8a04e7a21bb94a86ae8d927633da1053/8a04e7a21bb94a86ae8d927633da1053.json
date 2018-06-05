@@ -1,0 +1,29 @@
+﻿{
+  "Id": 33,
+  "Html": " <div id=\"win\" class=\"modal-content\">\r\n    <div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\r\n\r\n    <h4 class=\"modal-title\">   انتخاب دایرکتوری</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n    <div class=\"col-lg-12\">\r\n       <div id=\"divPath\" style=\"direction:ltr;height:8px;margin:5px\"></div>\r\n</div>\r\n   <table id=\"grvFolder\" class=\"table table-condensed table-hover table-striped table-responsive\">\r\n    <thead>\r\n        <tr>\r\n            \r\n               <th data-header-align=\"right\" data-align = \"right\" data-column-id=\"Id\" data-identifier=\"true\" data-type=\"numeric\" class=\"col-lg-1\">ردیف</th>\r\n            \r\n            \r\n                   <th data-header-align=\"center\" data-align = \"right\" data-column-id=\"Name\" data-order=\"desc\" data-formatter=\"Name\">عنوان</th>\r\n                     <th data-header-align=\"center\" data-align = \"center\" data-column-id=\"ModifieLocalDateTime\"  >تاریخ آخرین تغییرات</th>\r\n     \r\n        </tr>\r\n    </thead>\r\n</table>\r\n</div>\r\n<div class=\"modal-footer\">\r\n    <div class=\"form-group pull-right\">\r\n        <div>\r\n            <span id=\"btnSelect\" class=\"btn btn-primary\">انتخاب</span>\r\n            <span id=\"btnCancel\" class=\"btn btn-primary\">انصراف</span>\r\n        </div>\r\n  \r\n    </div>\r\n  \r\n   \r\n</div>\r\n</div>",
+  "Url": "/fa/admin/fms/folder-selector",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "انتخاب دایرکتوری",
+  "Guid": "8a04e7a21bb94a86ae8d927633da1053",
+  "Version": 36,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.fms_GetFoldersOfPathByPaging"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 20,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asBootGrid.css?minversion=13\"},{\"url\":\"asBootGrid.js?minversion=13\"},{\"url\":\"asModal.css?minversion=46\"},{\"url\":\"asModal.js?minversion=46\"}]",
+  "Language": "fa",
+  "RowVersion": "AAAAAAADNYQ="
+}

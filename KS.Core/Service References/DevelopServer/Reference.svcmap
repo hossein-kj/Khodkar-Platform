@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7c443455-ba8f-4ee2-aa75-32f6871466a9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51249/DevlopService/mex/" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="12d9b579-9c5f-4818-9365-55c5be1b693e" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="5ecd67db-f080-4316-93f1-9d1be787fe41" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="6f12825a-477f-405a-a15a-5cce1c020438" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+    <MetadataFile FileName="KS.Server.Model.Migration.xsd" MetadataType="Schema" ID="54d22b95-0c91-4f92-9b4f-a7b3fe1851fd" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="4f001f46-fd1c-4e51-9a9d-d1f1bae4e087" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+    <MetadataFile FileName="KS.Server.Exceptions.xsd" MetadataType="Schema" ID="c47f1659-68f4-490b-941f-e14237c56519" SourceId="1" SourceUrl="http://localhost:51249/DevlopService/mex/" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,8 @@
+﻿{
+  "title": "Test WebPage",
+  "url": "/en/mobile/admin/develop/test/testpage",
+  "pageId": "iba6d3c5c6d8847fea539eb68b35f4cdd",
+  "dependentModules": "[]",
+  "param": "{}",
+  "html": "<span style='display: none' id='iba6d3c5c6d8847fea539eb68b35f4cdd'></span>Mobile Content"
+}

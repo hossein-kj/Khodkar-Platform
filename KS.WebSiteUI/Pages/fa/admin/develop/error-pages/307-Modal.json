@@ -1,0 +1,8 @@
+﻿{
+  "title": "صفحه به طور موقت از دسترس خارج می باشد",
+  "url": "/fa/admin/develop/error-pages/307",
+  "pageId": "icb07ed76d93c41b38645ba03dd24d55e",
+  "dependentModules": "[]",
+  "param": "{}",
+  "html": "<span style='display: none' id='icb07ed76d93c41b38645ba03dd24d55e'></span>\r\n    <div class=\"modal-content\">\r\n    <div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\r\n\r\n    <h4 class=\"modal-title\"> صفحه به طور موقت از دسترس خارج می باشد</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\nصفحه به طور موقت از دسترس خارج می باشد\r\n</div>\r\n<div class=\"modal-footer\">\r\n</div>\r\n</div>\r\n\r\n"
+}

@@ -1,0 +1,158 @@
+$(selector).calendarsPicker({ 
+    calendar: $.calendars.instance(), // The calendar to use 
+    pickerClass: '', // CSS class to add to this instance of the datepicker 
+    showOnFocus: true, // True for popup on focus, false for not 
+    showTrigger: null, // Element to be cloned for a trigger, null for none 
+    showAnim: 'show', // Name of jQuery animation for popup, '' for no animation 
+    showOptions: {}, // Options for enhanced animations 
+    showSpeed: 'normal', // Duration of display/closure 
+    popupContainer: null, // The element to which a popup calendar is added, null for body 
+    alignment: 'bottom', // Alignment of popup - with nominated corner of input: 
+        // 'top' or 'bottom' aligns depending on language direction, 
+        // 'topLeft', 'topRight', 'bottomLeft', 'bottomRight' 
+    fixedWeeks: false, // True to always show 6 weeks, false to only show as many as are needed 
+    firstDay: null, // First day of the week, 0 = Sunday, 1 = Monday, ... 
+        // defaults to calendar local setting if null 
+    calculateWeek: null, // Calculate week of the year from a date, null for calendar default 
+    monthsToShow: 1, // How many months to show, cols or [rows, cols] 
+    monthsOffset: 0, // How many months to offset the primary month by 
+    monthsToStep: 1, // How many months to move when prev/next clicked 
+    monthsToJump: 12, // How many months to move when large prev/next clicked 
+    changeMonth: true, // True to change month/year via drop-down, false for navigation only 
+    yearRange: 'c-10:c+10', // Range of years to show in drop-down: 'any' for direct text entry 
+        // or 'start:end', where start/end are '+-nn' for relative to today 
+        // or 'c+-nn' for relative to the currently selected date 
+        // or 'nnnn' for an absolute year 
+    showOtherMonths: false, // True to show dates from other months, false to not show them 
+    selectOtherMonths: false, // True to allow selection of dates from other months too 
+    defaultDate: null, // Date to show if no other selected 
+    selectDefaultDate: false, // True to pre-select the default date if no other is chosen 
+    minDate: null, // The minimum selectable date 
+    maxDate: null, // The maximum selectable date 
+    dateFormat: null, // Format for dates, defaults to calendar setting if null 
+    autoSize: false, // True to size the input field according to the date format 
+    rangeSelect: false, // Allows for selecting a date range on one date picker 
+    rangeSeparator: ' - ', // Text between two dates in a range 
+    multiSelect: 0, // Maximum number of selectable dates, zero for single select 
+    multiSeparator: ',', // Text between multiple dates 
+    onDate: null, // Callback as a date is added to the datepicker 
+    onShow: null, // Callback just before a datepicker is shown 
+    onChangeMonthYear: null, // Callback when a new month/year is selected 
+    onSelect: null, // Callback when a date is selected 
+    onClose: null, // Callback when a datepicker is closed 
+    altField: null, // Alternate field to update in synch with the datepicker 
+    altFormat: null, // Date format for alternate field, defaults to dateFormat 
+    constrainInput: true, // True to constrain typed input to dateFormat allowed characters 
+    commandsAsDateFormat: false, // True to apply formatDate to the command texts 
+    commands: this.commands, // Command actions that may be added to a layout by name 
+ 
+    // Localisation settings 
+    renderer: this.defaultRenderer, // The rendering templates 
+    prevText: '<Prev', // Text for the previous month command 
+    prevStatus: 'Show the previous month', // Status text for the previous month command 
+    prevJumpText: '<<', // Text for the previous year command 
+    prevJumpStatus: 'Show the previous year', // Status text for the previous year command 
+    nextText: 'Next>', // Text for the next month command 
+    nextStatus: 'Show the next month', // Status text for the next month command 
+    nextJumpText: '>>', // Text for the next year command 
+    nextJumpStatus: 'Show the next year', // Status text for the next year command 
+    currentText: 'Current', // Text for the current month command 
+    currentStatus: 'Show the current month', // Status text for the current month command 
+    todayText: 'Today', // Text for the today's month command 
+    todayStatus: 'Show today\'s month', // Status text for the today's month command 
+    clearText: 'Clear', // Text for the clear command 
+    clearStatus: 'Clear all the dates', // Status text for the clear command 
+    closeText: 'Close', // Text for the close command 
+    closeStatus: 'Close the datepicker', // Status text for the close command 
+    yearStatus: 'Change the year', // Status text for year selection 
+    monthStatus: 'Change the month', // Status text for month selection 
+    weekText: 'Wk', // Text for week of the year column header 
+    weekStatus: 'Week of the year', // Status text for week of the year column header 
+    dayStatus: 'Select DD, M d, yyyy', // Status text for selectable days 
+    defaultStatus: 'Select a date', // Status text shown by default 
+    isRTL: false // True if language is right-to-left 
+}); 
+ 
+$.calendarsPicker.commands = { // Command actions that may be added to a layout by name 
+    // name: { // The command name, use '{button:name}' or '{link:name}' in layouts 
+    //        text: '', // The field in the regional settings for the displayed text 
+    //        status: '', // The field in the regional settings for the status text 
+    //      // The keystroke to trigger the action 
+    //        keystroke: {keyCode: nn, ctrlKey: boolean, altKey: boolean}, 
+    //        enabled: fn, // The function that indicates the command is enabled 
+    //        date: fn, // The function to get the date associated with this action 
+    //        action: fn} // The function that implements the action 
+    prev: {...}, // Previous month 
+    prevJump: {...}, // Previous year 
+    next: {...}, // Next month 
+    nextJump: {...}, // Next year 
+    current: {...}, // Current month 
+    today: {...}, // Today's month 
+    clear: {...}, // Clear the datepicker 
+    close: {...}, // Close the datepicker 
+    prevWeek: {...}, // Previous week 
+    prevDay: {...}, // Previous day 
+    nextDay: {...}, // Next day 
+    nextWeek: {...} // Next week 
+} 
+ 
+$.calendarsPicker.defaultRenderer = { // The standard datepicker renderer 
+    picker: '...', // Overall structure 
+    monthRow: '...', // One row of months 
+    month: '...', // A single month 
+    weekHeader: '...', // A week header 
+    dayHeader: '...', // Individual day header 
+    week: '...', // One week of the month 
+    day: '...', // An individual day 
+    monthSelector: '...', // jQuery selector, relative to picker, for a single month 
+    daySelector: '...', // jQuery selector, relative to picker, for individual days 
+    rtlClass: '...', // Class for right-to-left (RTL) languages 
+    multiClass: '...', // Class for multi-month datepickers 
+    defaultClass: '...', // Class for selectable dates 
+    selectedClass: '...', // Class for currently selected dates 
+    highlightedClass: '...', // Class for highlighted dates 
+    todayClass: '...', // Class for today 
+    otherMonthClass: '...', // Class for days from other months 
+    weekendClass: '...', // Class for days on weekends 
+    commandClass: '...', // Class prefix for commands 
+    commandButtonClass: '...', // Extra class(es) for commands that are buttons 
+    commandLinkClass: '...', // Extra class(es) for commands that are links 
+    disabledClass: '...' // Class for disabled commands 
+} 
+ 
+$.calendarsPicker.setDefaults(settings) // Set global defaults 
+$.calendarsPicker.multipleEvents(fns) // Apply multiple callbacks to an event 
+ 
+$(selector).calendarsPicker('option', settings) // Update multiple settings 
+$(selector).calendarsPicker('option', name, value) // Update a single setting 
+$(selector).calendarsPicker('option', name) // Retrieve a current setting 
+$(selector).calendarsPicker('destroy') // Remove datepicker functionality 
+$(selector).calendarsPicker('enable') // Enable datepicker and field 
+$(selector).calendarsPicker('disable') // Disable datepicker and field 
+$(selector).calendarsPicker('isDisabled') // Determine if a datepicker is disabled 
+$(selector).calendarsPicker('show') // Display a popup datepicker 
+$(selector).calendarsPicker('hide') // Close a popup datepicker 
+$(selector).calendarsPicker('clear') // Close a popup datepicker and clear its field 
+$(selector).calendarsPicker('getDate') // Retrieve the selected dates 
+$(selector).calendarsPicker('setDate', dates, endDate) // Set the selected dates 
+$(selector).calendarsPicker('retrieveDate', elem) // Retrieve the date for a selected datepicker element 
+$(selector).calendarsPicker('performAction', action) // Execute a named command 
+$(selector).calendarsPicker('changeMonth', offset) // Move a number of months 
+$(selector).calendarsPicker('showMonth', year, month) // Show a specific month and year 
+$(selector).calendarsPicker('changeDay', offset) // Move a number of days 
+$(selector).calendarsPicker('selectDate', elem) // Select the date for a datepicker element 
+ 
+// And in the extension module 
+ 
+$.calendarsPicker.weekOfYearRenderer // Renderer showing week of the year 
+$.calendarsPicker.themeRollerRenderer // Renderer using ThemeRoller styling 
+$.calendarsPicker.themeRollerWeekOfYearRenderer // Renderer combining the above two 
+ 
+$.calendarsPicker.noWeekends // onDate callback to nnot allow weekend dates 
+$.calendarsPicker.changeFirstDay // onShow callback to allow changing the first day of the week 
+$.calendarsPicker.hoverCallback(onHover) // onShow callback to follow date hovers 
+$.calendarsPicker.highlightWeek // onShow callback to highlight a hovered week 
+$.calendarsPicker.showStatus // onShow callback to show a status bar 
+$.calendarsPicker.monthNavigation // onShow callback to simplify navigation within a year 
+$.calendarsPicker.selectWeek // onShow callback to select an entire week 
+$.calendarsPicker.selectMonth // onShow callback to select an entire month 

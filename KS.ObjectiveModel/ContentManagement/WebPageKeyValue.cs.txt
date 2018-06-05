@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KS.ObjectiveModel.ContentManagement
+{
+    public sealed class WebPageKeyValue : EntityMasterDataKeyValueObjective
+    {
+        public new static int GetSelfEntityId()
+        {
+            return EntityIdentity.WebPageKeyValue;
+        }
+
+        //[ForeignKey("MasterDataKeyValueId")]
+        //public Service Service { get; set; }
+    }
+}

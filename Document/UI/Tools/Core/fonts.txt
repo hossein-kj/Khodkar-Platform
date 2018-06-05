@@ -1,0 +1,2 @@
+https://github.com/bramstein/fontfaceobserver
+https://jonsuh.com/blog/font-loading-with-font-events/

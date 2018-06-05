@@ -1,0 +1,23 @@
+$('#listRender').calendarsPicker({monthsToShow: [6, 1], showOtherMonths: true, 
+    onSelect: function(date) { alert('You picked ' + date); }, 
+    renderer: {picker: '<div><ul class="days">' + 
+        '{weekHeader}{weekHeader}{weekHeader}{weekHeader}{weekHeader}{weekHeader}' + 
+        '</ul><div>{months}</div></div>', 
+        monthRow: '<div>{months}</div>', 
+        month: '<div class="month"><div>{monthHeader:M yyyy}</div><ul>{weeks}</ul></div>', 
+        weekHeader: '{days}', 
+        dayHeader: '<li>{day}</li>', 
+        week: '{days}', 
+        day: '<li>{day}</li>', 
+        monthSelector: '.month', 
+        daySelector: 'li', 
+        rtlClass: 'rtl', 
+        multiClass: 'multi', 
+        defaultClass: 'default', 
+        selectedClass: 'selected', 
+        highlightedClass: 'highlight', 
+        todayClass: 'today', 
+        otherMonthClass: 'other-month', 
+        weekendClass: 'weekend', 
+        commandClass: 'cmd-', 
+        disabledClass: 'disabled'}});

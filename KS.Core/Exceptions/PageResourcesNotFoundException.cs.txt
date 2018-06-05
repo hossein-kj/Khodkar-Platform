@@ -1,0 +1,17 @@
+﻿using System;
+using KS.Common.Exceptions.Contexts.Ado;
+using KS.Common.GlobalVarioable;
+using KS.Common.Settings;
+using KS.Common.Utility;
+
+namespace KS.Common.Exceptions
+{
+     [Serializable]
+    public sealed class PageResourcesNotFoundException : Exception
+    {
+         public PageResourcesNotFoundException(string message) : base(Helper.ToAsErrorMessage(message)) { }
+         public PageResourcesNotFoundException() : base(Helper.ToAsErrorMessage(SqlContext.GetEceptionMessage(ExceptionKey.PageResourcesNotFoundException
+             , Setting.Language))) { }
+         //public PageNotFoundException() : base(Helper.ToAsErrorMessage(Resources.ErrorMessages.PageNotFoundException)) { }
+    }
+}

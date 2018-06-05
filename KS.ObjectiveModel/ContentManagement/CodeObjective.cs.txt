@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using KS.ObjectiveModel.Base;
+
+namespace KS.ObjectiveModel.ContentManagement
+{
+    public sealed class CodeObjective : BaseEntityObjective
+    {
+        [ForeignKey("TypeId")]
+        public MasterDataKeyValueObjective Type { get; set; }
+
+        [StringLength(128)]
+        public string Name { get; set; }
+        public int TypeId { get; set; }
+
+        [StringLength(256)]
+        public string Description { get; set; }
+        [StringLength(32)]
+        [Index(IsUnique = true)]
+        public string Guid { get; set; }
+        public int Version { get; set; }
+        public ICollection<LocalCodeObjective> LocalCodes { get; set; }
+    }
+}

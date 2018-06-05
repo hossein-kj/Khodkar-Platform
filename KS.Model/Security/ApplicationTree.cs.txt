@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using KS.Model.Base;
+
+namespace KS.Model.Security
+{
+
+    public class ApplicationTree : BaseEntity, ITree<ApplicationTree>, ILogEntity
+    {
+        public ApplicationTree()
+        {
+
+            this.Childrens = new List<ApplicationTree>();
+
+        }
+
+        public ApplicationTree(string text, string url, int order)
+            : this()
+        {
+            this.Text = text;
+            this.Url = url;
+            this.Order = order;
+        }
+
+        public ApplicationTree(string text, string url, string iconPath, int order, int parentId)
+            : this(text, url, order)
+        {
+            this.ParentId = parentId;
+            this.IconPath = iconPath;
+        }
+
+        //public int Id { get; set; }
+        public int? LanguageAndCultureId { get; set; }
+
+        [StringLength(255)]
+        public string Text { get; set; }
+
+        [StringLength(512)]
+        public string Html { get; set; }
+        public string Action { get; set; }
+
+        [StringLength(255)]
+        public string IconPath { get; set; }
+
+        public Boolean IsLeaf { get; set; }
+
+        [StringLength(4)]
+        public string TransactionCode { get; set; }
+
+        [StringLength(255)]
+        public string Url { get; set; }
+        public int? Order { get; set; }
+        public int? ParentId { get; set; }
+        public int? RoleId { get; set; }
+        public virtual ApplicationTree Parent { get; set; }
+        public virtual ICollection<ApplicationTree> Childrens { get; set; }
+        public static new string GetSelfEntityTableName()
+        {
+            return "[Security].[AspNetTrees]";
+        }
+
+        public ApplicationRole Role { get; set; }
+
+        //public virtual ICollection<ApplicationTreeNode> Ancestors { get; set; }
+        //public virtual ICollection<ApplicationTreeNode> Offspring { get; set; }
+
+    }
+}

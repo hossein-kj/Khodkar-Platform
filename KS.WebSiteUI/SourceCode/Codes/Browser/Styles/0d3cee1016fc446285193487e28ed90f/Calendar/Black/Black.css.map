@@ -1,0 +1,10 @@
+﻿{
+	"version": 3,
+	"file": "Black.css",
+	"sources": [
+		"Black.scss"
+	],
+	"sourcesContent": [],
+	"mappings": "AACuB,sBAAsB,CAAC,iCAAiC,CAAtB;EACrD,QAAQ,EAAE,mBAAoB;EAC9B,IAAI,EAAE,gBAAiB;EACvB,UAAU,EAAE,q5HAAG,CAAi8H,UAAU;CAHp6H;;AAQ1D,2BAA2B,CAAA;EACvB,gBAAgB,EAAE,idAAG;CADG;;AAG5B,2BAA2B,CAAA;EACvB,gBAAgB,EAAE,6nBAAG;CADG",
+	"names": []
+}

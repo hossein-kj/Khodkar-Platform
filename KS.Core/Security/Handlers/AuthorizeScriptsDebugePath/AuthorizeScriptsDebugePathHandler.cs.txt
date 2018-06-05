@@ -1,0 +1,36 @@
+﻿using System;
+using System.Web;
+using KS.Core.Security;
+
+namespace KS.Core.UI.Handlers.AuthorizeScriptsDebugePath
+{
+    public class AuthorizeScriptsDebugePathHandler : IHttpHandler
+    {
+        public bool IsReusable => false;
+
+        
+        public IAsyncResult BeginProcessRequest(HttpContext context, AsyncCallback cb, Object extraData)
+        {
+            //context.Response.Write("<p>Begin IsThreadPoolThread is " + Thread.CurrentThread.IsThreadPoolThread + "</p>\r\n");
+            var path = AuthorizeManager.AuthorizeDebugJavascriptPath(context.Request.RawUrl);
+            context.Response.ContentType = "application/javascript";
+            AuthorizeScriptsDebugePathAsynchOperation asynch = new AuthorizeScriptsDebugePathAsynchOperation
+                (cb, context, path);
+            asynch.StartAsyncWork();
+            return asynch;
+
+        
+        }
+
+        public void EndProcessRequest(IAsyncResult result)
+        {
+        }
+
+        public void ProcessRequest(HttpContext context)
+        {
+            throw new InvalidOperationException();
+        }
+    }
+
+   
+}

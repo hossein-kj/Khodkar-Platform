@@ -1,0 +1,8 @@
+﻿{
+  "title": "Test Page",
+  "url": "/en/admin/develop/test/testpage",
+  "pageId": "if8732d663c3d4cdf863af491153d6813",
+  "dependentModules": "[{\"url\":\"Pages/f8732d663c3d4cdf863af491153d6813.js?minVersion=10\"},{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asEditor.js?minversion=19\"},{\"url\":\"asOdataQueryBuilder.js\"}]",
+  "param": "{}",
+  "html": "<span style='display: none' id='if8732d663c3d4cdf863af491153d6813'></span><div id=\"testService\"></div>\r\n <div id=\"drp_service\" style=\"float: left;\"></div>\r\n<div id=\"developTestPagePartial1\">hcfgghcgcvgcv</div>\r\n\r\n     <br/>\r\n     <div id=\"cmsWebForm_drp_service2\" style=\"float: left;\"></div>\r\n          <div>6546545641</div>\r\n         <br/>\r\n              <img data-srcset-base=\"/content/images/\" data-srcset-ext=\"/image.png\" data-srcset=\"hdpi 2000w, mdpi 1000w, ldpi 300w, ldpi\" style=\"width:100px;heigt:100px;\" >\r\n              \r\n              <div id=\"cmsWebForm_Html\">sdfcdsfcd</div>"
+}

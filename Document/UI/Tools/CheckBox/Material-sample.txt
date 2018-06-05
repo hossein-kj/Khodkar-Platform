@@ -1,0 +1,65 @@
+<div class="container">
+    <h3 class="text-center">Material Design Switch</h3>
+    <hr>
+    <div class="col-xs-12">
+        <p class="lead">I have been using an Android Device for the last few days and am falling in love with the switchs they use in Android. I loved them so much I wanted to port them over to Bootstrap so I could use them in future projects. I did some research and all of the ones I could find used custom colors which prevented them from working with Bootswatch or required you to edit the css files to make them match your theme. I wanted to work around that.</p>
+        <p class="lead">Please use the theme picker above to see how this snippet works with bootswatch themes. I hope you enjoy this snippet.</p>    
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Material Design Switch Demos</div>
+            
+                <!-- List group -->
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Bootstrap Switch Default
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionDefault" class="label-default"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        Bootstrap Switch Primary
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionPrimary" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionPrimary" class="label-primary"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        Bootstrap Switch Success
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionSuccess" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionSuccess" class="label-success"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        Bootstrap Switch Info
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionInfo" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionInfo" class="label-info"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        Bootstrap Switch Warning
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionWarning" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionWarning" class="label-warning"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        Bootstrap Switch Danger
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionDanger" name="someSwitchOption001" type="checkbox"/>
+                            <label for="someSwitchOptionDanger" class="label-danger"></label>
+                        </div>
+                    </li>
+                </ul>
+            </div>            
+        </div>
+    </div>
+</div>

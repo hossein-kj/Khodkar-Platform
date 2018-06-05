@@ -1,0 +1,32 @@
+﻿{
+  "Id": 135,
+  "Html": "\r\n    <div class=\"modal-content\">\r\n    <div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\r\n\r\n    <h4 class=\"modal-title\"> Report Management</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n    <div style=\"direction: ltr;\">\r\n          <br />\r\n           <label class=\"control-label\" style=\"position: absolute;right: 10px;\">Event logging status</label>\r\n        <div class=\"as-material-switch\">\r\n               <div style=\"float:left\">\r\n            <input id=\"chkStatusLog\" name=\"chkStatus\" type=\"checkbox\" />\r\n            <label for=\"chkStatusLog\" class=\"label-default as-label\">  </label>\r\n          </div>\r\n     </div>\r\n        <br />\r\n    </div>\r\n    <br>\r\n     <div class=\"text-center\">\r\n   <input id=\"btnToggleEnableLog\" class=\"btn btn-primary\" type=\"button\" value=\"Enable/Disable (Temporary)\" data-loading-text=\"Loading ...\" />\r\n</div>\r\n\r\n<p></p>\r\n<hr>\r\n <div class=\"text-center\">\r\n   <input id=\"btnBackUpActionLog\" class=\"btn btn-primary\" type=\"button\" value=\" Backup and rebuild the event database  \" data-loading-text=\"Loading ...\" />\r\n</div>\r\n<p></p>\r\n<hr>\r\n <div class=\"text-center\">\r\n   <input id=\"btnBackUpErrorLog\" class=\"btn btn-primary\" type=\"button\" value=\"  Backup and Rebuild the Error Database \" data-loading-text=\"Loading ...\" />\r\n</div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n    <div class=\"form-group pull-right\">\r\n        <div>\r\n            <span id=\"btnCancel\" class=\"btn btn-primary\">Cancel</span>\r\n        </div>\r\n  \r\n    </div>\r\n  \r\n   \r\n</div>\r\n</div>\r\n\r\n",
+  "Url": "/en/admin/develop/reports/manager",
+  "EditMode": false,
+  "Params": "",
+  "FrameWorkUrl": "",
+  "TemplatePatternUrl": "",
+  "Tools": null,
+  "ViewRoleId": 5,
+  "ModifyRoleId": 5,
+  "AccessRoleId": 5,
+  "Title": "Report Management",
+  "Guid": "08c5e99b5da445208fcb1f1f9fab7511",
+  "Version": 1,
+  "EnableCache": false,
+  "CacheSlidingExpirationTimeInMinutes": 0,
+  "Services": [
+    "$.asUrls.develop_reports_ActionLog_ToggleEnableLog",
+    "$.asUrls.develop_reports_ActionLog_BackUp",
+    "$.asUrls.develop_reports_ErrorLog_BackUp",
+    "$.asUrls.develop_reports_ActionLog_LogStatus"
+  ],
+  "IsMobileVersion": false,
+  "Status": 1,
+  "TypeId": 20,
+  "HaveStyle": false,
+  "HaveScript": true,
+  "DependentModules": "[{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
+  "Language": "en",
+  "RowVersion": "AAAAAAADP7s="
+}

@@ -1,0 +1,8 @@
+﻿{
+  "title": "View Zip Content",
+  "url": "/en/admin/fms/zip-view",
+  "pageId": "iee3051b2bcce4ff89e50a4f4505b4b03",
+  "dependentModules": "[{\"url\":\"Pages/ee3051b2bcce4ff89e50a4f4505b4b03.js?minVersion=1\"},{\"url\":\"asBootGrid.css?minversion=19\"},{\"url\":\"asBootGrid.js?minversion=19\"}]",
+  "param": "{}",
+  "html": "<span style='display: none' id='iee3051b2bcce4ff89e50a4f4505b4b03'></span> <div id=\"win\" class=\"modal-content\">\r\n    <div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\r\n\r\n    <h4 class=\"modal-title\">Zip Content</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n   <table id=\"grvZip\" class=\"table table-condensed table-hover table-striped table-responsive\">\r\n    <thead>\r\n        <tr>\r\n            \r\n               <th data-header-align=\"left\" data-align = \"left\" data-column-id=\"Id\" data-identifier=\"true\" data-type=\"numeric\" >Id</th>\r\n            \r\n            \r\n                   <th data-header-align=\"center\" data-align = \"left\" data-column-id=\"FileName\" data-order=\"desc\"  data-header-css-class=\"col-lg-6 col-md-6 col-sm-6\">Name</th>\r\n                       \r\n                           <th data-header-align=\"center\" data-align = \"center\" data-column-id=\"UncompressedSize\" >  Uncompressed Size </th>\r\n                             \r\n                              <th data-header-align=\"center\" data-align = \"center\" data-column-id=\"UsesEncryption\" data-formatter=\"UsesEncryption\">  Uses Encryption</th>\r\n                  \r\n     \r\n        </tr>\r\n    </thead>\r\n</table>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  \r\n   \r\n</div>\r\n</div>"
+}

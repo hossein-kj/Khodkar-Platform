@@ -1,0 +1,1 @@
+﻿(function(n){"use strict";n.fn.asPopovers=function(t){var i=n.as(this),r;return n.type(t)==="string"?i.popover(t):(r=n.extend({html:!0,animation:!0,placement:"auto bottom"},t),this.each(function(){i=n.as(this);i.popover(r)}),this)}})(jQuery)

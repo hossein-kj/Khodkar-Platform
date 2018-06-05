@@ -1,0 +1,62 @@
+/**
+ *
+ *	Toggle styles
+ *
+ *	================================================================
+ *
+ *	@since			1.4.0
+ *
+ */
+
+
+/**
+ *	=General
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-toggle {
+
+	.as-dropdown-box( @dropdown-toggle-bg );
+
+	color: @dropdown-toggle-color;
+	text-decoration: none;
+	padding: @dropdown-toggle-spacing-v @dropdown-toggle-spacing-h;
+	padding-right: ( ( @dropdown-toggle-spacing-h * 2 ) + @dropdown-icon-size );
+
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+
+	&:hover {
+		background: @dropdown-toggle-hover-bg;
+		color: @dropdown-toggle-hover-color;
+		text-decoration: none;
+	}
+
+	// Icon
+	.as-dropdown-icon {
+		position: absolute;
+		right: 0;
+		top: 0;
+		padding: @dropdown-toggle-spacing-v @dropdown-toggle-spacing-h;
+	}
+
+	// Text
+	.as-dropdown-text {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+    	// Text
+	.as-dropdown-text-rtl {
+	float:right;
+        margin-left: 5px;
+	}
+
+}
+
+// Open
+.as-dropdown-open .as-dropdown-toggle {
+	background: @dropdown-toggle-open-bg;
+	color: @dropdown-toggle-open-color;
+}

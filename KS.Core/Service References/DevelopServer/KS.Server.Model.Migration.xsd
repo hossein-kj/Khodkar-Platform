@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KS.Server.Model.Migration" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KS.Server.Model.Migration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="MigrationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AppDataPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ConfigurationTypeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Connection" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContextAssemblyName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContextAssemblyPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContextAssemblyRootNameSpace" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Force" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NameSpaceQualifiedConnectionType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SourceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TargetName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WebConfigPath" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MigrationInfo" nillable="true" type="tns:MigrationInfo" />
+  <xs:complexType name="MigrationCode">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DesignerCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Infos" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MigrationId" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Resources" nillable="true" type="q1:ArrayOfKeyValueOfstringanyType" />
+      <xs:element minOccurs="0" name="UserCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Verbose" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Warnings" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MigrationCode" nillable="true" type="tns:MigrationCode" />
+</xs:schema>

@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .form-group input[type="checkbox"] {
+            display: none;
+        }
+
+            .form-group input[type="checkbox"] + .btn-group > label span {
+                width: 20px;
+            }
+
+                .form-group input[type="checkbox"] + .btn-group > label span:first-child {
+                    display: none;
+                }
+
+                .form-group input[type="checkbox"] + .btn-group > label span:last-child {
+                    display: inline-block;
+                }
+
+            .form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+                display: inline-block;
+            }
+
+            .form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+                display: none;
+            }
+    </style>
+    <title>Setup</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div class="container" style="text-align: center">
+        <div class="row">
+            <h2><a href="https://bootswatch.com/" target="_blank">
+<img src="Content/images/Khodkar-En.png" /></a>Setup</h2>
+            <p>You can change defauls language and other setting in appSettings of platform web.config .</p>
+            <p>You must copy  msvcp140d.dll and msvcp140.dll to SysWow64 directory.</p>
+            <p>And You must copy  msvcp140d.dll and msvcp140.dll to System32 directory from same folder name of dll directory in setup.</p>
+        </div>
+        <div class="row">
+            <div id="divLoading">
+                <img src="Content/images/loading.gif" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h3> Setup Steps</h3><hr />
+                <div class="[ form-group ]">
+                    <input type="checkbox" name="btnSchema" id="btnSchema" autocomplete="off" />
+                    <div class="[ btn-group ]">
+                        <label for="btnSecuritySchema" class="[ btn btn-info ]">
+                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                            <span> </span>
+                        </label>
+                        <label for="btnSchema" class="[ btn btn-default active ]">
+                            Install Schemas
+                        </label>
+                    </div>
+                </div>
+                <div class="[ form-group ]">
+                    <input type="checkbox" name="btnSecuritySchema" id="btnSecuritySchema" autocomplete="off" />
+                    <div class="[ btn-group ]">
+                        <label for="btnSecuritySchema" class="[ btn btn-warning ]">
+                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                            <span> </span>
+                        </label>
+                        <label for="btnSecuritySchema" class="[ btn btn-default active ]">
+                            Install table and data of security
+                        </label>
+                    </div>
+                </div>
+                <div class="[ form-group ]">
+                    <input type="checkbox" name="btnCmsSchema" id="btnCmsSchema" autocomplete="off" />
+                    <div class="[ btn-group ]">
+                        <label for="btnCmsSchema" class="[ btn btn-primary ]">
+                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                            <span> </span>
+                        </label>
+                        <label for="btnCmsSchema" class="[ btn btn-default active ]">
+                            Install table and data of CMS
+                        </label>
+                    </div>
+                </div>
+
+                <div class="[ form-group ]">
+                    <input type="checkbox" name="btnSp" id="btnSp" autocomplete="off" />
+                    <div class="[ btn-group ]">
+                        <label for="btnSp" class="[ btn btn-danger ]">
+                            <span class="[ glyphicon glyphicon-ok ]"></span>
+                            <span> </span>
+                        </label>
+                        <label for="btnSp" class="[ btn btn-default active ]">
+                            Install Stored Procedure
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <script src="Scripts/jquery.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#divLoading").hide();
+            $("#btnSchema").click(function () {
+                $("#divLoading").show();
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    data: {
+                        step: 1
+                    },
+                    url: "/setup/run/",
+                    //async: false,
+                    success: function (result) {
+                        $("#divLoading").hide();
+                        alert("Successfully Instal")
+                    },
+                    error: function (result) {
+                        $("#divLoading").hide();
+                        alert("Error : See details on console")
+                        console.dir(result)
+                    }
+                });
+            });
+            $("#btnSecuritySchema").click(function () {
+                $("#divLoading").show();
+                $.ajax({
+                    dataType: 'json',
+                    type:'post',
+                    data: {
+                        step: 2
+                    },
+                    url: "/setup/run/",
+                    //async: false,
+                    success: function (result) {
+                        $("#divLoading").hide();
+                        alert("Successfully Instal")
+                    },
+                    error: function (result) {
+                        $("#divLoading").hide();
+                        alert("Error : See details on console")
+                        console.dir(result)
+                    }
+                });
+            });
+
+            $("#btnCmsSchema").click(function () {
+                $("#divLoading").show();
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    data: {
+                        step: 3
+                    },
+                    url: "/setup/run/",
+                    //async: false,
+                    success: function (result) {
+                        $("#divLoading").hide();
+                        alert("Successfully Instal")
+                    },
+                    error: function (result) {
+                        $("#divLoading").hide();
+                        alert("Error : See details on console")
+                        console.dir(result)
+                    }
+                });
+            });
+
+            $("#btnSp").click(function () {
+                $("#divLoading").show();
+                $.ajax({
+                    dataType: 'json',
+                    type: 'post',
+                    data: {
+                        step: 4
+                    },
+                    url: "/setup/run/",
+                    //async: false,
+                    success: function (result) {
+                        $("#divLoading").hide();
+                        alert("Successfully Instal")
+                    },
+                    error: function (result) {
+                        $("#divLoading").hide();
+                        alert("Error : See details on console")
+                        console.dir(result)
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

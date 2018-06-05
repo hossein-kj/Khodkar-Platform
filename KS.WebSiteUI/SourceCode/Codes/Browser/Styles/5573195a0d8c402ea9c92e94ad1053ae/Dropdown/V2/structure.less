@@ -1,0 +1,148 @@
+/**
+ *
+ *	=Structure
+ *
+ *	================================================================ */
+
+
+/**
+ *	=General
+ *	---------------------------------------------------------------- */
+
+.as-dropdown {
+
+	position: relative;
+	display: inline-block;
+	vertical-align: bottom;
+	line-height: @dropdown-line-height;
+
+	a {
+		text-decoration: none;
+	}
+
+}
+ 
+
+/**
+ *	=Toggle
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-toggle {
+
+	background: @dropdown-toggle-bg;
+	display: inline-block;
+	text-decoration: none;
+	position: relative;
+	font-size: @dropdown-toggle-size;
+	padding: ( ( @dropdown-toggle-height - ( @dropdown-toggle-size * @dropdown-line-height ) ) / 2 ) @dropdown-toggle-spacing;
+	margin: 0;
+	box-shadow: @dropdown-toggle-shadow;
+
+	.as-dropdown-icon {
+
+		height: 2px;
+		width: 8px;
+		opacity: .6;
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+		margin-left: @dropdown-toggle-spacing;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-left: 4px solid transparent;
+			border-right: 4px solid transparent;
+			border-top: 4px solid;
+		}
+
+	}
+
+	.as-dropdown-text {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	img {
+		vertical-align: middle;
+	}
+
+}
+ 
+
+/**
+ *	=Containers
+ *	---------------------------------------------------------------- */
+
+.as-dropdown-menu-wrapper {
+	background: @dropdown-menu-bg;
+	overflow: hidden;
+	box-shadow: @dropdown-menu-shadow;
+}
+
+.as-dropdown-menu-container {
+	position: relative;
+	width: @dropdown-menu-width;
+	max-width: 100%;
+}
+
+.as-dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: inherit;
+}
+
+.as-dropdown-menu-main,
+.as-dropdown-menu-open {
+	display: block;
+}
+
+.as-dropdown-menu-open {
+	position: relative;
+}
+
+// Wrapper
+.as-dropdown-menu-wrapper {
+	position: absolute;
+	z-index: 999;
+	display: none;
+	opacity: 0;
+}
+
+.as-dropdown-below .as-dropdown-menu-wrapper {
+	top: 100%;
+	bottom: auto;
+	margin: 3px 0 0;
+}
+
+.as-dropdown-above .as-dropdown-menu-wrapper {
+	bottom: 100%;
+	top: auto;
+	margin: 0 0 3px;
+}
+
+// Mask
+.as-dropdown-mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	display: none;
+}
+
+.as-dropdown-animating .as-dropdown-mask {
+	display: block;
+}
+
+// Overlay
+.as-dropdown-overlay {
+	background: @dropdown-overlay-bg;
+	position: fixed;
+	opacity: 0;
+}

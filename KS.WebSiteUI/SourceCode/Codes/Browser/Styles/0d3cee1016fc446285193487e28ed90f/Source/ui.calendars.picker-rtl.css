@@ -1,0 +1,9 @@
+.ui-datepicker-cmd-prev {
+    direction: ltr !important;
+}
+.ui-datepicker-cmd-next {
+ direction: ltr !important;
+}
+.ui-datepicker-group .ui-datepicker-header {
+    height: auto !important;
+}

@@ -1,0 +1,2 @@
+https://github.com/stidges/jquery-searchable
+http://listjs.com/examples/add-get-remove/

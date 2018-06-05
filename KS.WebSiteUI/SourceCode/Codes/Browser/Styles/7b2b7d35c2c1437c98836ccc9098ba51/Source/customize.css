@@ -1,0 +1,21 @@
+﻿/*#region customize foonav smart (asOffConvas) menu*/
+  .fon-nav-inner {
+            width: auto !important;
+        }
+  .fon-item {
+      text-align: right !important;
+  }
+  a.fon-item {
+      text-decoration: none !important;
+  }
+  .fon-button {
+     text-decoration: none !important;  
+  }
+  .fon-item-icon:before {
+    margin-left: 5px !important;
+}
+.fon-nav {
+      font-family: 'A.Google' !important;
+  }
+.fon-buttons{z-index:9999 !important;}
+/*endregion*/

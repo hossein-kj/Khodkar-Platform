@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using KS.ObjectiveModel.Base;
+
+namespace KS.ObjectiveModel.ContentManagement
+{
+    public sealed class HtmlTemplate:BaseEntity
+    {
+        public int? ParentId { get; set; }
+        public int Order { get; set; }
+
+        [StringLength(8)]
+        public string Tag { get; set; }
+
+        [StringLength(128)]
+        public string Src { get; set; }
+
+        [StringLength(64)]
+        public string Class { get; set; }
+
+         [StringLength(512)]
+        public string Style { get; set; }
+
+        [StringLength(512)]
+        public string Html { get; set; }
+
+        //public int? RoleId { get; set; }
+
+        public ICollection<HtmlTemplate> Childrens { get; set; }
+    }
+}
