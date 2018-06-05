@@ -5,6 +5,6 @@ Online And Web Base And Free And Open Source Platform For Developing Web Base On
 <br>
  https://DotNetExpert.ir اطلاعات بیشتر در
 <br>
-@dotnetexpert فیلم های آموزشی در کانال آپارات
+https://www.aparat.com/dotnetexpert فیلم های آموزشی در کانال آپارات
 <br>
 @dotnetexpert_ir  آدرس کانال تلگرام
