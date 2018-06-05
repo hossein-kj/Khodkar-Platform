@@ -3106,7 +3106,6 @@
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\nuget\bootstrap.nuspec" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\nuget\bootstrap.sass.nuspec" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\nuget\MyGet.ps1" />
-    <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\package-lock.json" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\package.json" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\README.md" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\sache.json" />
