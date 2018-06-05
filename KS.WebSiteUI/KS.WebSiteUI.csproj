@@ -3088,8 +3088,6 @@
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\docs\4.0\utilities\text.md" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\docs\4.0\utilities\vertical-align.md" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\docs\4.0\utilities\visibility.md" />
-    <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\Gemfile" />
-    <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\Gemfile.lock" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\js\dist\alert.js.map" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\js\dist\button.js.map" />
     <Content Include="SourceCode\Codes\Browser\Styles\2c37a27016c547b2bda09f1939399583\bootstrap-4.0.0\js\dist\carousel.js.map" />
