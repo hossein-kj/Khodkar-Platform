@@ -84,8 +84,7 @@ namespace KS.WebSiteUI
             //start log time
             var startTime = DateTime.Now.TimeOfDay.ToString();
 
-            // Any connection or hub wire up and configuration should go here
-            app.MapSignalR();
+          
 
             // Get your HttpConfiguration.
             var config = new HttpConfiguration();
@@ -282,6 +281,10 @@ namespace KS.WebSiteUI
             app.UseMiddlewareFromContainer<ActionLogSpecialServicesMiddleware>();
             app.UseMiddlewareFromContainer<WebPageMiddleware>();
             ConfigureAuth(app);
+
+            // Any connection or hub wire up and configuration should go here
+            app.MapSignalR();
+
             app.UseAutofacMvc();
             app.UseAutofacWebApi(config);
             app.UseWebApi(config);

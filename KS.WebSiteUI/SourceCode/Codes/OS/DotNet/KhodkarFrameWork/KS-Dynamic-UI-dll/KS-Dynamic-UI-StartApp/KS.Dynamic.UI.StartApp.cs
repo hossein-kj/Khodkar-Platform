@@ -1,4 +1,4 @@
-﻿ /*khodkar c# comment                  
+﻿ /*khodkar c# comment                   
 
 
 namespace KS.Dynamic.UI.StartApp
@@ -101,8 +101,7 @@ using KS.Core.UI.Setting;
             //start log time
             var startTime = DateTime.Now.TimeOfDay.ToString();
             
-            // Any connection or hub wire up and configuration should go here
-            app.MapSignalR();
+           
 
             // Get your HttpConfiguration.
             var config = new HttpConfiguration();
@@ -300,6 +299,10 @@ using KS.Core.UI.Setting;
             app.UseMiddlewareFromContainer<ActionLogSpecialServicesMiddleware>();
             app.UseMiddlewareFromContainer<WebPageMiddleware>();
             ConfigureAuth(app);
+            
+             // Any connection or hub wire up and configuration should go here
+            app.MapSignalR();
+            
             app.UseAutofacMvc();
             app.UseAutofacWebApi(config);
            app.UseWebApi(config);
@@ -641,4 +644,4 @@ using KS.Core.UI.Setting;
             engineSwitcher.DefaultEngineName = MsieJsEngine.EngineName;
         }
     }
-}                        khodkar c# comment*/ 
+}                         khodkar c# comment*/ 
