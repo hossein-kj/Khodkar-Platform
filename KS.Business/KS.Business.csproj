@@ -205,7 +205,7 @@
     <Compile Include="Localization\LocalizePasswordValidator.cs" />
     <Compile Include="Localization\LocalizeUserValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\ApplicationOAuthAuthorizationServerProvider.cs" />
+    <Compile Include="Security\Provider\ApplicationOAuthAuthorizationServerProvider.cs" />
     <Compile Include="Security\ApplicationRoleManager.cs" />
     <Compile Include="Security\ApplicationRoleStore.cs" />
     <Compile Include="Security\ApplicationSignInManager.cs" />
@@ -215,6 +215,7 @@
     <Compile Include="Security\Base\ISecurityBiz.cs" />
     <Compile Include="Security\Base\IPermissionBiz.cs" />
     <Compile Include="Security\PermissionBiz.cs" />
+    <Compile Include="Security\Provider\QueryStringOAuthBearerProvider.cs" />
     <Compile Include="Security\SecurityBiz.cs" />
     <Compile Include="Security\SmsService.cs" />
   </ItemGroup>

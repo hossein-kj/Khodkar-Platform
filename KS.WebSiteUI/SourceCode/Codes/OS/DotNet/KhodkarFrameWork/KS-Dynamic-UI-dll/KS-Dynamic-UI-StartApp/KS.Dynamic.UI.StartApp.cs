@@ -1,4 +1,4 @@
-﻿ /*khodkar c# comment                   
+﻿ /*khodkar c# comment                      
 
 
 namespace KS.Dynamic.UI.StartApp
@@ -88,6 +88,9 @@ using System;
 using KS.Core.Localization;
 using KS.Core.Model.Log;
 using KS.Core.UI.Setting;
+//using Microsoft.Owin.Cors;
+using Microsoft.Owin.Security.OAuth;
+using KS.Business.Security.Provider;
 
     public partial class Startup
     {
@@ -101,7 +104,7 @@ using KS.Core.UI.Setting;
             //start log time
             var startTime = DateTime.Now.TimeOfDay.ToString();
             
-           
+          
 
             // Get your HttpConfiguration.
             var config = new HttpConfiguration();
@@ -300,8 +303,19 @@ using KS.Core.UI.Setting;
             app.UseMiddlewareFromContainer<WebPageMiddleware>();
             ConfigureAuth(app);
             
-             // Any connection or hub wire up and configuration should go here
-            app.MapSignalR();
+              // Any connection or hub wire up and configuration should go here
+             app.Map("/signalr", map =>
+                {
+                    //uncomment blow line if you want cross domain signalR
+                    //map.UseCors(CorsOptions.AllowAll);
+    
+                    map.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions()
+                    {
+                        Provider = new QueryStringOAuthBearerProvider()
+                    });
+    
+                    map.RunSignalR();
+                });
             
             app.UseAutofacMvc();
             app.UseAutofacWebApi(config);
@@ -479,7 +493,7 @@ using KS.Core.UI.Setting;
       
            
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
-            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
+             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromHours(Config.LoginExpireTimeSpanInHours));
 
             // Enables the application to remember the second login verification factor such as phone or email.
             // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
@@ -507,8 +521,9 @@ using KS.Core.UI.Setting;
             //    ClientId = "",
             //    ClientSecret = ""
             //});
-
+            
             //app.UseYahooAuthentication("<YOUR CONSUMER KEY>", "<YOUR CONSUMER SECRET>");
+
         }
     }
     
@@ -644,4 +659,4 @@ using KS.Core.UI.Setting;
             engineSwitcher.DefaultEngineName = MsieJsEngine.EngineName;
         }
     }
-}                         khodkar c# comment*/ 
+}                            khodkar c# comment*/ 

@@ -1488,6 +1488,12 @@
      })
 
         // Declare a proxy to reference the hub. 
+        var token = $.asStorage.getItem($.asLoginAccessToken);
+
+        if (token) {
+            $.connection.hub.qs={'BearerToken':token}
+        }
+       
             var notificationManager = $.connection.notificationHub;
             // Create a function that the hub can call to broadcast messages.
             notificationManager.client.broadcastMessage = function (template,message) {

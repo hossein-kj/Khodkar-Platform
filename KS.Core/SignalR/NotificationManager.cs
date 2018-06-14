@@ -1,5 +1,4 @@
-﻿
-using KS.Core.Hubs;
+﻿using KS.Core.SignalR.Hubs;
 using Microsoft.AspNet.SignalR;
 
 namespace KS.Core.SignalR

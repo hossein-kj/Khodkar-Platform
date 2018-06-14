@@ -419,7 +419,7 @@
     <Compile Include="FileSystemProvide\Uploader\ImageHandler.cs" />
     <Compile Include="GlobalVarioable\Config.cs" />
     <Compile Include="GlobalVarioable\Enumeration.cs" />
-    <Compile Include="Hubs\NotificationHub.cs" />
+    <Compile Include="SignalR\Hubs\NotificationHub.cs" />
     <Compile Include="Localization\Adapters\DefaultLanguageAdapter.cs" />
     <Compile Include="Localization\Adapters\ILanguageAdapter.cs" />
     <Compile Include="Localization\Adapters\BaseLanguageAdapter.cs" />
@@ -475,6 +475,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="SignalR\Attribute\AuthorizeEnumAttribute.cs" />
     <Compile Include="SignalR\INotificationManager.cs" />
     <Compile Include="SignalR\NotificationManager.cs" />
     <Compile Include="UI\Attribute\Odata\AuthorizeByLogOfODataServiceAttribute.cs" />

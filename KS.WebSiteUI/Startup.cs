@@ -69,6 +69,9 @@ using System;
 using KS.Core.Localization;
 using KS.Core.Model.Log;
 using KS.Core.UI.Setting;
+using Microsoft.Owin.Cors;
+using Microsoft.Owin.Security.OAuth;
+using KS.Business.Security.Provider;
 
 [assembly: OwinStartup("StaticStartup", typeof(KS.WebSiteUI.Startup))]
 namespace KS.WebSiteUI
@@ -84,7 +87,6 @@ namespace KS.WebSiteUI
             //start log time
             var startTime = DateTime.Now.TimeOfDay.ToString();
 
-          
 
             // Get your HttpConfiguration.
             var config = new HttpConfiguration();
@@ -122,7 +124,7 @@ namespace KS.WebSiteUI
             builder.RegisterType<DataBaseManager>().As<IDataBaseManager>().InstancePerLifetimeScope();
             builder.RegisterType<CodeTemplate>().As<ICodeTemplate>().InstancePerLifetimeScope();
             builder.RegisterType<SourceControl>().As<ISourceControl>().InstancePerLifetimeScope();
-            builder.RegisterType<Migration>().As<IMigration>().InstancePerLifetimeScope();
+            builder.RegisterType<RemoteMigration>().As<IMigration>().InstancePerLifetimeScope();
             builder.RegisterType<UnitTester>().As<IUnitTester>().InstancePerLifetimeScope();
             builder.RegisterType<FilesHandler>().As<IFilesHandler>().InstancePerLifetimeScope();
 
@@ -276,14 +278,27 @@ namespace KS.WebSiteUI
             // REGISTER WITH OWIN
             //app.UseAutofacMiddleware(container);
 
+
             app.UseMiddlewareFromContainer<LanguageAndCultureMiddleware>();
             app.UseMiddlewareFromContainer<ActionLogMiddleware>();
             app.UseMiddlewareFromContainer<ActionLogSpecialServicesMiddleware>();
             app.UseMiddlewareFromContainer<WebPageMiddleware>();
+
             ConfigureAuth(app);
 
             // Any connection or hub wire up and configuration should go here
-            app.MapSignalR();
+            app.Map("/signalr", map =>
+            {
+                //uncomment blow line if you want cross domain signalR
+               // map.UseCors(CorsOptions.AllowAll);
+
+                map.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions()
+                {
+                    Provider = new QueryStringOAuthBearerProvider()
+                });
+
+                map.RunSignalR();
+            });
 
             app.UseAutofacMvc();
             app.UseAutofacWebApi(config);

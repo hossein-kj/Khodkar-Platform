@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using KS.Core.CacheProvider;
-using KS.Core.CodeManager;
 using KS.Core.GlobalVarioable;
-using Microsoft.Owin.Security.OAuth;
 using KS.Core.Localization;
 using KS.Core.Model.Develop;
 using KS.Core.Security;
-using Microsoft.AspNet.Identity;
 using KS.Core.UI.Setting;
 using KS.DataAccess.Contexts.Base;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.OAuth;
 
-namespace KS.Business.Security
+namespace KS.Business.Security.Provider
 {
     public class ApplicationOAuthAuthorizationServerProvider: OAuthAuthorizationServerProvider
     {

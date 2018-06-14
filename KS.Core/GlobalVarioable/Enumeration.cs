@@ -29,7 +29,8 @@
     {
         Admin = 5,
         Public = 6,
-        Debug = 15
+        Debug = 15,
+        Developers = 13
     }
 
     public enum SourceType
