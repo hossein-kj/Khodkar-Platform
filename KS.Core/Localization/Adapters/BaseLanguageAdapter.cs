@@ -18,7 +18,7 @@ namespace KS.Core.Localization.Adapters
         {
             DataBaseContextManager = dataBaseContextManager;
         }
-        public virtual  string ApplyLanguageAndMobileSignToAjaxRequestAsync(string languageOrUrl)
+        public virtual string ApplyLanguageAndMobileSignToAjaxRequestAsync(string languageOrUrl)
         {
             //if (languageOrUrl == null) return Setting.Language;
             //var fullUrl = (languageOrUrl[0] == Helper.RootUrl.ToCharArray()[0] ? languageOrUrl : Helper.RootUrl + languageOrUrl);
@@ -40,7 +40,7 @@ namespace KS.Core.Localization.Adapters
 
 
 
-            if (languageOrUrl == null)
+            if (languageOrUrl == null || languageOrUrl.Trim() == "")
             {
                 return Settings.IsMobileMode ? Settings.Language + Config.MobileSign : Settings.Language;
             }
@@ -52,20 +52,20 @@ namespace KS.Core.Localization.Adapters
                 if (fullUrl.Length > 1)
                     if (fullUrl[fullUrl.Length - 1] == Helper.RootUrl.ToCharArray()[0])
                         fullUrl = fullUrl.Remove(fullUrl.Length - 1);
-            
+
                 if (fullUrl == Helper.RootUrl)
                     return Settings.Language + fullUrl;
-           
-                    var urlParts = fullUrl.Split(Helper.RootUrl.ToCharArray()[0]);
-     
-          
+
+                var urlParts = fullUrl.Split(Helper.RootUrl.ToCharArray()[0]);
+
+
                 var lang = Config.LanguageAndCultures.Where(lg => lg == urlParts[1]).ToList();
                 if (lang.Count != 0) return fullUrl;
 
                 return Helper.RootUrl + Settings.Language + fullUrl;
 
             }
-            else 
+            else
             {
                 //if(Setting.IsMobileMode && !languageOrUrl.Contains(Config.MobileSign))
 
@@ -84,8 +84,8 @@ namespace KS.Core.Localization.Adapters
 
                 var lang = Config.LanguageAndCultures.Where(lg => lg == urlParts[1]).ToList();
                 return lang.Count != 0 ?
-                    fullUrl.Insert(fullUrl.IndexOf(urlParts[1], StringComparison.OrdinalIgnoreCase)+ urlParts[1].Length, Config.MobileSign).Replace("//", "/")
-                    : (Helper.RootUrl + Settings.Language + Config.MobileSign + fullUrl).Replace("//","/");
+                    fullUrl.Insert(fullUrl.IndexOf(urlParts[1], StringComparison.OrdinalIgnoreCase) + urlParts[1].Length, Config.MobileSign).Replace("//", "/")
+                    : (Helper.RootUrl + Settings.Language + Config.MobileSign + fullUrl).Replace("//", "/");
             }
         }
 
@@ -99,9 +99,9 @@ namespace KS.Core.Localization.Adapters
             //return parameter;
 
 
-            if (parameter == null || parameter.Count==0) return new List<string>() { Settings.Language };
+            if (parameter == null || parameter.Count == 0) return new List<string>() { Settings.Language };
             else if (!Settings.IsMobileMode ||
-              (Settings.IsMobileMode && parameter.Contains(Config.MobileSign.Replace("/",""))))
+              (Settings.IsMobileMode && parameter.Contains(Config.MobileSign.Replace("/", ""))))
             {
                 var language = parameter.First().ToLower();
                 var lang = Config.LanguageAndCultures.Where(lg => lg == language).ToList();
@@ -109,7 +109,7 @@ namespace KS.Core.Localization.Adapters
                 parameter.Insert(0, Settings.Language);
                 return parameter;
             }
-            else 
+            else
             {
                 //(Setting.IsMobileMode && !parameter.Contains(Config.MobileSign))
                 var language = parameter.First().ToLower();
@@ -158,14 +158,14 @@ namespace KS.Core.Localization.Adapters
                 new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             //"{\"asError\":\"" + string.Format(GetMasterDataKeyValueTranslate((int)EntityIdentity.KhodkarException, code, Settings.Language).Key, message) + "\"}";
             else return message.IndexOf("asError", StringComparison.Ordinal) < 0 ?
-            JsonConvert.SerializeObject(new {asError = message }, Formatting.None,
-                new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore})
+            JsonConvert.SerializeObject(new { asError = message }, Formatting.None,
+                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
                 : message; //"{\"asError\":\"" + message + "\"}";
         }
 
         public virtual string ToLocalDateTime(DateTime utcMiladyDateTime)
         {
-            
+
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(Config.LocalTimeZoneId);
 
             var miladyDateTime = utcMiladyDateTime.Add(tzi.GetUtcOffset(utcMiladyDateTime));

@@ -15,10 +15,18 @@ namespace KS.Core.Security.Adapters
         {
             get
             {
-                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                try
+                {
+                    var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
 
-                return Convert.ToInt32(identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
-                                   .Select(c => c.Value).FirstOrDefault());
+                    return Convert.ToInt32(identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                                       .Select(c => c.Value).FirstOrDefault());
+                }
+                catch (Exception)
+                {
+                    //in external Login Mode May be User Id Not Int
+                    return 0;
+                }
             }
         }
 
@@ -65,7 +73,7 @@ namespace KS.Core.Security.Adapters
 
                 var userGroups = identity.Claims.Where(c => c.Type == ClaimTypes.GroupSid)
                                    .Select(c => c.Value).ToList();
-                
+
                 var rolesId = new List<int>();
                 foreach (var groupRole in AuthorizeManager.GetUserRoles(userGroups.Select(int.Parse).ToList()).Select(ur => ur.RolesId))
                 {
@@ -86,17 +94,17 @@ namespace KS.Core.Security.Adapters
             CacheManager.ClearCurrentUserCache();
             //var debugUser = SourceControl.DebugUsers?.Find(du => du.UserId == CurrentUserManager.Id);
 
-  
-             
+
+
             //    if (debugUser != null)
             //        SourceControl.DebugUsers?.Remove(debugUser);
 
 
 
             sessionManager.Abandon();
-                return true;
-          
-    
+            return true;
+
+
 
         }
     }
