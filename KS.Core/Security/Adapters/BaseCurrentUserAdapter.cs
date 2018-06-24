@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
+using System.Web;
 using KS.Core.CacheProvider;
 using KS.Core.CodeManager;
 using KS.Core.SessionProvider.Base;
@@ -17,7 +18,10 @@ namespace KS.Core.Security.Adapters
             {
                 try
                 {
-                    var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+
+
+                    var identity = Thread.CurrentPrincipal.Identity.IsAuthenticated ? (ClaimsPrincipal)Thread.CurrentPrincipal
+                        : (ClaimsPrincipal)HttpContext.Current.User ?? (ClaimsPrincipal)Thread.CurrentPrincipal;
 
                     return Convert.ToInt32(identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
                                        .Select(c => c.Value).FirstOrDefault());
@@ -34,7 +38,8 @@ namespace KS.Core.Security.Adapters
         {
             get
             {
-                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                var identity = Thread.CurrentPrincipal.Identity.IsAuthenticated ? (ClaimsPrincipal)Thread.CurrentPrincipal
+                        : (ClaimsPrincipal)HttpContext.Current.User ?? (ClaimsPrincipal)Thread.CurrentPrincipal;
 
                 return identity.Claims.Where(c => c.Type == ClaimTypes.Name)
                                    .Select(c => c.Value).FirstOrDefault();
@@ -45,14 +50,15 @@ namespace KS.Core.Security.Adapters
         {
             get
             {
-                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                var identity = Thread.CurrentPrincipal.Identity.IsAuthenticated ? (ClaimsPrincipal)Thread.CurrentPrincipal
+                        : (ClaimsPrincipal)HttpContext.Current.User ?? (ClaimsPrincipal)Thread.CurrentPrincipal;
 
                 return identity.Claims.Where(c => c.Type == ClaimTypes.Email)
                                    .Select(c => c.Value).FirstOrDefault();
             }
         }
 
-        public virtual bool IsAuthenticated => Thread.CurrentPrincipal.Identity.IsAuthenticated;
+        public virtual bool IsAuthenticated => HttpContext.Current.User == null ? Thread.CurrentPrincipal.Identity.IsAuthenticated : HttpContext.Current.User.Identity.IsAuthenticated;
 
         //public virtual List<string> Roles
         //{
@@ -69,7 +75,8 @@ namespace KS.Core.Security.Adapters
         {
             get
             {
-                var identity = (ClaimsPrincipal)Thread.CurrentPrincipal;
+                var identity = Thread.CurrentPrincipal.Identity.IsAuthenticated ? (ClaimsPrincipal)Thread.CurrentPrincipal
+                        : (ClaimsPrincipal)HttpContext.Current.User ?? (ClaimsPrincipal)Thread.CurrentPrincipal;
 
                 var userGroups = identity.Claims.Where(c => c.Type == ClaimTypes.GroupSid)
                                    .Select(c => c.Value).ToList();
@@ -85,7 +92,8 @@ namespace KS.Core.Security.Adapters
         }
 
 
-        public virtual string UserIdentity => System.Web.HttpContext.Current.User.Identity.Name ?? "";
+        public virtual string UserIdentity => HttpContext.Current.User == null ? (Thread.CurrentPrincipal.Identity.Name ?? "") : (HttpContext.Current.User.Identity.Name ?? "");
+
 
         public virtual string Ip => System.Web.HttpContext.Current.Request.UserHostAddress;
 

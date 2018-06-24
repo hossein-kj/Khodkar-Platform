@@ -256,3 +256,5 @@ ModelManifest.xml
 /KS.WebSiteUI/SourceCode/Codes/OS/DotNet/output/KS.Dynamic.WebService_log3.txt
 /KS.WebSiteUI/SourceCode/Codes/OS/DotNet/output/KS.Dynamic.WebService_r3.dll
 /KS.WebSiteUI/SourceCode/Codes/Browser/Scripts/0d3f7facd84c4d87bbc49cc403f6e933/0d3f7facd84c4d87bbc49cc403f6e933.db
+/KS.WebSiteUI/Log/ActionLog.db
+/KS.WebSiteUI/Log/ErrorLog.db
