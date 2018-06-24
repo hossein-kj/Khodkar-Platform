@@ -460,6 +460,17 @@
         otherHandler: function () {
 
         },
+        setToken:function(username,token){
+            $.asCookies.set($.asCoockiesName.asIsAuthenticated, { IsAuthenticated: true }, { expires: 10000000 })
+            $.asStorage.setItem($.asLoginAccessToken, token)
+            $.asStorage.setItem($.asUserName, username)
+            
+            if (token) {
+                $.connection.hub.stop();
+                $.connection.hub.qs={'BearerToken':token}
+                $.connection.hub.start();
+            }
+        },
         //eventLogin: 'LoginSuccessed',
         //eventLogOff: 'LogOffSuccessed',
         url: '',
@@ -1488,11 +1499,6 @@
      })
 
         // Declare a proxy to reference the hub. 
-        var token = $.asStorage.getItem($.asLoginAccessToken);
-
-        if (token) {
-            $.connection.hub.qs={'BearerToken':token}
-        }
        
             var notificationManager = $.connection.notificationHub;
             // Create a function that the hub can call to broadcast messages.
@@ -2762,10 +2768,10 @@
                         if(data.debugId){
                              $.asStorage.setItem($.asDebugId, data.debugId)
                         }
-                    
-                        $.asCookies.set($.asCoockiesName.asIsAuthenticated, { IsAuthenticated: true }, { expires: 10000000 })
-                        $.asStorage.setItem($.asLoginAccessToken, data.access_token)
-                        $.asStorage.setItem($.asUserName, user.username)
+                        $.asAccountManager.setToken(user.username,data.access_token)
+                        // $.asCookies.set($.asCoockiesName.asIsAuthenticated, { IsAuthenticated: true }, { expires: 10000000 })
+                        // $.asStorage.setItem($.asLoginAccessToken, data.access_token)
+                        // $.asStorage.setItem($.asUserName, user.username)
 
                         $.asShowMessage({ message: $.asRes[$.asLang].loginSuccess })
 
