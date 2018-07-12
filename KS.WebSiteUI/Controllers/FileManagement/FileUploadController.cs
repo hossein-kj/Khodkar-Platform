@@ -6,19 +6,20 @@ using System.Web;
 using Newtonsoft.Json;
 using KS.Core.Model.FileSystem;
 using KS.Core.FileSystemProvide.Base;
+using KS.WebSiteUI.Controllers.Base;
 
 namespace KS.WebSiteUI.Controllers.FileManagement
 {
     [RoutePrefix("fms")]
-    public class FileUploadController : ApiController
+    public class FileUploadController : BaseAuthorizedWebApiController
     {
-        IFilesHandler _filesHandler;
+        readonly IFilesHandler _filesHandler;
 
         public FileUploadController(IFilesHandler filesHandler)
         {
             _filesHandler = filesHandler;
         }
-      
+
         //public ActionResult Show()
         //{
         //    JsonFiles ListOfFiles = filesHelper.GetFileList();
@@ -38,8 +39,8 @@ namespace KS.WebSiteUI.Controllers.FileManagement
         public JObject Upload()
         {
             var resultList = new List<ViewDataUploadFilesResult>();
-           
-       
+
+
 
             _filesHandler.UploadAndShowResults(HttpContext.Current, resultList);
 
@@ -48,7 +49,7 @@ namespace KS.WebSiteUI.Controllers.FileManagement
 
             return JObject.Parse(JsonConvert.SerializeObject
           (new { files = resultList }, Formatting.None));
-            
+
         }
         //public JsonResult GetFileList()
         //{
@@ -61,6 +62,6 @@ namespace KS.WebSiteUI.Controllers.FileManagement
         //    filesHelper.DeleteFile(file);
         //    return Json("OK", JsonRequestBehavior.AllowGet);
         //}
-       
+
     }
 }
