@@ -282,15 +282,17 @@ namespace KS.WebSiteUI
             app.UseMiddlewareFromContainer<LanguageAndCultureMiddleware>();
             app.UseMiddlewareFromContainer<ActionLogMiddleware>();
             app.UseMiddlewareFromContainer<ActionLogSpecialServicesMiddleware>();
-            app.UseMiddlewareFromContainer<WebPageMiddleware>();
+
 
             ConfigureAuth(app);
+
+            app.UseMiddlewareFromContainer<WebPageMiddleware>();
 
             // Any connection or hub wire up and configuration should go here
             app.Map("/signalr", map =>
             {
                 //uncomment blow line if you want cross domain signalR
-               // map.UseCors(CorsOptions.AllowAll);
+                //map.UseCors(CorsOptions.AllowAll);
 
                 map.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions()
                 {

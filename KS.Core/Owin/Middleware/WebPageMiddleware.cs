@@ -56,14 +56,14 @@ namespace KS.Core.Owin.Middleware
             pagePath = (Config.PagesPath.Substring(1) + pagePath.Replace("//", "/")).Replace("//", "/");
 
             context.Response.Redirect(pagePath.Replace("//", "/") + "-" + type +
-                                      ".json?url=" + pagePath.Replace(Config.PagesPath.Substring(1),Helper.RootUrl).Replace("//", "/") + "&type=" + type);
+                                      ".json?url=" + pagePath.Replace(Config.PagesPath.Substring(1), Helper.RootUrl).Replace("//", "/") + "&type=" + type);
 
 
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            
+
             var mainPath = Config.DefaultsGetWebPagesServiceUrl.ToLower();
             var isModal = false;
             var requestUrl = context.Request.Path.Value.ToLower();
@@ -89,11 +89,14 @@ namespace KS.Core.Owin.Middleware
                 {
 
                     IAspect aspect;
-                    AuthorizeManager.AuthorizeWebPageUrl(dbUrl, type, out aspect);
+                    var isAuthorize = AuthorizeManager.AuthorizeWebPageUrl(dbUrl, type, out aspect);
 
 
-
-                    if (aspect.IsNull)
+                    if (!isAuthorize)
+                    {
+                        SetErrorPage(HttpStatusCode.Unauthorized, type, context);
+                    }
+                    else if (aspect.IsNull)
                     {
                         SetErrorPage(HttpStatusCode.NotFound, type, context);
                     }
@@ -115,7 +118,7 @@ namespace KS.Core.Owin.Middleware
                         dbUrl = dbUrl.EndsWith("/") ? dbUrl.Substring(0, dbUrl.Length - 1) : dbUrl;
 
                         url = (Config.PagesPath.Substring(1) + dbUrl.Replace("//", "/")).Replace("//", "/");
-                       
+
                         context.Response.Redirect(url + "-" + (isModal ? WebPageType.Modal : WebPageType.Form) +
                                                   ".json?url=" + dbUrl.Replace("//", "/") + "&type=" +
                                                   (isModal ? WebPageType.Modal : WebPageType.Form));
@@ -141,8 +144,8 @@ namespace KS.Core.Owin.Middleware
                 }
 
             }
-            
-                await Next.Invoke(context);
+
+            await Next.Invoke(context);
         }
     }
 }
