@@ -16,6 +16,8 @@ namespace KS.Core.Localization.Adapters
         string GetText(TextKey code);
         string GetText(string code);
 
+        string GetException(ExceptionKey code);
+        string GetException(string code);
         string ToAsErrorMessage(ExceptionKey code = ExceptionKey.None, string message = null);
 
         string ToAsErrorMessage(string code, string message = null);

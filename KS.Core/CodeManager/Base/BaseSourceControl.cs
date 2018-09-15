@@ -155,9 +155,9 @@ namespace KS.Core.CodeManager.Base
             var disPath = FileSystemManager.RelativeToAbsolutePath((codePath.Replace("~", Config.SourceCodeDeletedPath)
                 + "/" + zipName.Replace(".", "-") + "-" + LanguageManager.ToLocalDateTime(DateTime.UtcNow).Replace(" ", "-").Replace(":", "_").Replace("/", "-") + ".zip").Replace("//","/"));
             if (disPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-              codePath.Replace("~", Config.SourceCodeDeletedPath)
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, codePath.Replace("~", Config.SourceCodeDeletedPath)
                 + zipName + "-" + LanguageManager.ToLocalDateTime(DateTime.UtcNow).Replace(" ", "-").Replace(":", "_").Replace("/", "-") + ".zip"));
+       
 
             var sourcePath = FileSystemManager.RelativeToAbsolutePath(codePath);
 

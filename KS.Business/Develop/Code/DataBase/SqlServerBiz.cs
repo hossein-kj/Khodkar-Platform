@@ -93,14 +93,14 @@ namespace KS.Business.Develop.Code.DataBase
                 || (md.ForeignKey3 == connectionId && md.TypeId == (int)EntityIdentity.Permission)).ToListAsync();
             var connection = connectionByPermission.FirstOrDefault(con => con.Id == connectionId);
             if (connection == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Connection "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Connection "));
+         
             var permission = connectionByPermission.FirstOrDefault(prm => prm.ForeignKey3 == connectionId
             && prm.TypeId == (int)EntityIdentity.Permission);
 
             if (permission == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Permission "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Permission "));
+   
 
             if (!AuthorizeManager.IsAuthorize(permission.ForeignKey2))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));

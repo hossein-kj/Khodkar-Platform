@@ -176,10 +176,11 @@ namespace KS.Business.ContenManagment
             link.Action = linkDto.Action;
             link.Url = linkUrl;
 
-            var repeatedLink = await _contentManagementContext.Links.Where(sr => sr.Url == link.Url).CountAsync()
-         ;
+            var repeatedLink = await _contentManagementContext.Links.Where(sr => sr.Url == link.Url).CountAsync();
+         
             if ((repeatedLink > 0 && oldUrl == "") || ((repeatedLink > 1 && oldUrl == "")))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue), link.Url));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, link.Url));
+          
 
             try
             {
@@ -217,9 +218,8 @@ namespace KS.Business.ContenManagment
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Link Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "Link Id"));
             }
             var link = await _contentManagementContext.Links.SingleOrDefaultAsync(md => md.Id == id)
                 ;
@@ -234,7 +234,8 @@ namespace KS.Business.ContenManagment
                  .CountAsync();
 
             if (useCount > 0)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), link.Text));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, link.Text));
+         
 
             _contentManagementContext.Links.Remove(link);
 

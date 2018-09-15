@@ -185,8 +185,8 @@ namespace KS.Core.FileSystemProvide.Base
 
             if (File.Exists(RelativeToAbsolutePath(newFullName)))
             {
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath),
-                 newFullName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath, newFullName));
+
             }
 
             File.Move(RelativeToAbsolutePath(oldFullName), RelativeToAbsolutePath(newFullName));
@@ -198,8 +198,8 @@ namespace KS.Core.FileSystemProvide.Base
 
             if (File.Exists(RelativeToAbsolutePath(newFullName)))
             {
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath),
-                 newFullName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath, newFullName));
+
             }
 
             Directory.Move(RelativeToAbsolutePath(oldFullName), RelativeToAbsolutePath(newFullName));
@@ -263,8 +263,8 @@ namespace KS.Core.FileSystemProvide.Base
 
                 path = HostingEnvironment.MapPath(path);
                 if (path == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                 temp));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, temp));
+       
             }
             return path;
         }

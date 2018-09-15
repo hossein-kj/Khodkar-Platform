@@ -28,7 +28,7 @@ namespace KS.Core.FileSystemProvide.Base
 
         //public void DeleteFiles(string pathToDelete)
         //{
-
+         
         //    string path = HostingEnvironment.MapPath(pathToDelete);
 
         //    System.Diagnostics.Debug.WriteLine(path);
@@ -50,7 +50,7 @@ namespace KS.Core.FileSystemProvide.Base
         //    System.Diagnostics.Debug.WriteLine("DeleteFile");
         //    //    var req = HttpContext.Current;
         //    System.Diagnostics.Debug.WriteLine(file);
-
+ 
         //    string fullPath = Path.Combine(StoragePath, file);
         //    System.Diagnostics.Debug.WriteLine(fullPath);
         //    System.Diagnostics.Debug.WriteLine(System.IO.File.Exists(fullPath));
@@ -78,7 +78,7 @@ namespace KS.Core.FileSystemProvide.Base
         //{
 
         //    var r = new List<ViewDataUploadFilesResult>();
-
+       
         //    string fullPath = Path.Combine(StoragePath);
         //    if (Directory.Exists(fullPath))
         //    {
@@ -99,20 +99,20 @@ namespace KS.Core.FileSystemProvide.Base
         {
             var httpRequest = contentBase.Request;
 
-            StoragePath = httpRequest.Form[0];
-
-
+           StoragePath = httpRequest.Form[0];
+            
+           
             Directory.CreateDirectory(StoragePath);
             // Create new folder for thumbs
-            // Directory.CreateDirectory(StoragePath + "/thumbs/");
+           // Directory.CreateDirectory(StoragePath + "/thumbs/");
 
             foreach (string inputTagName in httpRequest.Files)
             {
 
                 var headers = httpRequest.Headers;
 
-                // var file = httpRequest.Files[inputTagName];
-
+               // var file = httpRequest.Files[inputTagName];
+              
 
                 if (string.IsNullOrEmpty(headers["X-File-Name"]))
                 {
@@ -136,10 +136,10 @@ namespace KS.Core.FileSystemProvide.Base
             for (int i = 0; i < request.Files.Count; i++)
             {
                 var file = request.Files[i];
-
+              
                 var fullPath = Path.Combine(StoragePath, Path.GetFileName(file.FileName));
 
-                if (!File.Exists(fullPath))
+                if (!File.Exists(fullPath))       
                 {
                     file.SaveAs(fullPath);
                     //Create thumb
@@ -169,9 +169,9 @@ namespace KS.Core.FileSystemProvide.Base
                 }
                 else
                 {
-                    statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName, "fileAlreadyExist"));
+                    statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName,"fileAlreadyExist"));
                 }
-
+    
 
             }
         }
@@ -185,7 +185,7 @@ namespace KS.Core.FileSystemProvide.Base
             if (request.Files.Count != 1) throw new HttpRequestValidationException("Attempt to upload chunked file containing more than one fragment per request");
             var file = request.Files[0];
             var inputStream = file.InputStream;
-
+        
             var fullName = Path.Combine(StoragePath, Path.GetFileName(file.FileName));
             //var ThumbfullPath = Path.Combine(fullName, Path.GetFileName(file.FileName + "80x80.jpg"));
             //ImageHandler handler = new ImageHandler();
@@ -207,7 +207,7 @@ namespace KS.Core.FileSystemProvide.Base
             }
             statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName));
         }
-        public virtual ViewDataUploadFilesResult UploadResult(string fileName, int fileSize, string fileFullPath, string errorCode = "")
+        public virtual ViewDataUploadFilesResult UploadResult(string fileName,int fileSize,string fileFullPath,string errorCode="")
         {
             string getType = System.Web.MimeMapping.GetMimeMapping(fileFullPath);
             var result = new ViewDataUploadFilesResult()
@@ -254,7 +254,7 @@ namespace KS.Core.FileSystemProvide.Base
         //    {
         //        return _urlBase + "/thumbs/" + Path.GetFileNameWithoutExtension(fileName) + "80x80.jpg";
         //    }
-
+           
         //}
         //public List<string> FilesList()
         //{
@@ -278,3 +278,4 @@ namespace KS.Core.FileSystemProvide.Base
 
 }
 
+    

@@ -125,7 +125,8 @@ namespace KS.Core.Security.Adapters
                 }
 
             }
-            throw new UnauthorizedAccessException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPath), path));
+            throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPath, path));
+            
         }
 
         public virtual bool AuthorizeActionOnEntityId(int entityId,int entityTypeId, int actionKey)
@@ -191,7 +192,7 @@ namespace KS.Core.Security.Adapters
         //        if (IsAuthorize(Convert.ToInt32(permission)))
         //            return url;
         //    }
-        //    throw new UnauthorizedAccessException(string.Format(Translation.ToAsErrorMessage(ExceptionKey.InvalidAccessToService),
+        //    throw new UnauthorizedAccessException((Translation.ToAsErrorMessage(ExceptionKey.InvalidAccessToService),
         //        url));
         //}
 
@@ -281,11 +282,8 @@ namespace KS.Core.Security.Adapters
             }
             catch (UnauthorizedAccessException)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessForAddingChildToParenRecord, parentId.ToString()));
 
-                throw new KhodkarInvalidException(
-                    string.Format(
-                        LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessForAddingChildToParenRecord),
-                        parentId));
             }
         }
 

@@ -74,9 +74,8 @@ namespace KS.Business.ContenManagment
           
 
             var repeatedLink = await _contentManagementContext.FilePaths.Where(fp => fp.Url == file.Url).CountAsync();
-            if ((repeatedLink > 0 && oldUrl == "") || ((repeatedLink > 1 && oldUrl == "")))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue),
-                    file.Url));
+            if ((repeatedLink > 0 && oldUrl == "") || (repeatedLink > 1 && oldUrl == ""))
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, file.Url));
           
             file.ContentType = _fileSystemManager.GetExtension(filePathUrl);
             file.Url = filePathUrl;
@@ -140,9 +139,7 @@ namespace KS.Business.ContenManagment
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "File Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "File Id"));
             }
             var file = await _contentManagementContext.Files.SingleOrDefaultAsync(fl => fl.Id == id);
 

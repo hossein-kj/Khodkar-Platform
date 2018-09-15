@@ -18,4 +18,3 @@ namespace KS.Business.Security.Provider
         }
     }
 }
-

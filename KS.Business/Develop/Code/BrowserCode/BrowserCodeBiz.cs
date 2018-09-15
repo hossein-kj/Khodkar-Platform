@@ -264,7 +264,8 @@ namespace KS.Business.Develop.Code.BrowserCode
                 var sourcesCount = await ContentManagementContext.MasterDataKeyValues.Where(md=>md.ParentId == bundleEntity.Id)
            .CountAsync();
                 if (sourcesCount > 0)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), bundleEntity.Name));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, bundleEntity.Name));
+         
             }
 
             var dependency = !isSource ? await GetBundleDependencyForDependencyEngieen(id): new List<KeyValue>();

@@ -241,9 +241,8 @@ string content, bool creatDirectoryIfNotExist = false)
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "LanguageAndCulture Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "LanguageAndCulture Id"));
             }
             var languageAndCulture = await _contentManagementContext.LanguageAndCultures
                 .SingleOrDefaultAsync(ln => ln.Id == id);
@@ -257,7 +256,8 @@ string content, bool creatDirectoryIfNotExist = false)
                  .CountAsync();
 
             if (useCount > 0)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), languageAndCulture.Language));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, languageAndCulture.Language));
+           
 
             DeleteFile( Config.ResourcesSourceCodePath, languageAndCulture.Language, ".js");
             DeleteFile(Config.ResourcesDistPath, languageAndCulture.Language, ".js");

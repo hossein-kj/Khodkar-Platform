@@ -152,7 +152,7 @@ namespace KS.Core.EntityFramework
 
                 //if (you want set proxy for connection) uncomment below line
 
-                //binding.ProxyAddress = new Uri(string.Format("http://{0}:{1}", "samplePoroxy.yourDomain.com", "port"));
+                //binding.ProxyAddress = new Uri(("http://{0}:{1}", "samplePoroxy.yourDomain.com", "port"));
 
                 //binding.BypassProxyOnLocal = true;
 

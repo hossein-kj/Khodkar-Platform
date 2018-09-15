@@ -81,10 +81,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Code Id"));
             }
 
             var code =
@@ -99,7 +97,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
      .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
                 if (dotnetCode == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+              
 
 
                 JArray outputArray = outputDto.SelectedOutputs;
@@ -128,8 +127,9 @@ namespace KS.Business.Develop.Code.Os.DotNet
 
             else
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToDellDllOutput), code.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToDellDllOutput, code.Code));
+
+
             }
 
             return true;
@@ -146,10 +146,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Code Id"));
             }
 
             var code =
@@ -166,7 +164,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
                     .SingleOrDefaultAsync(cd => cd.TypeId == (int) EntityIdentity.DotNetCode && cd.IsType);
 
                 if (dotnetCode == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+               
 
                 if(path.StartsWith(code.PathOrUrl))
                 {
@@ -187,7 +186,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPath), path));
+                    throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPath, path));
+                    
                 }
 
                 return JObject.Parse(JsonConvert.SerializeObject
@@ -200,9 +200,8 @@ namespace KS.Business.Develop.Code.Os.DotNet
                     ModifieLocalDateTime = ""
                 }, Formatting.None));
             }
-          
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToAddDllOutput), code.Code));
+            throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToAddDllOutput, code.Code));
+
           
 
         }
@@ -240,7 +239,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType == true);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+        
 
             var diskInfos = GetOutputs(dotnetCode.PathOrUrl + CompileOutPutDirectory,code.Code.Replace(DllExtention,"_*")+DllExtention);
 
@@ -276,7 +276,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+          
 
             var diskInfos = GetOutputs(dotnetCode.PathOrUrl + CompileOutPutDirectory, code.Code.Replace(DllExtention, "_*") + DllExtention);
 
@@ -379,14 +380,13 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 {
                     if (!AuthorizeManager.AuthorizeActionOnEntityId(code.Id, (int) EntityIdentity.DotNetCode,
                         (int) ActionKey.CloseOrOpenChangingCode))
-                    throw new KhodkarInvalidException(string.Format(
-                        LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant), code.Code));
+                        throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, code.Code));
+ ;
                 }
                 else if (code.EnableCache)
                 {
-                    throw new KhodkarInvalidException(string.Format(
-                        LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant),
-                        code.Code));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, code.Code));
+
                 }
 
             }
@@ -416,8 +416,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             {
                 if (parentCode.EnableCache)
                 {
-                        throw new KhodkarInvalidException(string.Format(
-                            LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant), parentCode.Code));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, parentCode.Code));
+
                 }
 
                 AuthorizeManager.CheckParentNodeModifyAccessForAddingChildNode(parentCode, parentCode.Id);
@@ -504,8 +504,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
 
                 if (ancientParent.EnableCache)
                 {
-                        throw new KhodkarInvalidException(string.Format(
-                            LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant), ancientParent.Code));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, ancientParent.Code));
+
                 }
 
                 //editor Language
@@ -523,8 +523,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                .Where(cd => cd.Code == code.Code && cd.ParentId == code.ParentId).CountAsync();
 
             if ((repeatedCode > 0 && isNew) || (repeatedCode > 1 && !isNew))
-                throw new KhodkarInvalidException(string.Format(LanguageManager
-                    .ToAsErrorMessage(ExceptionKey.RepeatedValue), code.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, code.Code));
+
 
             if (code.ForeignKey1 == (int) DotNetCodeType.NamaeSpace 
                 || code.ForeignKey1 == (int)DotNetCodeType.CompiledDll
@@ -581,8 +581,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
 
                 var unAuthorizedDlls = await AuthorizeManager.AuthorizeReferencingDllAsync(dllId);
                 if (unAuthorizedDlls.Any())
-                    throw new KhodkarInvalidException(string.Format(
-                        LanguageManager.ToAsErrorMessage(ExceptionKey.DllReferencingAccessDeny), string.Join(",", unAuthorizedDlls)));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.DllReferencingAccessDeny, string.Join(",", unAuthorizedDlls)));
+        
                 code.SecondCode = dependentDllArray.ToString();
             }
             else
@@ -772,10 +772,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Code Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
+       
             }
            // string path = codeData.Path;
             string outputName = codeData.Name;
@@ -789,7 +787,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+          
 
         
 
@@ -797,9 +796,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 + outputName;
 
             if (!_fileSystemManager.FileExist(dllPath))
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                        outputName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, outputName));
+
 
             if (AuthorizeManager.AuthorizeActionOnEntityId(code.Id, (int)EntityIdentity.DotNetCode,
                 (int)ActionKey.PublishDll))
@@ -900,8 +898,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
 
             else
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPublishDll), code.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPublishDll, code.Code));
+
             }
             _notificationManager.BroadcastMessage("warning", "restartAppMessage");
             return true;
@@ -925,7 +923,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+         
 
 
 
@@ -933,9 +932,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                  + name.Replace(DllExtention,TxtExtention).Replace(ReleaseMode,Log).Replace(DebugMode, Log);
 
             if (!_fileSystemManager.FileExist(logPath))
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                        name.Replace(DllExtention, TxtExtention)));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, name.Replace(DllExtention, TxtExtention)));
+       
 
             if (AuthorizeManager.AuthorizeActionOnEntityId(code.Id, (int)EntityIdentity.DotNetCode,
                 (int)ActionKey.ViewBuildLogOfDllOutput))
@@ -943,9 +941,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
 
                 return await _fileSystemManager.ReadAsync(logPath);
             }
-
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToViewBuildLogOfDllOutput), code.Code));
+            throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToViewBuildLogOfDllOutput, code.Code));
+ 
 
         }
 
@@ -960,10 +957,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Code Id"));
             }
             var code =
                 await _contentManagementContext.MasterDataKeyValues.AsNoTracking().SingleOrDefaultAsync(cd => cd.Id == id);
@@ -1003,7 +998,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
     .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+          
 
 
             var listOfDotNetCode = await GetListOfDotnetCodeAsync(dllCodes);
@@ -1067,10 +1063,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Code Id"));
             }
             var code =
                 await _contentManagementContext.MasterDataKeyValues.AsNoTracking().SingleOrDefaultAsync(cd => cd.Id == id);
@@ -1096,8 +1090,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 
             else
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToCompileDll), code.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToCompileDll, code.Code));
+
             }
             return true;
         }
@@ -1145,7 +1139,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
     .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+     
 
             //if (dll.Value == dll.Version && _fileSystemManager.FileExist(dotnetCode.PathOrUrl +  CompileOutPutDirectory + dll.Guid + "/" 
             //    + dll.Code.Insert(dll.Code.IndexOf(DllExtention, StringComparison.OrdinalIgnoreCase),ReleaseMode + dll.Version))
@@ -1372,7 +1367,12 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                     }
                     catch (CheckOutRecordException ex)
                     {
-                        checkOutExceptionMessage.Add(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.CheckOutCode), code.Code, ex.ModifyUser));
+
+                        checkOutExceptionMessage.Add(
+                            LanguageManager.ToAsErrorMessage(
+                                message:
+                                string.Format(LanguageManager.GetException(ExceptionKey.CheckOutCode), code.Code,
+                                    ex.ModifyUser)));
 
                     }
 
@@ -1394,9 +1394,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "Code Id"));
             }
             var code = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(cd => cd.Id == id);
 
@@ -1575,10 +1574,7 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(string.Format(LanguageManager
-                    .ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "CodeId"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Code Id"));
             }
 
 
@@ -1588,8 +1584,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 (int)EntityIdentity.DotNetCode,
                 ancientParent.Value??0,
                 (int)ActionKey.DeleteDebugInfo))
-                throw new KhodkarInvalidException(string.Format(
-                      LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToDeleteDebugInfo), ancientParent.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToDeleteDebugInfo, ancientParent.Code));
+      
 
             JArray servicesCodeArray = codeData.DebugInfoIds;
             var debugInfoIds = servicesCodeArray.ToObject<List<int>>();
@@ -1609,8 +1605,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                  (int)EntityIdentity.DotNetCode,
                  ancientParent.Value ?? 0,
                  (int)ActionKey.ReadDebugInfo))
-                throw new KhodkarInvalidException(string.Format(
-                    LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToReadDebugInfo), ancientParent.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToReadDebugInfo, ancientParent.Code));
+       
 
             return _debugger.GetDebugInfo(debugInfoId, ancientParent.Code);
 
@@ -1633,8 +1629,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                   (int)EntityIdentity.DotNetCode,
                   ancientParent.Value ?? 0,
                   (int)ActionKey.ReadDebugInfo))
-                throw new KhodkarInvalidException(string.Format(
-                   LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToReadDebugInfo), ancientParent.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToReadDebugInfo, ancientParent.Code));
+
 
             var count = 0;
          
@@ -1695,17 +1691,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                     .FirstOrDefault(md => md.TypeId == (int) EntityIdentity.Path &&
                                           md.Id == (int) Paths.TempPath);
                 if (tempPath == null)
-                    throw new KhodkarInvalidException(
-                        string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                            "Temp"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "Temp"));
+
 
                 await _fileSystemManager.WriteAsync((_fileSystemManager.CreatDirectoryIfNotExist(tempPath.PathOrUrl) + "/" + outPutName + ".xml").Replace("//", "/")
                     , xml);
                 return true;
             }
-            throw new KhodkarInvalidException(
-                   string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                       url));
+            throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, url));
+ 
         }
 
             public string GetWcfWebServiceCode(string wcfLocalUrl,string language)
@@ -1720,9 +1714,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 .FirstOrDefault(md => md.TypeId == (int) EntityIdentity.Path &&
                                       md.Id == (int) Paths.TempPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                        "Temp"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "Temp"));
+
 
             var xmlPath = (tempPath.PathOrUrl + "/" + wcfGuid + ".xml").Replace("//", "/");
             var xml = await _fileSystemManager.ReadAsync(xmlPath);
@@ -1869,10 +1862,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Connection Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Connection Id"));
+          
             }
     var connectionByPermission = await _contentManagementContext.MasterDataKeyValues.AsNoTracking()
                 .Where(md => (md.Id == connectionId && md.TypeId == (int)EntityIdentity.SqlServerConnections)
@@ -1881,15 +1872,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             var connection = connectionByPermission.FirstOrDefault(con => con.Id == connectionId);
 
             if (connection == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Connection "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Connection "));
+     
 
             var permission = connectionByPermission.FirstOrDefault(prm => prm.ForeignKey3 == connectionId
             && prm.TypeId == (int)EntityIdentity.Permission);
 
             if (permission == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Permission "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Permission "));
+          
 
             if (!AuthorizeManager.IsAuthorize(permission.ForeignKey2))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
@@ -1898,9 +1889,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                       .FirstOrDefault(md => md.TypeId == (int)EntityIdentity.Path &&
                                             md.Id == (int)Paths.TempPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                        "Temp"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "Temp"));
+  
 
 
 
@@ -1912,10 +1902,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Configuration Code Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Configuration Code Id"));
+      
             }
 
             int dllVersion;
@@ -1926,10 +1914,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Dll Version"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Dll Version"));
+  
             }
 
             var configurationCode =
@@ -1955,14 +1941,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+            
 
 
 
             if (!AuthorizeManager.AuthorizeActionOnEntityId(configurationCode.Id, (int)EntityIdentity.DotNetCode, (int)ActionKey.BuildConfigurationCodeEFMigration))
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToGenerateMigration), configurationCode.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToGenerateMigration, configurationCode.Code));
+         
             }
             var dllPath = (dotnetCode.PathOrUrl + CompileOutPutDirectory).Replace("//", "/");
             var dllName = dll.Code.Insert(
@@ -1971,9 +1958,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+
 
 
             return JObject.FromObject(_migration.GenerateMigration(new MigrationInfo()
@@ -2018,7 +2004,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+           
 
 
 
@@ -2030,9 +2017,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+
 
             var configurationCodeFullName = configurationCode.Code.Replace(dll.Code + ".", "");
  
@@ -2058,10 +2044,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Connection Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Connection Id"));
             }
             var connectionByPermission = await _contentManagementContext.MasterDataKeyValues
                         .Where(md => (md.Id == connectionId && md.TypeId == (int)EntityIdentity.SqlServerConnections)
@@ -2070,15 +2054,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             var connection = connectionByPermission.FirstOrDefault(con => con.Id == connectionId);
 
             if (connection == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Connection "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Connection "));
+
 
             var permission = connectionByPermission.FirstOrDefault(prm => prm.ForeignKey3 == connectionId
             && prm.TypeId == (int)EntityIdentity.Permission);
 
             if (permission == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Permission "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Permission "));
+     
 
             if (!AuthorizeManager.IsAuthorize(permission.ForeignKey2))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
@@ -2087,9 +2071,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                       .FirstOrDefault(md => md.TypeId == (int)EntityIdentity.Path &&
                                             md.Id == (int)Paths.TempPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                        "Temp"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "Temp"));
+
 
 
 
@@ -2101,10 +2084,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Configuration Code Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Configuration Code Id"));
             }
 
             int dllVersion;
@@ -2115,10 +2096,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Dll Version"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Dll Version"));
             }
 
             var configurationCode =
@@ -2138,8 +2117,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
 
             if (dll.EnableCache)
             {
-                throw new KhodkarInvalidException(string.Format(
-                    LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant), dll.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, dll.Code));
+
             }
 
 
@@ -2148,15 +2127,16 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+           
 
 
 
             if (!AuthorizeManager.AuthorizeActionOnEntityIdByVersion(configurationCode.Id, (int)EntityIdentity.DotNetCode, configurationCode.Version,
                 (int)ActionKey.RubConfigurationCodeEFMigration))
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToUpgradeMigration), configurationCode.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToUpgradeMigration, configurationCode.Code));
+
             }
             var dllPath = (dotnetCode.PathOrUrl + CompileOutPutDirectory).Replace("//", "/");
             var dllName = dll.Code.Insert(
@@ -2165,9 +2145,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+         
 
 
             _migration.RunMigration(new MigrationInfo()
@@ -2205,10 +2184,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Connection Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Connection Id"));
             }
             var connectionByPermission = await _contentManagementContext.MasterDataKeyValues
                         .Where(md => (md.Id == connectionId && md.TypeId == (int)EntityIdentity.SqlServerConnections)
@@ -2217,15 +2194,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             var connection = connectionByPermission.FirstOrDefault(con => con.Id == connectionId);
 
             if (connection == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Connection "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Connection "));
+ 
 
             var permission = connectionByPermission.FirstOrDefault(prm => prm.ForeignKey3 == connectionId
             && prm.TypeId == (int)EntityIdentity.Permission);
 
             if (permission == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-               " Permission "));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, " Permission "));
+        
 
             if (!AuthorizeManager.IsAuthorize(permission.ForeignKey2))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
@@ -2234,9 +2211,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                       .FirstOrDefault(md => md.TypeId == (int)EntityIdentity.Path &&
                                             md.Id == (int)Paths.TempPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                        "Temp"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "Temp"));
+
 
 
 
@@ -2248,10 +2224,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Configuration Code Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Configuration Code Id"));
+ 
             }
 
             int dllVersion;
@@ -2262,10 +2236,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Dll Version"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Dll Version"));
             }
 
             var configurationCode =
@@ -2291,14 +2263,15 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+           
 
 
 
             if (!AuthorizeManager.AuthorizeActionOnEntityId(configurationCode.Id, (int)EntityIdentity.DotNetCode, (int)ActionKey.BuildConfigurationCodeEFMigration))
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToGenerateMigration), configurationCode.Code));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToGenerateMigration, configurationCode.Code));
+           
             }
             var dllPath = (dotnetCode.PathOrUrl + CompileOutPutDirectory).Replace("//", "/");
             var dllName = dll.Code.Insert(
@@ -2307,9 +2280,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+
 
 
            return _migration.GetMigrationScript(new MigrationInfo()
@@ -2343,10 +2315,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "code Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "code Id"));
+       
             }
 
             int dllVersion;
@@ -2357,10 +2327,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Dll Version"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Dll Version"));
             }
 
             var code =
@@ -2371,7 +2339,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeNotFound));
 
             if (code.ForeignKey1 == (int)DotNetCodeType.LinesOfCode)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeCanNotBeDotNetLineOfCodeType), code.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeCanNotBeDotNetLineOfCodeType, code.Name));
+            
 
 
             var dll = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(cd => cd.Id == code.ForeignKey2);
@@ -2387,7 +2356,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+           
 
 
             
@@ -2396,14 +2366,14 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             if (!AuthorizeManager.AuthorizeActionOnEntityIdByVersion(dll.Id, (int)EntityIdentity.DotNetCode, dllVersion,
                 (int)ActionKey.RunUnitTest))
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToRunUnitTest), dll.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToRunUnitTest, dll.Name));
+  
             }
 
             //if (!AuthorizeManager.AuthorizeActionOnEntityIdByVersion(code.Id, (int)EntityIdentity.DotNetCode, code.Version,
             //   (int)ActionKey.RunUnitTest))
             //{
-            //    throw new KhodkarInvalidException(string.Format(
+            //    throw new KhodkarInvalidException((
             //           LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToRunUnitTest), code.Name));
             //}
 
@@ -2414,9 +2384,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+    
 
 
             string methodeName = unitTestInfoDto.MethodeName;
@@ -2460,7 +2429,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeNotFound));
 
             if (code.ForeignKey1 == (int)DotNetCodeType.LinesOfCode)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeCanNotBeDotNetLineOfCodeType), code.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.CodeCanNotBeDotNetLineOfCodeType, code.Name));
+         
     
 
             var dll = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(cd => cd.Id == code.ForeignKey2);
@@ -2474,7 +2444,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
        .SingleOrDefaultAsync(cd => cd.TypeId == (int)EntityIdentity.DotNetCode && cd.IsType);
 
             if (dotnetCode == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), CompileOutPutDirectory));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, CompileOutPutDirectory));
+           
 
 
 
@@ -2486,9 +2457,8 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                 ReleaseMode + dllVersion);
 
             if (!_fileSystemManager.FileExist(dllPath + dllName))
-                throw new KhodkarInvalidException(
-                 string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-                     dllName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, dllName));
+     
 
             var methodeName = "";
             var className = "";

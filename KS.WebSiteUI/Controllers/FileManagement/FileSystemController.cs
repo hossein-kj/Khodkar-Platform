@@ -156,10 +156,7 @@ namespace KS.WebSiteUI.Controllers.FileManagement
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Base Url Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Base Url Id"));
             }
             return _fileSystemBiz.DownlodFromUrl(baseUrlId,url,filePath, fileName);
         }

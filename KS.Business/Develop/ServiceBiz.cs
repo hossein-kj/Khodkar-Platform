@@ -116,8 +116,9 @@ string content, bool creatDirectoryIfNotExist = false)
             var repeatedService = await _contentManagementContext
                 .MasterDataKeyValues.Where(sr => sr.PathOrUrl == serviceUrl && sr.TypeId == (int)EntityIdentity.Service).CountAsync()
                 ;
-            if ((repeatedService > 0 && isNew) || ((repeatedService > 1 && !isNew)))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue), serviceUrl));
+            if ((repeatedService > 0 && isNew) || (repeatedService > 1 && !isNew))
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, serviceUrl));
+           
 
             int parentId = serviceDto.ParentId;
             if (service.ParentId != parentId || isNew)
@@ -136,10 +137,12 @@ string content, bool creatDirectoryIfNotExist = false)
             service.Code = serviceCode;
 
             repeatedService = await _contentManagementContext
-                .MasterDataKeyValues.Where(sr => sr.Code == service.Code && sr.TypeId == (int)EntityIdentity.Service).CountAsync()
-         ;
-            if ((repeatedService > 0 && isNew) || ((repeatedService > 1 && !isNew)))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue), service.Code));
+                .MasterDataKeyValues.Where(sr => sr.Code == service.Code && sr.TypeId == (int) EntityIdentity.Service)
+                .CountAsync();
+         
+            if ((repeatedService > 0 && isNew) || (repeatedService > 1 && !isNew))
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, service.Code));
+            
 
             service.Guid = serviceDto.Guid;
             service.Description = serviceDto.Description;
@@ -283,9 +286,8 @@ string content, bool creatDirectoryIfNotExist = false)
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Service Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "Service Id"));
             }
             var service = await _contentManagementContext
                 .MasterDataKeyValues.SingleOrDefaultAsync(sr => sr.Id == id && sr.TypeId==(int)EntityIdentity.Service);
@@ -306,7 +308,8 @@ string content, bool creatDirectoryIfNotExist = false)
                 .CountAsync();
 
             if(useCount > 0)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), service.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, service.Name));
+           
 
             if(_fileSystemManager.FileExist(Path.Combine(Config.ServicesSourceCodePath, service.Guid + ".js")))
             {

@@ -99,8 +99,8 @@ namespace KS.Business.FileManagement
             var tempPath = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(Config.ThumbnailPath, ActionKey.WriteToDisk));
            
             if (tempPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                    Config.ThumbnailPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, Config.ThumbnailPath));
+      
             var thumbnailPath = tempPath.ToLower();
             Parallel.ForEach(files, file =>
             {
@@ -124,8 +124,8 @@ namespace KS.Business.FileManagement
             var rootPath = HostingEnvironment.ApplicationHost.GetPhysicalPath();
             var tempPath = _fileSystemManager.RelativeToAbsolutePath(Config.ThumbnailPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                    Config.ThumbnailPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, Config.ThumbnailPath));
+        
             var thumbnailRootPath = tempPath.ToLower();
 
             var destinationPath = AuthorizeManager.AuthorizeActionOnPath(moveInfo.DestinationPath, ActionKey.WriteToDisk);
@@ -137,11 +137,11 @@ namespace KS.Business.FileManagement
                 var source = _fileSystemManager.RelativeToAbsolutePath(sourcePath + "/" + file);
                 var dist = _fileSystemManager.RelativeToAbsolutePath(destinationPath + "/" + file);
                 if (source == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                  "source"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "source"));
+            
                 if (dist == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                   "dist"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "dist"));
+          
                 _fileSystemManager.MoveFile(source, dist);
 
                 var thumbnailSourcePath = source.Substring(rootPath.Length);
@@ -154,11 +154,11 @@ namespace KS.Business.FileManagement
                 var source = _fileSystemManager.RelativeToAbsolutePath(sourcePath + "/" + folder);
                 var dist = _fileSystemManager.RelativeToAbsolutePath(destinationPath + "/" + folder);
                 if (source == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                  "source"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "source"));
+              
                 if (dist == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                   "dist"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "dist"));
+             
                 _fileSystemManager.MoveDirectory(source, dist);
 
                 var thumbnailSourcePath = source.Substring(rootPath.Length);
@@ -214,8 +214,8 @@ namespace KS.Business.FileManagement
             var temp = zipOprationInfo.DestinationPath;
             zipOprationInfo.DestinationPath = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(zipOprationInfo.DestinationPath, ActionKey.WriteToDisk));
             if (zipOprationInfo.DestinationPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-              temp));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, temp));
+     
             
             zipOprationInfo.SourcePath = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(zipOprationInfo.SourcePath, ActionKey.ReadFromDisk));
 
@@ -223,14 +223,14 @@ namespace KS.Business.FileManagement
             {
                 if (_fileSystemManager.FileExist(zipOprationInfo.DestinationPath.ToLower().IndexOf(".zip", StringComparison.Ordinal) > -1
                     ? zipOprationInfo.DestinationPath : zipOprationInfo.DestinationPath + ".zip"))
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath),
-                 zipOprationInfo.DestinationPath));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath, zipOprationInfo.DestinationPath));
+                
             }
            var path = zipOprationInfo.DestinationPath.Remove(zipOprationInfo.DestinationPath.ToLower()
                     .LastIndexOf("\\", StringComparison.Ordinal));
             if (!_fileSystemManager.DirectoryExists(path))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-             path));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, path));
+         
             return _zipManager.Zip(zipOprationInfo);
         }
         public bool UnZip(UnZipOprationInfo unZipOprationInfo)
@@ -264,18 +264,18 @@ namespace KS.Business.FileManagement
             var rootPath = HostingEnvironment.ApplicationHost.GetPhysicalPath();
             var tempPath = _fileSystemManager.RelativeToAbsolutePath(Config.ThumbnailPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                    Config.ThumbnailPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, Config.ThumbnailPath));
+         
             var thumbnailRootPath = tempPath.ToLower();
 
             var oldPath = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(renameInfo.OldPath,ActionKey.ReadFromDisk));
             var newPath = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(renameInfo.NewPath,ActionKey.WriteToDisk));
             if(oldPath==null)
-            throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                 renameInfo.OldPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, renameInfo.OldPath));
+          
             if (newPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                     renameInfo.NewPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, renameInfo.NewPath));
+      
 
             var thumbnailOldPath = oldPath.Substring(rootPath.Length);
             var thumbnailNewPath = newPath.Substring(rootPath.Length);
@@ -301,15 +301,15 @@ namespace KS.Business.FileManagement
             var rootPath = HostingEnvironment.ApplicationHost.GetPhysicalPath();
             var tempPath = _fileSystemManager.RelativeToAbsolutePath(Config.ThumbnailPath);
             if (tempPath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                    Config.ThumbnailPath));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, Config.ThumbnailPath));
+          
             var thumbnailRootPath = tempPath.ToLower();
 
             var path = _fileSystemManager.RelativeToAbsolutePath(AuthorizeManager.AuthorizeActionOnPath(deleteInfo.Path,ActionKey.DeleteFromDisk));
         
             if (path == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound),
-                     deleteInfo.Path));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, deleteInfo.Path));
+           
       
 
 

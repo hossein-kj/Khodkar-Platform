@@ -132,10 +132,8 @@ namespace KS.Business.Security
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Role Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Role Id"));
             }
             var role = await _roleManager.FindByIdAsync(id);
 
@@ -149,8 +147,8 @@ namespace KS.Business.Security
                 .CountAsync();
 
             if (useCount > 0)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), role.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, role.Name));
+ 
 
             await _roleManager.DeleteAsync(role);
 
@@ -303,10 +301,8 @@ namespace KS.Business.Security
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "Group Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Group Id"));
+           
             }
             var group = await _securityContext.Groups.FindAsync(id);
 
@@ -320,8 +316,8 @@ namespace KS.Business.Security
                 .CountAsync();
 
             if (useCount > 0)
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), group.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, group.Name));
+
 
             _securityContext.Groups.Remove(group);
             await _securityContext.SaveChangesAsync();
@@ -385,10 +381,8 @@ namespace KS.Business.Security
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "User Id"));
 
-                throw new KhodkarInvalidException(
-                    string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                        "User Id"));
             }
             var appUser = await _userManager.FindByIdAsync(id);
 

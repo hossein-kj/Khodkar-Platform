@@ -220,7 +220,8 @@ namespace KS.Business.ContenManagment
                                 md => md.PathOrUrl == masterDataUrlOrPath && md.TypeId == masterData.TypeId).CountAsync()
                             ;
                 if ((repeatedMasterData > 0 && isNew) || (repeatedMasterData > 1 && !isNew))
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue), masterDataUrlOrPath));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, masterDataUrlOrPath));
+               
 
             }
             masterData.PathOrUrl = masterDataUrlOrPath;
@@ -309,10 +310,14 @@ namespace KS.Business.ContenManagment
             masterData.Code = masterDataDto.Code;
             if (masterData.Code != null)
             {
-                var repeatedMasterData = await ContentManagementContext.MasterDataKeyValues.Where(md => md.Code == masterData.Code && md.TypeId == masterData.TypeId).CountAsync()
-                ;
+                var repeatedMasterData =
+                    await
+                        ContentManagementContext.MasterDataKeyValues.Where(
+                            md => md.Code == masterData.Code && md.TypeId == masterData.TypeId).CountAsync();
+
                 if ((repeatedMasterData > 0 && isNew) || (repeatedMasterData > 1 && !isNew))
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue), masterData.Code));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, masterData.Code));
+               
             }
 
 
@@ -342,8 +347,8 @@ namespace KS.Business.ContenManagment
             }
             catch (Exception)
             {
-
-                throw new ValidationException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric), "TypeId"));
+                throw new ValidationException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "TypeId"));
+              
             }
 
             try
@@ -353,7 +358,8 @@ namespace KS.Business.ContenManagment
             catch (Exception)
             {
                 if (masterData.IsType)
-                    throw new ValidationException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric), "ParentTypeId"));
+                    throw new ValidationException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "ParentTypeId"));
+            
                 masterData.ParentTypeId = null;
             }
 
@@ -407,15 +413,15 @@ namespace KS.Business.ContenManagment
             try
             {
                 id = masterDataKeyValueData.Id;
+              
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "MasterDataKeyValue Id"));
+
             }
-            var masterDatakeyValue = await ContentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == id)
-                ;
+            var masterDatakeyValue = await ContentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == id);
 
             if (masterDatakeyValue == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.MasterDataKeyValuesNotFound));
@@ -436,14 +442,16 @@ namespace KS.Business.ContenManagment
            .CountAsync();
 
                 if (useCount > 0)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), masterDatakeyValue.Name));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, masterDatakeyValue.Name));
+          
 
             }
             var refrenceCount = await ContentManagementContext.MasterDataKeyValues.Where(md=> md.ForeignKey1==masterDatakeyValue.Id || md.ForeignKey2 == masterDatakeyValue.Id || md.ForeignKey3 == masterDatakeyValue.Id)
                  .CountAsync();
 
             if (refrenceCount > 0)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem), masterDatakeyValue.Name));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, masterDatakeyValue.Name));
+      
 
             ContentManagementContext.MasterDataKeyValues.Remove(masterDatakeyValue);
        

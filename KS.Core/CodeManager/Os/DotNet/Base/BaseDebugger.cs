@@ -57,10 +57,8 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
 
             return JsonConvert.SerializeObject
             (data, Formatting.None,
-                new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+                new JsonSerializerSettings() {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         }
         public virtual DebugInfo AddOrUpdateDebugInfo(DebugInfo debugInfo, string dbPath)
         {
@@ -84,10 +82,10 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
                     else
                     {
                         var info = db.GetCollection<DebugInfo>(DebugCollection).FindOne(dg => dg.Id == debugInfo.Id);
-
+                       
                         if (info.IsAppDebugInfo)
                             throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToUpdateCodeMadeDebugInfo));
-
+              
 
                         sourceControl.Update(debugInfo);
                     }
@@ -97,7 +95,7 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
             return debugInfo;
         }
 
-        public virtual void DeleteDebugInfo(List<int> debugInfoIds, string dbPath, int dllVersion)
+        public virtual void DeleteDebugInfo(List<int> debugInfoIds, string dbPath,int dllVersion)
         {
             dbPath = (FileSystemManager
                           .CreatDirectoryIfNotExist(dbPath) + "/" + DebugDb).Replace("//", "/");
@@ -111,7 +109,7 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
                     }
 
 
-                }
+                } 
             }
         }
 
@@ -133,7 +131,7 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
         , int codeId
         , int dllVersion
         , string data
-        , int? integerValue
+        ,int? integerValue
         , decimal? decimalValue
         , string fromDateTime
         , string toDateTime
@@ -207,7 +205,7 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
             {
 
                 Query query = Query.EQ("CodeId", codeId);
-
+                
 
                 using (var db = new LiteDatabase((FileSystemManager
                  .CreatDirectoryIfNotExist(dbPath) + "/" + DebugDb).Replace("//", "/")))

@@ -101,14 +101,11 @@ namespace KS.Core.CodeManager.Os.DotNet.Base
                             return (bool) method.Invoke(testInstance, null);
                         }
                     }
-
-                    throw new KhodkarInvalidException(
-                        string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.MethodNotFound),
-                            methodeName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.MethodNotFound, methodeName));
+               
                 }
-            throw new KhodkarInvalidException(
-                string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.ClassNotFound),
-                    className));
+            throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ClassNotFound, className));
+
         }
     }
 }

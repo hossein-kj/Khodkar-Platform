@@ -42,8 +42,8 @@ namespace KS.Core.Security.Handlers.AuthorizeScriptsDebugePath
             if(path != null)
             _context.Response.WriteFile(path.Replace("~", "").Replace("//", "/"));
             else
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound),
-             _context.Request.RawUrl));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.NotFound, _context.Request.RawUrl));
+
 
             _completed = true;
             _callback(this);

@@ -83,21 +83,24 @@ namespace KS.Business.Localization
         {
             if (string.IsNullOrWhiteSpace(user.UserName))
             {
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.PropertyTooShort), "User Name", RequiredLength));
+
+                errors.Add(LanguageManager.ToAsErrorMessage(
+                        message:
+                        string.Format(LanguageManager.GetException(ExceptionKey.PropertyTooShort), "User Name", RequiredLength)));
             }
             else if (AllowOnlyAlphanumericUserNames && !Regex.IsMatch(user.UserName, @"^[A-Za-z0-9@_\.]+$"))
             {
                 // If any characters are not letters or digits, its an illegal user name
             
 
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidUserName)));
+                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidUserName));
             }
             else
             {
                 var owner = await Manager.FindByNameAsync(user.UserName).WithCurrentCulture();
                 if (owner != null && !Object.Equals(owner.Id, user.Id))
                 {
-                    errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.DuplicateName)));
+                    errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.DuplicateName));
                 }
             }
         }
@@ -108,7 +111,10 @@ namespace KS.Business.Localization
             var email = user.UserName;
             if (string.IsNullOrWhiteSpace(email))
             {
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.PropertyTooShort), "Email", RequiredLength));
+
+                errors.Add(LanguageManager.ToAsErrorMessage(
+        message:
+        string.Format(LanguageManager.GetException(ExceptionKey.PropertyTooShort), "Email", RequiredLength)));
                 return;
             }
             try
@@ -117,14 +123,14 @@ namespace KS.Business.Localization
             }
             catch (FormatException)
             {
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidEmail)));
+                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidEmail));
                
                 return;
             }
             var owner = await Manager.FindByEmailAsync(email).WithCurrentCulture();
             if (owner != null && !Object.Equals(owner.Id, user.Id))
             {
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.DuplicateEmail)));
+                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.DuplicateEmail));
 
             }
         }

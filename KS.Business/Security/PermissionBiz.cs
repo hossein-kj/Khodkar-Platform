@@ -38,8 +38,8 @@ namespace KS.Business.Security
                 }
                 catch (Exception)
                 {
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-               "MasterDataKeyValue Id"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Id"));
+            
                 }
                 int entityTypeId;
                 try
@@ -48,8 +48,8 @@ namespace KS.Business.Security
                 }
                 catch (Exception)
                 {
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-               "MasterDataKeyValue Key"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Key"));
+                 
                 }
                 int actionTypeId;
                 try
@@ -58,8 +58,8 @@ namespace KS.Business.Security
                 }
                 catch (Exception)
                 {
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-               "MasterDataKeyValue ForeignKey1"));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue ForeignKey1"));
+                
                 }
                 if (entityTypeId != (int)EntityIdentity.Link)
                 {
@@ -99,9 +99,8 @@ namespace KS.Business.Security
             }
             catch (Exception)
             {
-
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "MasterDataKeyValue Id"));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Id"));
+             
             }
             var masterDatakeyValue = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == id)
              ;

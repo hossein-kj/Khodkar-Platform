@@ -62,7 +62,10 @@ namespace KS.Business.Localization
             var errors = new List<string>();
             if (string.IsNullOrWhiteSpace(item) || item.Length < RequiredLength)
             {
-                errors.Add(String.Format(CultureInfo.CurrentCulture, LanguageManager.ToAsErrorMessage(ExceptionKey.PropertyTooShort),"PassWord", RequiredLength));
+
+
+                errors.Add(LanguageManager.ToAsErrorMessage(message:string.Format(LanguageManager.GetException(ExceptionKey.PropertyTooShort),
+                    "PassWord", RequiredLength)));
             }
             if (RequireNonLetterOrDigit && item.All(IsLetterOrDigit))
             {

@@ -43,7 +43,8 @@ namespace KS.Business.ContenManagment
                 };
                 filePath = await _contentManagementContext.FilePaths.SingleOrDefaultAsync(fp => fp.Id == filePath.Id);
                 if (filePath == null)
-                    throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), ""));
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, ""));
+             
                 oldUrl = filePath.Url;
             }
             catch (Exception)
@@ -74,9 +75,9 @@ namespace KS.Business.ContenManagment
             }
 
             var repeatedLink = await _contentManagementContext.FilePaths.Where(fp => fp.Url == filePath.Url).CountAsync();
-            if ((repeatedLink > 0 && oldUrl == "") || ((repeatedLink > 1 && oldUrl == "")))
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue),
-                    filePath.Url));
+            if ((repeatedLink > 0 && oldUrl == "") || (repeatedLink > 1 && oldUrl == ""))
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, filePath.Url));
+
             filePath.Url = filePathUrl;
             filePath.Size = _fileSystemManager.GetFileSize(filePathUrl);
             filePath.Language = Config.DefaultsLanguage;
@@ -137,14 +138,14 @@ namespace KS.Business.ContenManagment
             }
             catch (Exception)
             {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "FilePath Id"));
 
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric),
-                "FilePath Id"));
             }
             var filePath = await _contentManagementContext.FilePaths.SingleOrDefaultAsync(fp => fp.Id == id);
 
             if (filePath == null)
-                throw new KhodkarInvalidException(string.Format(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound), ""));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, ""));
+          
 
             AuthorizeManager.SetAndCheckModifyAndAccessRole(filePath, null, false);
 

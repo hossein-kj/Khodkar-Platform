@@ -46,6 +46,17 @@ namespace KS.Core.Localization
             return Adapter.GetText(code);
         }
 
+
+        public static string GetException(ExceptionKey code)
+        {
+            return Adapter.GetException(code);
+        }
+
+        public static string GetException(string code)
+        {
+            return Adapter.GetException(code);
+        }
+
         public static string ToAsErrorMessage(ExceptionKey code = ExceptionKey.None, string message = null)
         {
             return Adapter.ToAsErrorMessage(code, message);

@@ -34,8 +34,7 @@ namespace KS.Business.ContenManagment
             if (!AuthorizeManager.AuthorizeActionOnEntityId(groupId, (int) EntityIdentity.Group,
                 (int) ActionKey.EditGroup))
             {
-                throw new KhodkarInvalidException(string.Format(
-                       LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToEditGroup), groupName));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToEditGroup, groupName));
             }
 
             JArray sremovedListArray = groupDto.RemovedList;
