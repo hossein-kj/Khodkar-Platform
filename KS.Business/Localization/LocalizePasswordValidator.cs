@@ -64,30 +64,30 @@ namespace KS.Business.Localization
             {
 
 
-                errors.Add(LanguageManager.ToAsErrorMessage(message:string.Format(LanguageManager.GetException(ExceptionKey.PropertyTooShort),
-                    "PassWord", RequiredLength)));
+                errors.Add(string.Format(LanguageManager.GetException(ExceptionKey.PropertyTooShort),
+                    "PassWord", RequiredLength));
             }
             if (RequireNonLetterOrDigit && item.All(IsLetterOrDigit))
             {
-                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.PasswordRequireNonLetterOrDigit));
+                errors.Add(LanguageManager.GetException(ExceptionKey.PasswordRequireNonLetterOrDigit));
             }
             if (RequireDigit && item.All(c => !IsDigit(c)))
             {
-                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.PasswordRequireNonLetterOrDigit));
+                errors.Add(LanguageManager.GetException(ExceptionKey.PasswordRequireDigit));
             }
             if (RequireLowercase && item.All(c => !IsLower(c)))
             {
-                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.PasswordRequireLower));
+                errors.Add(LanguageManager.GetException(ExceptionKey.PasswordRequireLower));
             }
             if (RequireUppercase && item.All(c => !IsUpper(c)))
             {
-                errors.Add(LanguageManager.ToAsErrorMessage(ExceptionKey.PasswordRequireUpper));
+                errors.Add(LanguageManager.GetException(ExceptionKey.PasswordRequireUpper));
             }
             if (errors.Count == 0)
             {
                 return Task.FromResult(IdentityResult.Success);
             }
-            return Task.FromResult(IdentityResult.Failed(String.Join(" ", errors)));
+            return Task.FromResult(IdentityResult.Failed(LanguageManager.ToAsErrorMessage(message: String.Join(" . ", errors))));
         }
 
         /// <summary>
