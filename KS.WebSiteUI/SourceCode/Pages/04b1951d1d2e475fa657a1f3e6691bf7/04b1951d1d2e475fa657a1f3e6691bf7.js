@@ -297,7 +297,8 @@ var getwebform = function (formUrl, pageTypeId) {
                 var q = queryString.split("/")
           initPageType(q[1])
                 $drpMenu.asDropdown('selectValue', [], true)
-                $drpMenu.asDropdown('selectValue', (q[0].toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
+                $drpMenu.asDropdown('selectValue', (decodeURI(q[0]).toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
+             
                 // console.log((q[0]).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
 
                 $drpType.asDropdown('selectValue', [], true)
@@ -389,13 +390,8 @@ var getwebform = function (formUrl, pageTypeId) {
 
 
             if (typeId == 15) {
-                 
                 if (webForm.TemplatePatternUrl != null)
-                    {
-                        console.dir(webForm)
-                   
-                        $drpFrameWork.asDropdown('selectValue', webForm.FrameWorkUrl)
-                    }
+                    $drpFrameWork.asDropdown('selectValue', webForm.FrameWorkUrl)
                 else
                     $drpFrameWork.asDropdown('selectValue', [], true)
                 $txtTemplatePatternUrl.val(webForm.TemplatePatternUrl)

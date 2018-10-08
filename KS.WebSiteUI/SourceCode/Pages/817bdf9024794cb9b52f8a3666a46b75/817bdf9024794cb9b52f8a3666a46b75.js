@@ -912,7 +912,7 @@ as("#cmsWebForm_cancelRestor").click(function () {
             }),
             success: function (webForm) {
                 webFormId = webForm.Id;
-              $.asShowMessage({ message: $.asRes[$.asLang].successOpration ,showTime:10000000});
+              $.asShowMessage({ message: $.asRes[$.asLang].successOpration,showTime:10000000 });
             }
         }, { $form: $frmCmsWebForm })
 
@@ -995,7 +995,6 @@ as("#cmsWebForm_cancelRestor").click(function () {
 bindEvent();
 var getwebform = function (formUrl, pageTypeId) {
     typeId=pageTypeId;
-
     isLoadQueryString = true;
     
            
@@ -1003,7 +1002,7 @@ var getwebform = function (formUrl, pageTypeId) {
                 initPageType(q[1])
 
                 $drpMenu.asDropdown('selectValue', [], true)
-                $drpMenu.asDropdown('selectValue', (q[0].toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
+                $drpMenu.asDropdown('selectValue', (decodeURI(q[0]).toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
                 // console.log((q[0]).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
 
                 $drpType.asDropdown('selectValue', [], true)

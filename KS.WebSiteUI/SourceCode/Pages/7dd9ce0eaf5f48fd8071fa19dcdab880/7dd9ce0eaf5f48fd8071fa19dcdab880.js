@@ -1002,7 +1002,7 @@ var getwebform = function (formUrl, pageTypeId) {
                 initPageType(q[1])
 
                 $drpMenu.asDropdown('selectValue', [], true)
-                $drpMenu.asDropdown('selectValue', (q[0].toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
+                $drpMenu.asDropdown('selectValue', (decodeURI(q[0]).toLowerCase()).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
                 // console.log((q[0]).replace(new RegExp($.asUrlDelimeter, "g"), "/"))
 
                 $drpType.asDropdown('selectValue', [], true)

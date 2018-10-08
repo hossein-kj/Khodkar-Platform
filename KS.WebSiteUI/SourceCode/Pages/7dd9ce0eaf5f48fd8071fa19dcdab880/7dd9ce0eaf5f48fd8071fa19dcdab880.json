@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "مدیریت صفحات",
   "Guid": "7dd9ce0eaf5f48fd8071fa19dcdab880",
-  "Version": 182,
+  "Version": 183,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -31,7 +31,7 @@
   "TypeId": 16,
   "HaveStyle": true,
   "HaveScript": true,
-  "DependentModules": "[{\"url\":\"asDropdown.js\"},{\"url\":\"asDropdown.css\"},{\"url\":\"asValidate.js\"},{\"url\":\"asValidate.css\"},{\"url\":\"asEditor.js\"},{\"url\":\"asCodeEditor.js\"},{\"url\":\"asWindow.js\"},{\"url\":\"asModal.css?minversion=46\"},{\"url\":\"asModal.js?minversion=46\"}]",
+  "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asEditor.js?minversion=19\"},{\"url\":\"asCodeEditor.js?minversion=8\"},{\"url\":\"asWindow.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
   "Language": "fa",
-  "RowVersion": "AAAAAAADNYo="
+  "RowVersion": "AAAAAAABX5E="
 }
