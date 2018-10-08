@@ -9,29 +9,30 @@ using Newtonsoft.Json.Linq;
 using KS.Core.Security;
 using KS.Core.Utility;
 using KS.WebSiteUI.Controllers.Base;
+using System.Web;
 
 namespace KS.WebSiteUI.Controllers.ContentManagement.Http
 {
     public class WebPageController : BaseAuthorizedWebApiController
     {
-       private readonly IWebPageBiz _webPageBiz;
+        private readonly IWebPageBiz _webPageBiz;
 
-       public WebPageController(IWebPageBiz contentManagementBiz)
+        public WebPageController(IWebPageBiz contentManagementBiz)
         {
             _webPageBiz = contentManagementBiz;
         }
 
-       
-       [Route("cms/WebPage/Get/{url}/{typeId}")]
-       [HttpGet]
-       public async Task<JObject> GetWebPageContent(string url, int typeId)
-       {
-           var form = await _webPageBiz.GetWebPageForEditAsync(url.Replace(Config.UrlDelimeter, Helper.RootUrl).Replace("#", ""), typeId);
-           if (form != null)
-               return form;
-           
-               return JObject.Parse(JsonConvert.SerializeObject(new WebPage() { Guid= SecureGuid.NewGuid().ToString("N") }, Formatting.None));
-       }
+
+        [Route("cms/WebPage/Get/{url}/{typeId}")]
+        [HttpGet]
+        public async Task<JObject> GetWebPageContent(string url, int typeId)
+        {
+            var form = await _webPageBiz.GetWebPageForEditAsync(HttpUtility.UrlDecode(url.Replace(" ", "%")).Replace(Config.UrlDelimeter, Helper.RootUrl).Replace("#", ""), typeId);
+            if (form != null)
+                return form;
+
+            return JObject.Parse(JsonConvert.SerializeObject(new WebPage() { Guid = SecureGuid.NewGuid().ToString("N") }, Formatting.None));
+        }
 
         [Route("cms/webpage/save")]
         [HttpPost]
@@ -52,15 +53,15 @@ namespace KS.WebSiteUI.Controllers.ContentManagement.Http
         [HttpGet]
         public JObject GetWebPageChangesFromSourceControl(string orderBy, int skip, int take
             , string comment
-            ,string user
+            , string user
             , string fromDateTime
             , string toDateTime
             , string webPageGuid
-            ,string type)
+            , string type)
         {
             return _webPageBiz.GetWebPageChangesFromSourceControl(orderBy, skip, take
             , comment
-            ,user
+            , user
             , fromDateTime
             , toDateTime
             , webPageGuid
