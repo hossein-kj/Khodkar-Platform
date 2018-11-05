@@ -120,19 +120,23 @@ namespace KS.Business.ContenManagment
         public async Task<Link> Save(JObject data)
         {
             dynamic linkDto = data;
-            Link link;
+            
             string oldUrl = "";
+
+            var link = new Link()
+            {
+                Id = linkDto.Id,
+                RowVersion = linkDto.RowVersion
+            };
+            var currentLink = await _contentManagementContext.Links.AsNoTracking().SingleOrDefaultAsync(ln => ln.Id == link.Id);
+
             try
             {
-                link = new Link()
-                {
-                    Id = linkDto.Id,
-                    RowVersion = linkDto.RowVersion
-                };
-                link = await _contentManagementContext.Links.SingleOrDefaultAsync(ln => ln.Id == link.Id);
-                if (link == null)
+                
+                if (currentLink == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LinkNotFound));
-                oldUrl = link.Url;
+                oldUrl = currentLink.Url;
+                _contentManagementContext.Links.Attach(link);
             }
             catch (Exception)
             {
@@ -149,7 +153,7 @@ namespace KS.Business.ContenManagment
             try
             {
                 int parentId = linkDto.ParentId;
-                if (link.ParentId != parentId)
+                if (currentLink?.ParentId != parentId)
                 {
 
                     var parentCode = await _contentManagementContext.Links.SingleOrDefaultAsync(md => md.Id == parentId);
@@ -178,7 +182,7 @@ namespace KS.Business.ContenManagment
 
             var repeatedLink = await _contentManagementContext.Links.Where(sr => sr.Url == link.Url).CountAsync();
          
-            if ((repeatedLink > 0 && oldUrl == "") || ((repeatedLink > 1 && oldUrl == "")))
+            if ((repeatedLink > 0 && oldUrl == "") || (repeatedLink > 1 && oldUrl == ""))
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, link.Url));
           
 
@@ -194,6 +198,14 @@ namespace KS.Business.ContenManagment
             link.Language = linkDto.Language;
 
             //if(service.IsLeaf)
+
+            if (currentLink != null)
+            {
+                link.ViewRoleId = currentLink.ViewRoleId;
+                link.ModifyRoleId = currentLink.ModifyRoleId;
+                link.AccessRoleId = currentLink.AccessRoleId;
+            }
+
             AuthorizeManager.SetAndCheckModifyAndAccessRole(link, linkDto);
 
             link.Status = linkDto.Status;

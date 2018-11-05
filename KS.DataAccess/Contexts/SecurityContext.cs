@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using KS.Core.Exceptions;
 using KS.Core.GlobalVarioable;
 using KS.Core.Localization;
+using KS.Core.Log;
+using KS.Core.Log.Elmah.Base;
 using KS.Core.Model.ContentManagement;
+using KS.Core.Model.Core;
 using KS.Core.Security;
 using KS.DataAccess.Config;
 using KS.DataAccess.Contexts.Config;
@@ -25,12 +31,14 @@ namespace KS.DataAccess.Contexts
         IdentityDbContext
             <ApplicationUser, ApplicationRole, int, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>, ISecurityContext
     {
-        public SecurityContext()
+        protected readonly IErrorLogManager ErrorLogManager;
+        public SecurityContext(IErrorLogManager errorLogManager)
             : base(ConnectionKey.DefaultsSqlServerConnection.ToString())
         {
             Database.Log += Log;
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
+            ErrorLogManager = errorLogManager;
         }
 
         static SecurityContext()
@@ -164,13 +172,87 @@ namespace KS.DataAccess.Contexts
         public override int SaveChanges()
         {
             FillLogProperty();
-            return base.SaveChanges();
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                //var entry = ex.Entries.Single();
+                ////The MSDN examples use Single so I think there will be only one
+                ////but if you prefer - do it for all entries
+                ////foreach(var entry in ex.Entries)
+                ////{
+                //if (entry.State == EntityState.Deleted)
+                //    //When EF deletes an item its state is set to Detached
+                //    //http://msdn.microsoft.com/en-us/data/jj592676.aspx
+                //    entry.State = EntityState.Detached;
+                //else
+                //    entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                ////throw; //You may prefer not to resolve when updating
+                ////}
+                throw new DataConcurrencyException();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errors = new List<KeyValue>();
+                foreach (var dbValidationErrors in ex.EntityValidationErrors.Select(er => er.ValidationErrors))
+                    errors.AddRange(dbValidationErrors.Select(dbValidationError => new KeyValue()
+                    {
+                        Key = dbValidationError.PropertyName,
+                        Value = dbValidationError.ErrorMessage
+                    }));
+                ErrorLogManager.LogException(new ExceptionLog()
+                {
+                    Detail = string.Join(" - ", errors.Select(er => er.Key + " : " + er.Value)),
+                    Message = ex.Message,
+                    Source = ex.GetType().FullName
+                });
+                throw;
+            }
         }
 
         public override async Task<int> SaveChangesAsync()
         {
             FillLogProperty();
-            return await base.SaveChangesAsync();
+            try
+            {
+                return await base.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                //var entry = ex.Entries.Single();
+                ////The MSDN examples use Single so I think there will be only one
+                ////but if you prefer - do it for all entries
+                ////foreach(var entry in ex.Entries)
+                ////{
+                //if (entry.State == EntityState.Deleted)
+                //    //When EF deletes an item its state is set to Detached
+                //    //http://msdn.microsoft.com/en-us/data/jj592676.aspx
+                //    entry.State = EntityState.Detached;
+                //else
+                //    entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                ////throw; //You may prefer not to resolve when updating
+                ////}
+                throw new DataConcurrencyException();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errors = new List<KeyValue>();
+                foreach (var dbValidationErrors in ex.EntityValidationErrors.Select(er => er.ValidationErrors))
+                    errors.AddRange(dbValidationErrors.Select(dbValidationError => new KeyValue()
+                    {
+                        Key = dbValidationError.PropertyName,
+                        Value = dbValidationError.ErrorMessage
+                    }));
+                ErrorLogManager.LogException(new ExceptionLog()
+                {
+                    Detail = string.Join(" - ", errors.Select(er => er.Key + " : " + er.Value)),
+                    Message = ex.Message,
+                    Source = ex.GetType().FullName
+                });
+                throw;
+            }
         }
 
         private void FillLogProperty()
@@ -223,5 +305,5 @@ namespace KS.DataAccess.Contexts
         //public System.Data.Entity.DbSet<KS.Model.Security.ApplicationRole> ApplicationRoles { get; set; }
     }
 
-  
+
 }

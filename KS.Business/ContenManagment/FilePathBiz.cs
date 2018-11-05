@@ -32,24 +32,24 @@ namespace KS.Business.ContenManagment
         public async Task<FilePath> Save(JObject data)
         {
             dynamic filePathDto = data;
-            FilePath filePath;
+            var filePath = new FilePath()
+            {
+                Id = filePathDto.Id,
+                RowVersion = filePathDto.RowVersion
+            };
+            var currentFilePath = await _contentManagementContext.FilePaths.AsNoTracking().SingleOrDefaultAsync(fp => fp.Id == filePath.Id);
             string oldUrl = "";
             try
             {
-                filePath = new FilePath()
-                {
-                    Id = filePathDto.Id,
-                    RowVersion = filePathDto.RowVersion
-                };
-                filePath = await _contentManagementContext.FilePaths.SingleOrDefaultAsync(fp => fp.Id == filePath.Id);
-                if (filePath == null)
+               
+                if (currentFilePath == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, ""));
              
-                oldUrl = filePath.Url;
+                oldUrl = currentFilePath.Url;
+                _contentManagementContext.FilePaths.Attach(filePath);
             }
             catch (Exception)
             {
-                filePath = new FilePath();
                 _contentManagementContext.FilePaths.Add(filePath);
             }
 
@@ -74,15 +74,22 @@ namespace KS.Business.ContenManagment
 
             }
 
-            var repeatedLink = await _contentManagementContext.FilePaths.Where(fp => fp.Url == filePath.Url).CountAsync();
+            var repeatedLink = await _contentManagementContext.FilePaths.Where(fp => fp.Url == filePathUrl).CountAsync();
             if ((repeatedLink > 0 && oldUrl == "") || (repeatedLink > 1 && oldUrl == ""))
-                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, filePath.Url));
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, filePathUrl));
 
             filePath.Url = filePathUrl;
             filePath.Size = _fileSystemManager.GetFileSize(filePathUrl);
             filePath.Language = Config.DefaultsLanguage;
 
             //if(service.IsLeaf)
+
+            if (currentFilePath != null)
+            {
+                filePath.ViewRoleId = currentFilePath.ViewRoleId;
+                filePath.ModifyRoleId = currentFilePath.ModifyRoleId;
+                filePath.AccessRoleId = currentFilePath.AccessRoleId;
+            }
             AuthorizeManager.SetAndCheckModifyAndAccessRole(filePath, filePathDto);
 
             filePath.Status = filePathDto.Status;
@@ -102,12 +109,15 @@ namespace KS.Business.ContenManagment
                 RowVersion = localFilePathDto.RowVersion
             };
 
-
+            var currentLocalFilePath = await _contentManagementContext.LocalFilePaths.Include(md => md.FilePath)
+                .AsNoTracking().SingleOrDefaultAsync(md => md.Id == localFilePath.Id);
             if (localFilePath.Id > 0)
             {
-                localFilePath = await _contentManagementContext.LocalFilePaths.Include(md => md.FilePath).SingleOrDefaultAsync(md => md.Id == localFilePath.Id);
-                if (localFilePath == null)
+                
+                if (currentLocalFilePath == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TranslateNotFound));
+
+                _contentManagementContext.LocalFilePaths.Attach(localFilePath);
             }
             else
             {
@@ -119,7 +129,15 @@ namespace KS.Business.ContenManagment
             localFilePath.Description = localFilePathDto.Description;
             localFilePath.Language = localFilePathDto.Language;
 
-            AuthorizeManager.SetAndCheckModifyAndAccessRole(localFilePath.FilePath, localFilePathDto, false);
+            var currentFilePath = await _contentManagementContext.FilePaths
+               .AsNoTracking().SingleOrDefaultAsync(md => md.Id == localFilePath.FilePathId);
+
+            if (currentFilePath == null)
+            {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "FilePathId"));
+            }
+
+            AuthorizeManager.SetAndCheckModifyAndAccessRole(currentFilePath, localFilePathDto, false);
 
 
             localFilePath.Status = localFilePathDto.Status;

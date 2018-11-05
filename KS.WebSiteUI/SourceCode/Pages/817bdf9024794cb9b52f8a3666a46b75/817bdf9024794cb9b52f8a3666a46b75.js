@@ -912,6 +912,7 @@ as("#cmsWebForm_cancelRestor").click(function () {
             }),
             success: function (webForm) {
                 webFormId = webForm.Id;
+                rowVersion = webForm.RowVersion;
               $.asShowMessage({ message: $.asRes[$.asLang].successOpration,showTime:10000000 });
             }
         }, { $form: $frmCmsWebForm })

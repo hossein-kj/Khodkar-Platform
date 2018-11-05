@@ -81,11 +81,14 @@ string content, bool creatDirectoryIfNotExist = false)
             };
             bool isNew = languageAndCultureDto.isNew;
             bool publish = languageAndCultureDto.publish;
+            var currentLanguageAndCulture = await _contentManagementContext.LanguageAndCultures.AsNoTracking().SingleOrDefaultAsync(ln => ln.Id == languageAndCulture.Id);
             if (!isNew)
             {
-                languageAndCulture = await _contentManagementContext.LanguageAndCultures.SingleOrDefaultAsync(ln => ln.Id == languageAndCulture.Id);
-                if (languageAndCulture == null)
+                
+                if (currentLanguageAndCulture == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LanguageAndCultureNotFound));
+
+                _contentManagementContext.LanguageAndCultures.Attach(languageAndCulture);
             }
             else
             {
@@ -103,10 +106,19 @@ string content, bool creatDirectoryIfNotExist = false)
             languageAndCulture.Version++;
 
             languageAndCulture.Status = languageAndCultureDto.Status;
-           
+
+            if (currentLanguageAndCulture != null)
+            {
+                languageAndCulture.ViewRoleId = currentLanguageAndCulture.ViewRoleId;
+                languageAndCulture.ModifyRoleId = currentLanguageAndCulture.ModifyRoleId;
+                languageAndCulture.AccessRoleId = currentLanguageAndCulture.AccessRoleId;
+            }
+
+            AuthorizeManager.SetAndCheckModifyAndAccessRole(languageAndCulture, languageAndCultureDto);
+
             await _contentManagementContext.SaveChangesAsync();
 
-            await _contentManagementContext.LanguageAndCultures.Where(lc => lc.Language == languageAndCulture.Language)
+            await _contentManagementContext.LanguageAndCultures.Where(lc => lc.Language == languageAndCulture.Language && lc.Id != languageAndCulture.Id)
                 .UpdateAsync(t => new LanguageAndCulture() {Version = languageAndCulture.Version});
 
             string jsCode = languageAndCultureDto.JsCode;

@@ -148,7 +148,7 @@ namespace KS.Business.Security
 
             if (useCount > 0)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, role.Name));
- 
+
 
             await _roleManager.DeleteAsync(role);
 
@@ -165,15 +165,17 @@ namespace KS.Business.Security
                 RowVersion = localRoleDto.RowVersion
             };
 
+            var currentLocalRole =
+                    await
+                        _securityContext.ApplicationLocalRoles.AsNoTracking().Include(md => md.Role)
+                            .SingleOrDefaultAsync(md => md.Id == localRole.Id);
 
             if (localRole.Id > 0)
             {
-                localRole =
-                    await
-                        _securityContext.ApplicationLocalRoles.Include(md => md.Role)
-                            .SingleOrDefaultAsync(md => md.Id == localRole.Id);
-                if (localRole == null)
+                if (currentLocalRole == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RoleNotFound));
+
+                _securityContext.ApplicationLocalRoles.Attach(localRole);
             }
             else
             {
@@ -185,7 +187,16 @@ namespace KS.Business.Security
             localRole.Description = localRoleDto.Description;
             localRole.Language = localRoleDto.Language;
 
-            AuthorizeManager.SetAndCheckModifyAndAccessRole(localRole.Role, localRoleDto, false);
+            var currentRole = await _securityContext.Roles
+               .AsNoTracking().SingleOrDefaultAsync(md => md.Id == localRole.RoleId);
+
+            if (currentRole == null)
+            {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RoleNotFound));
+            }
+
+
+            AuthorizeManager.SetAndCheckModifyAndAccessRole(currentRole, localRoleDto, false);
 
 
             localRole.Status = localRoleDto.Status;
@@ -284,7 +295,7 @@ namespace KS.Business.Security
 
             await _securityContext.SaveChangesAsync();
 
-            
+
             CacheManager.Remove(CacheManager.GetGroupKey(CacheKey.Aspect.ToString(), applicationGroup.Id));
 
             return applicationGroup;
@@ -302,7 +313,7 @@ namespace KS.Business.Security
             catch (Exception)
             {
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "Group Id"));
-           
+
             }
             var group = await _securityContext.Groups.FindAsync(id);
 
@@ -321,7 +332,7 @@ namespace KS.Business.Security
 
             _securityContext.Groups.Remove(group);
             await _securityContext.SaveChangesAsync();
-            
+
             CacheManager.Remove(CacheManager.GetGroupKey(CacheKey.Aspect.ToString(), group.Id));
             return true;
         }
@@ -336,15 +347,18 @@ namespace KS.Business.Security
                 RowVersion = localGroupDto.RowVersion
             };
 
+            var currentLocalGroup =
+                    await
+                        _securityContext.ApplicationLocalGroups.AsNoTracking().Include(md => md.Group)
+                            .SingleOrDefaultAsync(md => md.Id == localGroup.Id);
 
             if (localGroup.Id > 0)
             {
-                localGroup =
-                    await
-                        _securityContext.ApplicationLocalGroups.Include(md => md.Group)
-                            .SingleOrDefaultAsync(md => md.Id == localGroup.Id);
-                if (localGroup == null)
+
+                if (currentLocalGroup == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.GroupNotFound));
+
+                _securityContext.ApplicationLocalGroups.Attach(localGroup);
             }
             else
             {
@@ -356,7 +370,16 @@ namespace KS.Business.Security
             localGroup.Description = localGroupDto.Description;
             localGroup.Language = localGroupDto.Language;
 
-            AuthorizeManager.SetAndCheckModifyAndAccessRole(localGroup.Group, localGroupDto, false);
+
+            var currentGroup = await _securityContext.Groups
+              .AsNoTracking().SingleOrDefaultAsync(md => md.Id == localGroup.GroupId);
+
+            if (currentGroup == null)
+            {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.GroupNotFound));
+            }
+
+            AuthorizeManager.SetAndCheckModifyAndAccessRole(currentGroup, localGroupDto, false);
 
 
             localGroup.Status = localGroupDto.Status;
@@ -393,7 +416,7 @@ namespace KS.Business.Security
 
             var userProfileId = appUser.Id;
 
-            var result=await _userManager.DeleteAsync(appUser);
+            var result = await _userManager.DeleteAsync(appUser);
 
             if (result.Succeeded)
             {
@@ -405,7 +428,7 @@ namespace KS.Business.Security
 
                     await _contentManagementContext.SaveChangesAsync();
                 }
-             
+
                 return true;
             }
 
@@ -423,7 +446,7 @@ namespace KS.Business.Security
 
             if (result.Succeeded)
             {
- 
+
                 return true;
             }
 
@@ -451,7 +474,7 @@ namespace KS.Business.Security
                 Email = userDto.Email,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
-                BirthDate=DateTime.UtcNow,
+                BirthDate = DateTime.UtcNow,
                 Status = userDto.Status
 
 
@@ -503,7 +526,7 @@ namespace KS.Business.Security
                        appUser.ViewRoleId,
                        appUser.ModifyRoleId,
                        appUser.AccessRoleId,
-                       UserProfileId=appUser.Id,
+                       UserProfileId = appUser.Id,
                        appUser.Email,
                        appUser.Groups,
                        profile.AliasName
@@ -521,9 +544,9 @@ namespace KS.Business.Security
                     catch (Exception)
                     {
 
-                        
+
                     }
-                    
+
                     throw;
                 }
             }
@@ -555,12 +578,12 @@ namespace KS.Business.Security
 
                 _contentManagementContext.Users.Add(userProfile);
             }
-               // throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.UserProfileNotFound));
+            // throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.UserProfileNotFound));
 
 
 
             userProfile.AliasName = userDto.AliasName;
-     
+
 
             AuthorizeManager.SetAndCheckModifyAndAccessRole(appUser, userDto);
 
@@ -585,22 +608,22 @@ namespace KS.Business.Security
 
 
 
-                //Add User to the selected Groups 
+            //Add User to the selected Groups 
 
-                if (updateResult.Succeeded)
+            if (updateResult.Succeeded)
+            {
+
+                //todo:check Authorize
+                await UpdateUserGroups(user);
+
+                bool isChangePass = userDto.IsChangePass;
+                if (isChangePass)
                 {
-
-                    //todo:check Authorize
-                    await UpdateUserGroups(user);
-
-                    bool isChangePass = userDto.IsChangePass;
-                    if(isChangePass)
-                    {
-                        var token = await _userManager.GeneratePasswordResetTokenAsync(userId);
-                        var changePassResult = await _userManager.ResetPasswordAsync(userId, token, password);
-                        if (!changePassResult.Succeeded)
-                            throw new KhodkarInvalidException(changePassResult.Errors.First());
-                    }
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(userId);
+                    var changePassResult = await _userManager.ResetPasswordAsync(userId, token, password);
+                    if (!changePassResult.Succeeded)
+                        throw new KhodkarInvalidException(changePassResult.Errors.First());
+                }
 
                 appUser = await _securityContext.Users.Include(us => us.Groups).FirstOrDefaultAsync(us => us.Id == userId);
                 if (appUser == null)
@@ -616,15 +639,15 @@ namespace KS.Business.Security
                        appUser.ViewRoleId,
                        appUser.ModifyRoleId,
                        appUser.AccessRoleId,
-                       UserProfileId= appUser.Id,
+                       UserProfileId = appUser.Id,
                        appUser.Email,
                        appUser.Groups,
                        userProfile.AliasName
                    }, Formatting.None,
                        new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-               
-                }
-                throw new KhodkarInvalidException(updateResult.Errors.First());
+
+            }
+            throw new KhodkarInvalidException(updateResult.Errors.First());
 
 
         }
@@ -662,31 +685,31 @@ namespace KS.Business.Security
         {
             var count = await _securityContext.Users.Where(us => us.Groups.Any(gr => gr.GroupId == groupId)).CountAsync();
             var users = (await _securityContext.Users
-                .Include(us=>us.Groups).Where(us => us.Groups.Any(gr => gr.GroupId == groupId) || groupId==0).OrderBy(orderBy)
+                .Include(us => us.Groups).Where(us => us.Groups.Any(gr => gr.GroupId == groupId) || groupId == 0).OrderBy(orderBy)
                 .Skip(skip)
                 .Take(take).ToListAsync()).Select(us => new
-            {
-                us.Id,
-                us.UserName,
-                us.FirstName,
-                us.LastName,
-                us.Status,
-                us.ViewRoleId,
-                us.ModifyRoleId,
-                us.AccessRoleId,
-                UserProfileId= us.Id,
-                us.Email,
-                us.Groups,
-                AliasName=""
+                {
+                    us.Id,
+                    us.UserName,
+                    us.FirstName,
+                    us.LastName,
+                    us.Status,
+                    us.ViewRoleId,
+                    us.ModifyRoleId,
+                    us.AccessRoleId,
+                    UserProfileId = us.Id,
+                    us.Email,
+                    us.Groups,
+                    AliasName = ""
                 }).ToList();
 
-            var profileIds = users.Select(us=>us.UserProfileId).ToList();
+            var profileIds = users.Select(us => us.UserProfileId).ToList();
 
             var userAliasNames = await _contentManagementContext.Users.Where(us => profileIds.Contains(us.Id))
-                .Select(us =>new {us.Id, us.AliasName})
+                .Select(us => new { us.Id, us.AliasName })
                 .ToListAsync();
 
-            var finalUsers=users.Join(userAliasNames, us => us.UserProfileId, ua => ua.Id, (us, ua) => new
+            var finalUsers = users.Join(userAliasNames, us => us.UserProfileId, ua => ua.Id, (us, ua) => new
             {
                 us.Id,
                 us.UserName,

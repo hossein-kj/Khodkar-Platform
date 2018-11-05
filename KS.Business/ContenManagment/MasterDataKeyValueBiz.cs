@@ -172,18 +172,20 @@ namespace KS.Business.ContenManagment
                 secondPathOrUrlProtocolId = (int)Protocol.LocalUrlPorotocol;
             }
 
+            var currentMasterData = await ContentManagementContext.MasterDataKeyValues.AsNoTracking().SingleOrDefaultAsync(md => md.Id == masterData.Id);
+
             if (!isNew)
             {
-                masterData = await ContentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == masterData.Id);
-                if (masterData == null)
+               
+                if (currentMasterData == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.MasterDataKeyValuesNotFound));
 
-                if (masterData.EditMode)
+                if (currentMasterData.EditMode)
                 {
                     SourceControl.CheckCodeCheckOute(masterData);
 
                 }
-
+                ContentManagementContext.MasterDataKeyValues.Attach(masterData);
             }
             else
             {
@@ -228,7 +230,7 @@ namespace KS.Business.ContenManagment
             try
             {
                 int parentId = masterDataDto.ParentId;
-                if (masterData.ParentId != parentId || isNew)
+                if (currentMasterData?.ParentId != parentId || isNew)
                 {
                     
                     var parentCode = await ContentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == parentId);
@@ -367,6 +369,15 @@ namespace KS.Business.ContenManagment
             //if(masterData.IsLeaf)
             if(masterData.TypeId == (int)EntityIdentity.Permission && !isAuthroize)
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
+
+            if (currentMasterData != null)
+            {
+                masterData.ViewRoleId = currentMasterData.ViewRoleId;
+                masterData.ModifyRoleId = currentMasterData.ModifyRoleId;
+                masterData.AccessRoleId = currentMasterData.AccessRoleId;
+            }
+
+
             AuthorizeManager.SetAndCheckModifyAndAccessRole(masterData, masterDataDto);
 
 

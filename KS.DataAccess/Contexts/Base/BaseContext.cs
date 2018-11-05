@@ -50,7 +50,7 @@ namespace KS.DataAccess.Contexts.Base
             if (Settings.IsDebugMode)
             {
                 _query += s;
-                if(Database.Connection.State == System.Data.ConnectionState.Closed)
+                if (Database.Connection.State == System.Data.ConnectionState.Closed)
                 {
                     var dataTime = DateTime.UtcNow;
 
@@ -103,6 +103,23 @@ namespace KS.DataAccess.Contexts.Base
                 ////}
                 throw new DataConcurrencyException();
             }
+            catch (DbEntityValidationException ex)
+            {
+                var errors = new List<KeyValue>();
+                foreach (var dbValidationErrors in ex.EntityValidationErrors.Select(er => er.ValidationErrors))
+                    errors.AddRange(dbValidationErrors.Select(dbValidationError => new KeyValue()
+                    {
+                        Key = dbValidationError.PropertyName,
+                        Value = dbValidationError.ErrorMessage
+                    }));
+                ErrorLogManager.LogException(new ExceptionLog()
+                {
+                    Detail = string.Join(" - ", errors.Select(er => er.Key + " : " + er.Value)),
+                    Message = ex.Message,
+                    Source = ex.GetType().FullName
+                });
+                throw;
+            }
         }
 
         public override async Task<int> SaveChangesAsync()
@@ -135,11 +152,12 @@ namespace KS.DataAccess.Contexts.Base
                 foreach (var dbValidationErrors in ex.EntityValidationErrors.Select(er => er.ValidationErrors))
                     errors.AddRange(dbValidationErrors.Select(dbValidationError => new KeyValue()
                     {
-                        Key = dbValidationError.PropertyName, Value = dbValidationError.ErrorMessage
+                        Key = dbValidationError.PropertyName,
+                        Value = dbValidationError.ErrorMessage
                     }));
                 ErrorLogManager.LogException(new ExceptionLog()
                 {
-                    Detail = string.Join(" - " ,errors.Select(er=>er.Key + " : " + er.Value)),
+                    Detail = string.Join(" - ", errors.Select(er => er.Key + " : " + er.Value)),
                     Message = ex.Message,
                     Source = ex.GetType().FullName
                 });
