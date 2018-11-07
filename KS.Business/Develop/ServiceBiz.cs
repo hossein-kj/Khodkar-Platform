@@ -70,12 +70,12 @@ string content, bool creatDirectoryIfNotExist = false)
         public async Task<MasterDataKeyValue> Save(JObject data)
         {
             dynamic serviceDto = data;
-
+            int? serviceId = serviceDto.Id;
             var service = new MasterDataKeyValue
             {
-                Id = serviceDto.Id,
+                Id = serviceId ?? 0,
                 RowVersion = serviceDto.RowVersion,
-                TypeId = (int)EntityIdentity.Service
+                TypeId= (int)EntityIdentity.Service
             };
             bool isNew = serviceDto.IsNew;
 
@@ -112,14 +112,14 @@ string content, bool creatDirectoryIfNotExist = false)
             string serviceUrl = serviceDto.Url;
             if (serviceUrl.IndexOf(Helper.RootUrl, StringComparison.Ordinal) != 0)
                 serviceUrl = Helper.RootUrl + serviceUrl;
-            if (serviceUrl.LastIndexOf(Helper.RootUrl, StringComparison.Ordinal) == serviceUrl.Length - 1 && serviceUrl != "/")
+            if (serviceUrl.LastIndexOf(Helper.RootUrl, StringComparison.Ordinal) == serviceUrl.Length-1 && serviceUrl != "/")
                 serviceUrl = serviceUrl.Remove(serviceUrl.LastIndexOf(Helper.RootUrl, StringComparison.Ordinal));
             var repeatedService = await _contentManagementContext
                 .MasterDataKeyValues.Where(sr => sr.PathOrUrl == serviceUrl && sr.TypeId == (int)EntityIdentity.Service).CountAsync()
                 ;
             if ((repeatedService > 0 && isNew) || (repeatedService > 1 && !isNew))
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, serviceUrl));
-
+           
 
             int? parentId = serviceDto.ParentId;
             if (currentService?.ParentId != parentId || isNew)
@@ -138,12 +138,12 @@ string content, bool creatDirectoryIfNotExist = false)
             service.Code = serviceCode;
 
             repeatedService = await _contentManagementContext
-                .MasterDataKeyValues.Where(sr => sr.Code == service.Code && sr.TypeId == (int)EntityIdentity.Service)
+                .MasterDataKeyValues.Where(sr => sr.Code == service.Code && sr.TypeId == (int) EntityIdentity.Service)
                 .CountAsync();
-
+         
             if ((repeatedService > 0 && isNew) || (repeatedService > 1 && !isNew))
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, service.Code));
-
+            
 
             service.Guid = serviceDto.Guid;
             service.Description = serviceDto.Description;
@@ -297,7 +297,7 @@ string content, bool creatDirectoryIfNotExist = false)
 
             }
             var service = await _contentManagementContext
-                .MasterDataKeyValues.SingleOrDefaultAsync(sr => sr.Id == id && sr.TypeId == (int)EntityIdentity.Service);
+                .MasterDataKeyValues.SingleOrDefaultAsync(sr => sr.Id == id && sr.TypeId==(int)EntityIdentity.Service);
 
             if (service == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ServiceNotFound));
@@ -311,14 +311,14 @@ string content, bool creatDirectoryIfNotExist = false)
 
             }
 
-            var useCount = await _contentManagementContext.WebPages.Where(wp => wp.Services.Contains(service.PathOrUrl))
-                 .CountAsync();
+           var useCount = await _contentManagementContext.WebPages.Where(wp => wp.Services.Contains(service.PathOrUrl))
+                .CountAsync();
 
-            if (useCount > 0)
+            if(useCount > 0)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, service.Name));
+           
 
-
-            if (_fileSystemManager.FileExist(Path.Combine(Config.ServicesSourceCodePath, service.Guid + ".js")))
+            if(_fileSystemManager.FileExist(Path.Combine(Config.ServicesSourceCodePath, service.Guid + ".js")))
             {
                 _sourceControl.RecycleBin(Config.ServicesSourceCodePath, service.Guid + ".js", codeNameIsFolder: false);
 
@@ -334,11 +334,11 @@ string content, bool creatDirectoryIfNotExist = false)
         public async Task<JObject> GetAsync(int id)
         {
 
-            var serviceQuery = _contentManagementContext
+            var serviceQuery =  _contentManagementContext
                 .MasterDataKeyValues.Where(sr => sr.Id == id && sr.TypeId == (int)EntityIdentity.Service).FutureFirstOrDefault();
-            var maxIdQuery = _contentManagementContext.MasterDataKeyValues.OrderByDescending(md => md.Id).FutureFirstOrDefault();
+            var maxIdQuery = _contentManagementContext.MasterDataKeyValues.OrderByDescending(md=>md.Id).FutureFirstOrDefault();
 
-            var service = serviceQuery.Value;
+             var service = serviceQuery.Value;
             var maxId = maxIdQuery.Value;
 
             if (service == null)
@@ -350,7 +350,7 @@ string content, bool creatDirectoryIfNotExist = false)
 
         }
 
-        private async Task<JObject> ConvertToJsonAsync(MasterDataKeyValue service, int newId)
+        private async Task<JObject> ConvertToJsonAsync(MasterDataKeyValue service,int newId)
         {
             var lastModifieUser =
               await _securityContext.Users.SingleOrDefaultAsync(us => us.Id == service.CreateUserId);
@@ -359,7 +359,7 @@ string content, bool creatDirectoryIfNotExist = false)
                 service.Id,
                 service.Guid,
                 NewGuid = SecureGuid.NewGuid().ToString("N"),
-                NewId = newId,
+                NewId= newId,
                 service.PathOrUrl,
                 service.Key,
                 service.Name,
@@ -395,7 +395,7 @@ string content, bool creatDirectoryIfNotExist = false)
 
         private string GetServiceSourceCodePath(string guid, SourceType sourceType)
         {
-
+            
             var path = Config.ServicesSourceCodePath + guid;
 
             switch (sourceType)

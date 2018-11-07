@@ -123,9 +123,12 @@ namespace KS.Business.ContenManagment
             
             string oldUrl = "";
 
+            int? linkId = linkDto.Id;
+
+            
             var link = new Link()
             {
-                Id = linkDto.Id,
+                Id = linkId == null ? 0 : linkDto.Id,
                 RowVersion = linkDto.RowVersion
             };
             var currentLink = await _contentManagementContext.Links.AsNoTracking().SingleOrDefaultAsync(ln => ln.Id == link.Id);

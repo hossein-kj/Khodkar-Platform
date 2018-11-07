@@ -118,10 +118,10 @@ namespace KS.Business.ContenManagment
         public async Task<MasterDataKeyValue> Save(JObject data,bool isAuthroize=false)
         {
             dynamic masterDataDto = data;
-
+            int? masterDataId = masterDataDto.Id;
             var masterData = new MasterDataKeyValue
             {
-                Id = masterDataDto.Id,
+                Id = masterDataId ?? 0,
                 RowVersion = masterDataDto.RowVersion
             };
             bool isNew = masterDataDto.IsNew;
@@ -482,19 +482,22 @@ namespace KS.Business.ContenManagment
         public async Task<MasterDataLocalKeyValue> SaveTranslate(JObject data)
         {
             dynamic masterDataLocalDto = data;
-
+            int? masterDataLocalId = masterDataLocalDto.Id;
             var masterDataLocal = new MasterDataLocalKeyValue
             {
-                Id = masterDataLocalDto.Id,
+                Id = masterDataLocalId ?? 0,
                 RowVersion = masterDataLocalDto.RowVersion
             };
 
-
+            var currentMasterDataLocal = await ContentManagementContext.MasterDataLocalKeyValues.Include(md => md.MasterDataKeyValue)
+                    .SingleOrDefaultAsync(md => md.Id == masterDataLocal.Id);
             if (masterDataLocal.Id > 0)
             {
-                masterDataLocal = await ContentManagementContext.MasterDataLocalKeyValues.Include(md=>md.MasterDataKeyValue).SingleOrDefaultAsync(md => md.Id == masterDataLocal.Id);
-                if (masterDataLocal == null)
+                
+                if (currentMasterDataLocal == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TranslateNotFound));
+
+                ContentManagementContext.MasterDataLocalKeyValues.Attach(masterDataLocal);
             }
             else
             {
@@ -506,7 +509,15 @@ namespace KS.Business.ContenManagment
             masterDataLocal.Description = masterDataLocalDto.Description;
             masterDataLocal.Language = masterDataLocalDto.Language;
 
-            AuthorizeManager.SetAndCheckModifyAndAccessRole(masterDataLocal.MasterDataKeyValue, masterDataLocalDto,false);
+            var currentMasterData = await ContentManagementContext.MasterDataKeyValues
+               .AsNoTracking().SingleOrDefaultAsync(md => md.Id == masterDataLocal.MasterDataKeyValueId);
+
+            if (currentMasterData == null)
+            {
+                throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, "MasterDataKeyValueId"));
+            }
+
+            AuthorizeManager.SetAndCheckModifyAndAccessRole(currentMasterData, masterDataLocalDto,false);
 
 
             masterDataLocal.Status = masterDataLocalDto.Status;

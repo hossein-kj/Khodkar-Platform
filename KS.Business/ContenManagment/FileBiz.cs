@@ -34,10 +34,10 @@ namespace KS.Business.ContenManagment
             dynamic fileDto = data;
             
             string oldUrl = "";
-
+            int? fileId = fileDto.Id;
             var file = new File()
             {
-                Id = fileDto.Id,
+                Id = fileId ?? 0,
                 RowVersion = fileDto.RowVersion
             };
             var currentFile = await _contentManagementContext.Files.AsNoTracking()
@@ -107,10 +107,10 @@ namespace KS.Business.ContenManagment
         public async Task<LocalFile> SaveTranslate(JObject data)
         {
             dynamic localFileDto = data;
-
+            int? localFileId = localFileDto.Id;
             var localFile = new LocalFile
             {
-                Id = localFileDto.Id,
+                Id = localFileId ?? 0,
                 RowVersion = localFileDto.RowVersion
             };
 

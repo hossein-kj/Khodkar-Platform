@@ -32,9 +32,10 @@ namespace KS.Business.ContenManagment
         public async Task<FilePath> Save(JObject data)
         {
             dynamic filePathDto = data;
+            int? filePathId = filePathDto.Id;
             var filePath = new FilePath()
             {
-                Id = filePathDto.Id,
+                Id = filePathId ?? 0,
                 RowVersion = filePathDto.RowVersion
             };
             var currentFilePath = await _contentManagementContext.FilePaths.AsNoTracking().SingleOrDefaultAsync(fp => fp.Id == filePath.Id);
@@ -102,10 +103,10 @@ namespace KS.Business.ContenManagment
         public async Task<LocalFilePath> SaveTranslate(JObject data)
         {
             dynamic localFilePathDto = data;
-
+            int? localFilePathId = localFilePathDto.Id;
             var localFilePath = new LocalFilePath
             {
-                Id = localFilePathDto.Id,
+                Id = localFilePathId ?? 0,
                 RowVersion = localFilePathDto.RowVersion
             };
 

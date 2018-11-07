@@ -840,10 +840,10 @@ namespace KS.Business.ContenManagment
                 _contentManagementContext.MasterDataKeyValues
                 .Where(sr => servicesCode.Contains(sr.Code) && sr.TypeId== (int)EntityIdentity.Service)
                 .Select(sr => new { sr.Code, sr.PathOrUrl }).ToListAsync();
-            string rowVersion = webPageDto.RowVersion;
+            int? webPageId = webPageDto.Id;
             var webPage = new WebPage
             {
-                Id = webPageDto.Id,
+                Id = webPageId ?? 0,
                 RowVersion = webPageDto.RowVersion //BitConverter.GetBytes(Convert.ToInt64(rowVersion, 16)) 
             };
             bool checkIn = webPageDto.CheckIn;

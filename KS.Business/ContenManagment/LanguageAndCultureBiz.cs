@@ -73,10 +73,10 @@ string content, bool creatDirectoryIfNotExist = false)
         public async Task<LanguageAndCulture> Save(JObject data)
         {
             dynamic languageAndCultureDto = data;
-
+            int? languageAndCultureId = languageAndCultureDto.Id;
             var languageAndCulture = new LanguageAndCulture()
             {
-                Id = languageAndCultureDto.Id,
+                Id = languageAndCultureId ?? 0,
                 RowVersion = languageAndCultureDto.RowVersion
             };
             bool isNew = languageAndCultureDto.isNew;
