@@ -327,7 +327,7 @@ namespace KS.Business.ContenManagment
             masterData.Guid = masterDataDto.Guid;
             masterData.Description = masterDataDto.Description;
             masterData.Data = masterDataDto.Data;
-            masterData.Version++;
+            masterData.Version = (currentMasterData?.Version ?? 0) + 1; 
 
             try
             {

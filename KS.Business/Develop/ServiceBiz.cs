@@ -147,7 +147,7 @@ string content, bool creatDirectoryIfNotExist = false)
 
             service.Guid = serviceDto.Guid;
             service.Description = serviceDto.Description;
-            service.Version++;
+            service.Version = (currentService?.Version ?? 0) + 1;
             service.PathOrUrl = serviceUrl;
             try
             {

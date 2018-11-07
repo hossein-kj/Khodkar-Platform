@@ -604,7 +604,7 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             code.EnableCache = isCloseChangin;
             code.Guid = codeDto.Guid;
             code.Description = codeDto.Description;
-            code.Version++;
+            code.Version =  (currentCode?.Version ?? 0)+1;
         
 
             try

@@ -6,13 +6,13 @@
   "Params": "test:'test',loadScriptAndStyle:{urls:[{url:'asGetDependentModules.js?minversion=' + Math.floor((1 + Math.random()) * 0x10000)}]}",
   "FrameWorkUrl": "",
   "TemplatePatternUrl": "",
-  "Tools": "'asModal','asDropdown','asValidate','asEditor','asCodeEditor','asWindow'",
+  "Tools": null,
   "ViewRoleId": 5,
   "ModifyRoleId": 5,
   "AccessRoleId": 5,
   "Title": "Altarnative Webpage Management",
   "Guid": "04b1951d1d2e475fa657a1f3e6691bf7",
-  "Version": 2,
+  "Version": 4,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -33,5 +33,5 @@
   "HaveScript": true,
   "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asEditor.js?minversion=19\"},{\"url\":\"asCodeEditor.js?minversion=8\"},{\"url\":\"asWindow.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
   "Language": "en",
-  "RowVersion": "AAAAAAABnjE="
+  "RowVersion": "AAAAAAABvVk="
 }

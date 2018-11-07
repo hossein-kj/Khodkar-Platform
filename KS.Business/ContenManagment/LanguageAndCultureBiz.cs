@@ -103,7 +103,7 @@ string content, bool creatDirectoryIfNotExist = false)
             languageAndCulture.IsRightToLeft = languageAndCultureDto.IsRightToLeft;
 
             //for force update and change version for force client to get new versipn of language.js
-            languageAndCulture.Version++;
+            languageAndCulture.Version = (currentLanguageAndCulture?.Version ?? 0) + 1;
 
             languageAndCulture.Status = languageAndCultureDto.Status;
 

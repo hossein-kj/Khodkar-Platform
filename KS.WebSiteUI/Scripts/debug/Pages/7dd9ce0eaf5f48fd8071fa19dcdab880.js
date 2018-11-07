@@ -38,6 +38,7 @@
     $btnNext=as("#btnNext"),
     $btnPrev=as("#btnPrev"),
     $txtComment=as("#txtComment"),
+    $txtVersion = as("#cmsWebForm_version"),
     $winSourceManager=$.asModalManager.get({url:$.asModalManager.urls.sourceManager}),
     $winSourceComparator=$.asModalManager.get({url:$.asModalManager.urls.sourceComparator}),
     servicesId= [],
@@ -62,6 +63,7 @@
     htmlEditorPosition =[],
     currentEditor=null,
     interval = null;
+
 
 $winSourceComparator.asModal({width:1200}); 
 $winSourceManager.asModal({width:800});                
@@ -686,7 +688,7 @@ var bindEvent = function () {
             $txtTitle.val(webForm.Title)
             $txtParams.val(webForm.Params)
             $txtPageId.val(webForm.Guid)
-            $("#cmsWebForm_version").val(webForm.Version)
+            $txtVersion.val(webForm.Version)
             $chkStatus.prop('checked', webForm.Status)
             $chkCache.prop('checked', webForm.EnableCache)
             as("#chkMobile").prop('checked', webForm.IsMobileVersion)
@@ -913,6 +915,7 @@ as("#cmsWebForm_cancelRestor").click(function () {
             success: function (webForm) {
                 webFormId = webForm.Id;
                 rowVersion = webForm.RowVersion;
+                $txtVersion.val(webForm.Version);
               $.asShowMessage({ message: $.asRes[$.asLang].successOpration,showTime:10000000 });
             }
         }, { $form: $frmCmsWebForm })
@@ -1081,7 +1084,7 @@ var getwebform = function (formUrl, pageTypeId) {
             $txtTitle.val(webForm.Title)
             $txtParams.val(webForm.Params)
             $txtPageId.val(webForm.Guid)
-            $("#cmsWebForm_version").val(webForm.Version)
+            $txtVersion.val(webForm.Version)
             $chkPublish.prop('checked', false)
             $chkCheckIn.prop('checked', false)
             $chkStatus.prop('checked', webForm.Status)

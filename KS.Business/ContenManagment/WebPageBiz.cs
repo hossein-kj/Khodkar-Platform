@@ -970,10 +970,10 @@ namespace KS.Business.ContenManagment
             await _sourceControl.AddChange(pagesSourceCodePath,
             webPage.Guid + ".json",
             json,
-            webPage.Version +1,
+           (currentWebpage?.Version ?? 0) + 1,
             comment);
 
-            webPage.Version += 1;
+            webPage.Version = (currentWebpage?.Version ?? 0) + 1;
 
 
             
@@ -994,7 +994,7 @@ namespace KS.Business.ContenManagment
                         EnableCache = webPage.EnableCache,
                         EditMode = webPage.EditMode,
                         IsMobileVersion = webPage.IsMobileVersion,
-                        Version = webPage.Version + 1
+                        Version = webPage.Version
                     });
 
                 latestPage = await
