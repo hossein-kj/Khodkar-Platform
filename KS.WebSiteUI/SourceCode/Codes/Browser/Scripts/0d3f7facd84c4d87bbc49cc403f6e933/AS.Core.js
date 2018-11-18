@@ -1623,6 +1623,8 @@
 
     //#region route
     $(document).delegate('a', 'click', function (e) {
+         if($(this).attr('target') === "_blank")
+           return;
         var noLink = false, className
         if (e.which === 1 && !e.metaKey && !e.shiftKey) {
             

@@ -1541,11 +1541,6 @@
     <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\Core\jquery-3.3.1.js" />
     <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\Core\jquery.signalR-2.2.3.js" />
     <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\Core\modernizr.js" />
-    <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\gulpfile.js" />
-    <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\gulpfile1.js" />
-    <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\gulpfile2.js" />
-    <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\gulpfile3.js" />
-    <Content Include="SourceCode\Codes\Browser\Scripts\0d3f7facd84c4d87bbc49cc403f6e933\gulpfile5.js" />
     <Content Include="SourceCode\Codes\Browser\Scripts\0fc66d6d3024433e8d79520c91a28671\hammer.min.js" />
     <Content Include="SourceCode\Codes\Browser\Scripts\0fc66d6d3024433e8d79520c91a28671\imagesloaded.pkgd.min.js" />
     <Content Include="SourceCode\Codes\Browser\Scripts\0fc66d6d3024433e8d79520c91a28671\sequence.js" />
