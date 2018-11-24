@@ -450,10 +450,10 @@ var bindEvent =function () {
         queryString = $.asGetQueryString();
         if(queryString !== null){
             $.asTemp[queryString] = $.asTemp[queryString] || {};
-            $.asTemp[queryString].serviceJavascriptQueryEditor = $.asTemp[queryString].serviceJavascriptQueryEditor || "";
+            $.asTemp[queryString].dotNetEditor = $.asTemp[queryString].dotNetEditor || "";
     
-            if($.asTemp[queryString].serviceJavascriptQueryEditor !== "")
-                    $.asStorage.setItem("serviceJavascriptQueryEditor" + queryString,$.asTemp[queryString].serviceJavascriptQueryEditor);
+            if($.asTemp[queryString].dotNetEditor !== "")
+                    $.asStorage.setItem("dotNetEditor" + queryString,$.asTemp[queryString].dotNetEditor);
         }
    }
 
@@ -574,14 +574,19 @@ var bindEvent =function () {
              queryString = $.asGetQueryString();
               if(queryString !== null){
                 if( $edrDotNet === currentEditor)
-                    currentEditor.asCodeEditor('setValue',$.asStorage.getItem("serviceJavascriptQueryEditor" + queryString));
+                {
+                         $divEditor.show();
+                        currentEditor.asCodeEditor('setValue',$.asStorage.getItem("dotNetEditor" + queryString));
+                }
           }
     }
     
      var recoverAllEditor = function(){
           queryString = $.asGetQueryString();
           if(queryString !== null){
-                $edrDotNet.asCodeEditor('setValue',$.asStorage.getItem("serviceJavascriptQueryEditor" + queryString));
+               $divEditor.show();
+                $edrDotNet.asCodeEditor('setValue',$.asStorage.getItem("dotNetEditor" + queryString));
+                
           }
     }
    
@@ -1149,7 +1154,7 @@ as("#btnCancelRestor").click(function () {
 
         var jsCode = $edrDotNet.asCodeEditor("getValue")
 
-        $.asTemp[queryString].serviceJavascriptQueryEditor = jsCode;
+        $.asTemp[queryString].dotNetEditor = jsCode;
    
         
         dependencyId = [];
@@ -1300,7 +1305,7 @@ var getCode = function (id) {
     
 }
 var autoSave = function(){
-        $.asStorage.setItem("serviceJavascriptQueryEditor" + queryString,$edrDotNet.asCodeEditor("getValue"))
+        $.asStorage.setItem("dotNetEditor" + queryString,$edrDotNet.asCodeEditor("getValue"))
     }
 var changeEditorToolbar = function(editor){
         
