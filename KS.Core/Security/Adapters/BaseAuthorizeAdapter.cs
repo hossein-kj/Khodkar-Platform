@@ -45,15 +45,15 @@ namespace KS.Core.Security.Adapters
         {
             return DataBaseContextManager
                        .AuthorizeViewSourceCodeOfMasterDataKeyValues(codeId, CurrentUserManager.Id,
-                           (int) EntityIdentity.DotNetCode
-                           , (int) ActionKey.ViewSourceCode,
-                           (int) EntityIdentity.Permission) != 0;
+                           (int)EntityIdentity.DotNetCode
+                           , (int)ActionKey.ViewSourceCode,
+                           (int)EntityIdentity.Permission) != 0;
             //|| CurrentUserManager.RolesId.Any(r => r == (int)Roles.Admin);
         }
 
         public virtual string AuthorizeDebugJavascriptPath(string path)
         {
-            
+
             path = Helper.ProperPath(path).Replace("//", "/");
             path = path.IndexOf("?", StringComparison.OrdinalIgnoreCase) > -1 ? path.Remove(path.IndexOf("?", StringComparison.OrdinalIgnoreCase)) : path;
 
@@ -81,7 +81,7 @@ namespace KS.Core.Security.Adapters
 
                         realPath = realPath.Replace(Config.ScriptDebugPagesPath.ToLower(), "~/");
                         if (AuthorizeViewDebugScriptOfWebPage(realPath, debug.UserId))
-                            //|| IsAuthorize(Convert.ToInt32(Roles.Admin)))
+                        //|| IsAuthorize(Convert.ToInt32(Roles.Admin)))
                         {
                             return realPath.Replace("~/", Config.ScriptDebugPagesPath);
                         }
@@ -116,7 +116,7 @@ namespace KS.Core.Security.Adapters
             //if(IsAuthorize(Convert.ToInt32(Roles.Admin)))
             //    return path;
 
-            var permissions =  DataBaseContextManager.GetPermissionOfPath((int)EntityIdentity.Permission, (int)EntityIdentity.Path, actionKey, path);
+            var permissions = DataBaseContextManager.GetPermissionOfPath((int)EntityIdentity.Permission, (int)EntityIdentity.Path, actionKey, path);
             if (permissions != null)
             {
                 if (permissions.Any(permission => IsAuthorize(Convert.ToInt32(permission))))
@@ -126,10 +126,10 @@ namespace KS.Core.Security.Adapters
 
             }
             throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidAccessToPath, path));
-            
+
         }
 
-        public virtual bool AuthorizeActionOnEntityId(int entityId,int entityTypeId, int actionKey)
+        public virtual bool AuthorizeActionOnEntityId(int entityId, int entityTypeId, int actionKey)
         {
             if (IsAuthorize(Convert.ToInt32(Roles.Admin)))
                 return true;
@@ -148,8 +148,8 @@ namespace KS.Core.Security.Adapters
                 return true;
 
             var permissions = DataBaseContextManager.GetPermissionOfEntityIdByVersion((int)EntityIdentity.Permission,
-                entityTypeId, actionKey, entityId, entityVersion); 
-            if (permissions != null )
+                entityTypeId, actionKey, entityId, entityVersion);
+            if (permissions != null)
             {
                 return permissions.Any(permission => IsAuthorize(Convert.ToInt32(permission)));
             }
@@ -159,13 +159,13 @@ namespace KS.Core.Security.Adapters
 
         public virtual bool AuthorizeMasterDataKeyValueUrl(string url, ActionKey actionKey, out IAspect aspect)
         {
-            return AuthorizeMasterDataKeyValueUrl( url, (int) actionKey, out aspect);
+            return AuthorizeMasterDataKeyValueUrl(url, (int)actionKey, out aspect);
         }
 
-        public virtual bool AuthorizeMasterDataKeyValueUrl(string url, int actionKey,out IAspect aspect)
+        public virtual bool AuthorizeMasterDataKeyValueUrl(string url, int actionKey, out IAspect aspect)
         {
             aspect = GetAspectForMasterDataKeyValueUrl(actionKey, url);
-            if (aspect != null)
+            if (!aspect.IsNull)
             {
                 if (IsAuthorize(Convert.ToInt32(aspect.Permission)))
                     return true;
@@ -175,8 +175,8 @@ namespace KS.Core.Security.Adapters
 
         public virtual bool AuthorizeWebPageUrl(string url, string type, out IAspect aspect)
         {
-            aspect = GetAspectForWebPage(url,type);
-            return aspect != null && IsAuthorize(aspect.Permission);
+            aspect = GetAspectForWebPage(url, type);
+            return aspect.IsNull || IsAuthorize(aspect.Permission);
         }
 
         //public virtual async Task<string> AuthorizeUrlAsync(string url, ActionKey actionKey)
@@ -200,12 +200,12 @@ namespace KS.Core.Security.Adapters
         {
             return DataBaseContextManager.GetUserInfoById(userId);
         }
-        protected virtual bool AuthorizeViewDebugScriptOfWebPage(string path,int userId)
+        protected virtual bool AuthorizeViewDebugScriptOfWebPage(string path, int userId)
         {
             return DataBaseContextManager
                 .AuthorizeViewDebugScriptOfWebPage(path
-                .Substring(path.IndexOf("~/", StringComparison.Ordinal) +2,32), userId,(int)EntityIdentity.Link
-                ,(int)ActionKey.ViewSourceCode,
+                .Substring(path.IndexOf("~/", StringComparison.Ordinal) + 2, 32), userId, (int)EntityIdentity.Link
+                , (int)ActionKey.ViewSourceCode,
                 (int)EntityIdentity.Permission) != 0;
             //|| CurrentUserManager.RolesId.Any(r => r == (int)Roles.Admin);
         }
@@ -213,12 +213,12 @@ namespace KS.Core.Security.Adapters
         {
             return DataBaseContextManager.AuthorizeViewDebugScriptOfCode((int)EntityIdentity.Bundle,
                 (int)EntityIdentity.Script, path, userId, (int)ActionKey.ViewDebugSourceCode,
-                (int)EntityIdentity.Permission) != 0; 
+                (int)EntityIdentity.Permission) != 0;
         }
 
 
 
-        protected virtual IAspect GetAspectForWebPage(string url,string type)
+        protected virtual IAspect GetAspectForWebPage(string url, string type)
         {
             var key = CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), type, url);
 
@@ -235,14 +235,14 @@ namespace KS.Core.Security.Adapters
             url = url.EndsWith("/") ? url.Substring(0, url.Length - 1) : url;
 
             var aspect = DataBaseContextManager.GetAspectForWebPage(url, mobileUrl, type) ?? new Aspect
-                         {
-                             EnableCache = false,
-                             EnableLog = false,
-                             HasMobileVersion = false,
-                             Permission = 0,
-                             Status = 1,
-                             IsNull = true
-                         };
+            {
+                EnableCache = false,
+                EnableLog = false,
+                HasMobileVersion = false,
+                Permission = 0,
+                Status = 1,
+                IsNull = true
+            };
             CacheManager.Store(key, aspect, slidingExpiration: TimeSpan.FromMinutes(Config.AspectCacheSlidingExpirationTimeInMinutes));
             return aspect;
         }
@@ -253,8 +253,8 @@ namespace KS.Core.Security.Adapters
             if (CacheManager.Get<IAspect>(key).IsCached)
                 return CacheManager.Get<IAspect>(key).Value;
             var aspect = DataBaseContextManager.GetAspectForMasterDataKeyValueUrl(actionKey, url);
-            if (aspect != null)
-                CacheManager.Store(key,aspect,slidingExpiration:TimeSpan.FromMinutes(Config.AspectCacheSlidingExpirationTimeInMinutes));
+            if (!aspect.IsNull)
+                CacheManager.Store(key, aspect, slidingExpiration: TimeSpan.FromMinutes(Config.AspectCacheSlidingExpirationTimeInMinutes));
             return aspect;
         }
 
@@ -274,11 +274,11 @@ namespace KS.Core.Security.Adapters
             return true;
         }
 
-        public virtual void CheckParentNodeModifyAccessForAddingChildNode(IAccessRole entity,int parentId)
+        public virtual void CheckParentNodeModifyAccessForAddingChildNode(IAccessRole entity, int parentId)
         {
             try
             {
-               SetAndCheckModifyAndAccessRole(entity, null, false);
+                SetAndCheckModifyAndAccessRole(entity, null, false);
             }
             catch (UnauthorizedAccessException)
             {
@@ -291,15 +291,15 @@ namespace KS.Core.Security.Adapters
         {
             if (entity == null) return;
 
-            int? accessRoleId = newEntity==null ?null: newEntity.AccessRoleId;
-            int ? modifyRoleId = newEntity == null ? null : newEntity.ModifyRoleId;
-            int ? viewRoleId = newEntity == null ? null : newEntity.ViewRoleId;
+            int? accessRoleId = newEntity == null ? null : newEntity.AccessRoleId;
+            int? modifyRoleId = newEntity == null ? null : newEntity.ModifyRoleId;
+            int? viewRoleId = newEntity == null ? null : newEntity.ViewRoleId;
 
             if ((accessRoleId == null || modifyRoleId == null || viewRoleId == null) && set)
             {
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RoleIsNull));
             }
-           
+
             if (entity.ModifyRoleId != null)
                 if (!IsAuthorize((int)entity.ModifyRoleId))
                     throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
@@ -351,7 +351,7 @@ namespace KS.Core.Security.Adapters
 
             if (notCachedGroup.Count > 0)
             {
-               
+
 
                 var groupRoles = DataBaseContextManager.GetRolesIdByGroupsId(notCachedGroup);
 
@@ -390,17 +390,17 @@ namespace KS.Core.Security.Adapters
             //    //nameSpaces.Add(nameSpace.Key+"."+nameSpace.Value);
             //    //if (nameSpace.Value.IndexOf(".", StringComparison.Ordinal) > -1)
             //    //{
-                    
+
             //        BuildNameSpace(nameSpaces, nameSpace.Key, nameSpace.Value);
             //    //}
             //}
-           
-            var dllsPermission = await DataBaseContextManager.GetListOfDllReferencingPermissionFromeListOfDllIdAsync((int)EntityIdentity.Permission,(int)ActionKey.ReferenceDll,
+
+            var dllsPermission = await DataBaseContextManager.GetListOfDllReferencingPermissionFromeListOfDllIdAsync((int)EntityIdentity.Permission, (int)ActionKey.ReferenceDll,
                 usedDll);
 
             foreach (var dllPermission in dllsPermission)
             {
-                if (!dllsPermission.Any(dll => 
+                if (!dllsPermission.Any(dll =>
                  CurrentUserManager.RolesId.Contains(Convert.ToInt32(dll.Value))))
                     notAccessDlls.Add(dllPermission.Key);
             }
