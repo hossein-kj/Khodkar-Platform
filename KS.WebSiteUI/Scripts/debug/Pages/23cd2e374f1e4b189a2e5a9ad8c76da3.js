@@ -510,10 +510,10 @@ as("#btnCancelRestor").click(function () {
                 RowVersion: rowVersion
             }),
             success: function (languageAndCulture) {
-                var jsCode =selectedLanguageAndCulture.JsCode
+          
                 flagUrl=selectedLanguageAndCulture.FlagUrl
             selectedLanguageAndCulture=languageAndCulture
-            selectedLanguageAndCulture.JsCode = jsCode
+            selectedLanguageAndCulture.JsCode = $edrJavascript.asCodeEditor("getValue")
                  selectedLanguageAndCulture.FlagUrl=flagUrl
                  
                 setLanguageAndCulture(selectedLanguageAndCulture)
@@ -523,5 +523,6 @@ as("#btnCancelRestor").click(function () {
     });
   
 }
-bindEvent()  ; $(asPageId).append('<span id="asRegisterPage"></span>');as('#asRegisterPage').asRegisterPageEvent(); if (typeof (requestedUrl) != 'undefined')  
-                {$.asLoadPage(requestedUrl,requestedUrl.replace(/\//g, $.asUrlDelimeter));} });
+bindEvent()
+  ; $(asPageId).append('<span id="asRegisterPage"></span>');as('#asRegisterPage').asRegisterPageEvent();
+if (typeof (requestedUrl) != 'undefined')  {$.asLoadPage(requestedUrl,requestedUrl.replace(/\//g, $.asUrlDelimeter));} });

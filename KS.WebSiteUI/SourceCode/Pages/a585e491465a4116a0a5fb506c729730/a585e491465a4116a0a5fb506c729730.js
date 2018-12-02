@@ -486,7 +486,8 @@ as("#btnCancelRestor").click(function () {
                  return;
         }
        
-          
+         
+         
          if ($drpViewRole.asDropdown('selected')) {
             viewRoleId = $drpViewRole.asDropdown('selected').value
         }
@@ -516,12 +517,12 @@ as("#btnCancelRestor").click(function () {
                 RowVersion: rowVersion
             }),
             success: function (languageAndCulture) {
-                var jsCode =selectedLanguageAndCulture.JsCode
+               
                 flagUrl=selectedLanguageAndCulture.FlagUrl
             selectedLanguageAndCulture=languageAndCulture
-            selectedLanguageAndCulture.JsCode = jsCode
+        
                  selectedLanguageAndCulture.FlagUrl=flagUrl
-                 
+                 selectedLanguageAndCulture.JsCode =$edrJavascript.asCodeEditor("getValue");
                 setLanguageAndCulture(selectedLanguageAndCulture)
               $.asShowMessage({ message: $.asRes[$.asLang].successOpration });
             }

@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "ایجاد و ویرایش زبان و فرهنگ",
   "Guid": "a585e491465a4116a0a5fb506c729730",
-  "Version": 151,
+  "Version": 154,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -27,7 +27,7 @@
   "TypeId": 16,
   "HaveStyle": true,
   "HaveScript": true,
-  "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asCodeEditor.js?minversion=7\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"},{\"url\":\"asWindow.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
+  "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asCodeEditor.js?minversion=8\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"},{\"url\":\"asWindow.js?minversion=5\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
   "Language": "fa",
-  "RowVersion": "AAAAAAADPp4="
+  "RowVersion": "AAAAAAACOmM="
 }
