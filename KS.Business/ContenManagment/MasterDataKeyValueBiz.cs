@@ -121,8 +121,7 @@ namespace KS.Business.ContenManagment
             int? masterDataId = masterDataDto.Id;
             var masterData = new MasterDataKeyValue
             {
-                Id = masterDataId ?? 0,
-                RowVersion = masterDataDto.RowVersion
+                Id = masterDataId ?? 0
             };
             bool isNew = masterDataDto.IsNew;
 
@@ -185,6 +184,10 @@ namespace KS.Business.ContenManagment
                     SourceControl.CheckCodeCheckOute(masterData);
 
                 }
+
+                masterData = currentMasterData;
+                masterData.RowVersion = masterDataDto.RowVersion;
+
                 ContentManagementContext.MasterDataKeyValues.Attach(masterData);
             }
             else
@@ -485,8 +488,7 @@ namespace KS.Business.ContenManagment
             int? masterDataLocalId = masterDataLocalDto.Id;
             var masterDataLocal = new MasterDataLocalKeyValue
             {
-                Id = masterDataLocalId ?? 0,
-                RowVersion = masterDataLocalDto.RowVersion
+                Id = masterDataLocalId ?? 0
             };
 
             var currentMasterDataLocal = await ContentManagementContext.MasterDataLocalKeyValues.Include(md => md.MasterDataKeyValue)
@@ -496,6 +498,9 @@ namespace KS.Business.ContenManagment
                 
                 if (currentMasterDataLocal == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TranslateNotFound));
+
+                masterDataLocal = currentMasterDataLocal;
+                masterDataLocal.RowVersion = masterDataLocalDto.RowVersion;
 
                 ContentManagementContext.MasterDataLocalKeyValues.Attach(masterDataLocal);
             }

@@ -214,6 +214,28 @@ namespace KS.Core.Data.Contexts.Base
             }).FirstOrDefault();
         }
 
+        public virtual IWebPageCore GetWebPageForPublish(string url, string type)
+        {
+            return _sqlHelper.ExecuteReader<IWebPageCore>(CommandType.StoredProcedure,
+                "[ContentManagement].[GetWebPageForPublish]"
+                , r => new WebPageCore()
+                {
+                    Url = url,
+                    Title = r["Title"].ToString(),
+                    Html = r["Html"].ToString(),
+                    DependentModules = r["DependentModules"].ToString(),
+                    PageId = r["PageId"].ToString(),
+                    Param = r["Params"].ToString(),
+                    HaveStyle = Convert.ToBoolean(r["HaveStyle"].ToString()),
+                    HaveScript = Convert.ToBoolean(r["HaveScript"].ToString()),
+                    Version = r["Version"].ToString()
+                }, new[]
+            {
+              new SqlParameter("@Url", SqlDbType.NVarChar,1024){Value = url},
+              new SqlParameter("@Type", SqlDbType.NVarChar,10){Value = type}
+            }).FirstOrDefault();
+        }
+
         public virtual IAspect GetAspectForMasterDataKeyValueUrl(int actionKey, string url)
         {
             return _sqlHelper.ExecuteReader<IAspect>(CommandType.StoredProcedure,

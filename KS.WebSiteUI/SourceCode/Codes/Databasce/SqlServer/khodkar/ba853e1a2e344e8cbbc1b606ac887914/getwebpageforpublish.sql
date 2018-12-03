@@ -1,11 +1,11 @@
-﻿/****** Object:  StoredProcedure [Security].[GetAspectForUrl]    Script Date: 8/1/2017 10:03:05 PM ******/
+﻿
 
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [ContentManagement].[GetWebPageForView] 
+ALTER PROCEDURE [ContentManagement].[GetWebPageForPublish] 
 (
 @Url nvarchar(1024),
 @Type nvarchar(10)
@@ -24,6 +24,6 @@ BEGIN
         
 	  
 	  select Title,DependentModules,Params,Html,[Guid] as 'PageId',HaveScript,HaveStyle,[Version] FROM CONTENTMANAGEMENT.WebPages
-	  where (UPPER(url) = UPPER(@Url)) and typeid= @TypeId and [Status] = 1
+	  where (UPPER(url) = UPPER(@Url)) and typeid= @TypeId
 
 END

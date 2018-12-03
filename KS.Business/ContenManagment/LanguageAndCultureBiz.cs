@@ -76,17 +76,20 @@ string content, bool creatDirectoryIfNotExist = false)
             int? languageAndCultureId = languageAndCultureDto.Id;
             var languageAndCulture = new LanguageAndCulture()
             {
-                Id = languageAndCultureId ?? 0,
-                RowVersion = languageAndCultureDto.RowVersion
+                Id = languageAndCultureId ?? 0
             };
             bool isNew = languageAndCultureDto.isNew;
             bool publish = languageAndCultureDto.publish;
             var currentLanguageAndCulture = await _contentManagementContext.LanguageAndCultures.AsNoTracking().SingleOrDefaultAsync(ln => ln.Id == languageAndCulture.Id);
             if (!isNew)
             {
-
+                
                 if (currentLanguageAndCulture == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LanguageAndCultureNotFound));
+
+
+                languageAndCulture = currentLanguageAndCulture;
+                languageAndCulture.RowVersion = languageAndCultureDto.RowVersion;
 
                 _contentManagementContext.LanguageAndCultures.Attach(languageAndCulture);
             }
@@ -119,24 +122,24 @@ string content, bool creatDirectoryIfNotExist = false)
             await _contentManagementContext.SaveChangesAsync();
 
             await _contentManagementContext.LanguageAndCultures.Where(lc => lc.Language == languageAndCulture.Language && lc.Id != languageAndCulture.Id)
-                .UpdateAsync(t => new LanguageAndCulture() { Version = languageAndCulture.Version });
+                .UpdateAsync(t => new LanguageAndCulture() {Version = languageAndCulture.Version});
 
             string jsCode = languageAndCultureDto.JsCode;
             if (!string.IsNullOrEmpty(jsCode))
             {
-                await WriteFileAsync(Config.ResourcesSourceCodePath, languageAndCulture.Language, ".js", jsCode);
+                await WriteFileAsync(Config.ResourcesSourceCodePath , languageAndCulture.Language , ".js", jsCode);
                 if (!publish) return languageAndCulture;
 
-                await WriteFileAsync(Config.ResourcesDistPath, languageAndCulture.Language, ".js", _compressManager.CompressJavaScript(jsCode, languageAndCulture.Country));
+                await WriteFileAsync(Config.ResourcesDistPath , languageAndCulture.Language, ".js", _compressManager.CompressJavaScript(jsCode, languageAndCulture.Country));
             }
             UpdateWebConfigSetting(languageAndCulture, ActionKey.Add);
 
 
 
-
-            CacheManager.Remove(CacheManager.GetBrowsersCodeInfoKey(CacheKey.BrowsersCodeInfo.ToString(),
-           "~/" + languageAndCulture.Language));
-
+          
+                CacheManager.Remove(CacheManager.GetBrowsersCodeInfoKey(CacheKey.BrowsersCodeInfo.ToString(),
+               "~/" + languageAndCulture.Language));
+            
 
             //var bundleInfo =
             //    SourceControl.BrowsersCodeInfos.FirstOrDefault(bc => bc.BundleUrl == languageAndCulture.Language);
@@ -196,7 +199,7 @@ string content, bool creatDirectoryIfNotExist = false)
         public async Task<JObject> GetAsync(int id)
         {
 
-            var languageAndCulture = await _contentManagementContext.LanguageAndCultures.Where(ln => ln.Id == id).Include(ln => ln.Flag).FirstOrDefaultAsync();
+            var languageAndCulture = await _contentManagementContext.LanguageAndCultures.Where(ln => ln.Id == id).Include(ln=>ln.Flag).FirstOrDefaultAsync();
 
 
             if (languageAndCulture == null)
@@ -220,8 +223,8 @@ string content, bool creatDirectoryIfNotExist = false)
                 ViewRoleId = languageAndCulture.ViewRoleId,
                 ModifyRoleId = languageAndCulture.ModifyRoleId,
                 AccessRoleId = languageAndCulture.AccessRoleId,
-                FlagUrl = languageAndCulture.Flag.Url,
-                FlagId = languageAndCulture.FlagId,
+                FlagUrl =languageAndCulture.Flag.Url,
+                FlagId=languageAndCulture.FlagId,
                 Status = languageAndCulture.Status,
                 RowVersion = languageAndCulture.RowVersion,
                 JsCode = await GetResorces(languageAndCulture)
@@ -231,14 +234,14 @@ string content, bool creatDirectoryIfNotExist = false)
 
         private async Task<string> GetResorces(LanguageAndCulture languageAndCulture)
         {
+            
+                var path = AuthorizeManager.AuthorizeActionOnPath(Config.ResourcesSourceCodePath, ActionKey.ReadFromDisk) + languageAndCulture.Language + ".js";
 
-            var path = AuthorizeManager.AuthorizeActionOnPath(Config.ResourcesSourceCodePath, ActionKey.ReadFromDisk) + languageAndCulture.Language + ".js";
 
+                if (await _fileSystemManager.FileExistAsync(path))
+                    return await _fileSystemManager.ReadAsync(path);
 
-            if (await _fileSystemManager.FileExistAsync(path))
-                return await _fileSystemManager.ReadAsync(path);
-
-            return "";
+                return "";
 
         }
 
@@ -269,9 +272,9 @@ string content, bool creatDirectoryIfNotExist = false)
 
             if (useCount > 0)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, languageAndCulture.Language));
+           
 
-
-            DeleteFile(Config.ResourcesSourceCodePath, languageAndCulture.Language, ".js");
+            DeleteFile( Config.ResourcesSourceCodePath, languageAndCulture.Language, ".js");
             DeleteFile(Config.ResourcesDistPath, languageAndCulture.Language, ".js");
 
             _contentManagementContext.LanguageAndCultures.Remove(languageAndCulture);

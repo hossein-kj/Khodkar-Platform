@@ -352,8 +352,7 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
             int? codeId = codeDto.Id;
             var code = new MasterDataKeyValue
             {
-                Id = codeId ?? 0,
-                RowVersion = codeDto.RowVersion
+                Id = codeId ?? 0
             };
             bool isNew = codeDto.IsNew;
 
@@ -390,6 +389,9 @@ string content,bool isClassOrMethodOrLine, bool creatDirectoryIfNotExist = false
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidCloseOrOpenChangingCodeGrant, currentCode.Code));
 
                 }
+
+                code = currentCode;
+                code.RowVersion = codeDto.RowVersion;
 
                 _contentManagementContext.MasterDataKeyValues.Attach(code);
             }

@@ -74,7 +74,6 @@ string content, bool creatDirectoryIfNotExist = false)
             var service = new MasterDataKeyValue
             {
                 Id = serviceId ?? 0,
-                RowVersion = serviceDto.RowVersion,
                 TypeId= (int)EntityIdentity.Service
             };
             bool isNew = serviceDto.IsNew;
@@ -96,6 +95,10 @@ string content, bool creatDirectoryIfNotExist = false)
                     _sourceControl.CheckCodeCheckOute(currentService);
 
                 }
+
+                service = currentService;
+                service.RowVersion = serviceDto.RowVersion;
+
                 _contentManagementContext.MasterDataKeyValues.Attach(service);
             }
             else

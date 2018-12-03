@@ -128,8 +128,7 @@ namespace KS.Business.ContenManagment
             
             var link = new Link()
             {
-                Id = linkId == null ? 0 : linkDto.Id,
-                RowVersion = linkDto.RowVersion
+                Id = linkId == null ? 0 : linkDto.Id
             };
             var currentLink = await _contentManagementContext.Links.AsNoTracking().SingleOrDefaultAsync(ln => ln.Id == link.Id);
 
@@ -139,6 +138,8 @@ namespace KS.Business.ContenManagment
                 if (currentLink == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LinkNotFound));
                 oldUrl = currentLink.Url;
+                link = currentLink;
+                link.RowVersion = linkDto.RowVersion;
                 _contentManagementContext.Links.Attach(link);
             }
             catch (Exception)

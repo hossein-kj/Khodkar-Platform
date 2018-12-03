@@ -162,7 +162,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
 
                                 if (!pageCache.IsCached)
                                 {
-                                    CacheManager.Store(key, _dataBaseContextManager.GetWebPageForView(url, type).ToJObject(),
+                                    CacheManager.Store(key, _dataBaseContextManager.GetWebPageForPublish(url, type).ToJObject(),
                                         slidingExpiration:
                                         TimeSpan.FromMinutes(aspect.CacheSlidingExpirationTimeInMinutes));
                                     pageCache = CacheManager.Get<dynamic>(key);

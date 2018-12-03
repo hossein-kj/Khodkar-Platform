@@ -37,8 +37,7 @@ namespace KS.Business.ContenManagment
             int? fileId = fileDto.Id;
             var file = new File()
             {
-                Id = fileId ?? 0,
-                RowVersion = fileDto.RowVersion
+                Id = fileId ?? 0
             };
             var currentFile = await _contentManagementContext.Files.AsNoTracking()
                 .SingleOrDefaultAsync(fl => fl.Id == file.Id);
@@ -49,7 +48,8 @@ namespace KS.Business.ContenManagment
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FileNotFound));
 
                 oldUrl = currentFile.Url;
-
+                file = currentFile;
+                file.RowVersion = fileDto.RowVersion;
                 _contentManagementContext.Files.Attach(file);
             }
             catch (Exception)
@@ -110,8 +110,7 @@ namespace KS.Business.ContenManagment
             int? localFileId = localFileDto.Id;
             var localFile = new LocalFile
             {
-                Id = localFileId ?? 0,
-                RowVersion = localFileDto.RowVersion
+                Id = localFileId ?? 0
             };
 
             var currentLocalFile = await _contentManagementContext.LocalFiles.AsNoTracking().Include(md => md.File).SingleOrDefaultAsync(md => md.Id == localFile.Id);
@@ -121,6 +120,9 @@ namespace KS.Business.ContenManagment
                 
                 if (currentLocalFile == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TranslateNotFound));
+
+                localFile = currentLocalFile;
+                localFile.RowVersion = localFileDto.RowVersion;
 
                 _contentManagementContext.LocalFiles.Attach(localFile);
             }

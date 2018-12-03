@@ -161,8 +161,7 @@ namespace KS.Business.Security
             int? roleId = localRoleDto.Id;
             var localRole = new ApplicationLocalRole()
             {
-                Id = roleId ?? 0,
-                RowVersion = localRoleDto.RowVersion
+                Id = roleId ?? 0
             };
 
             var currentLocalRole =
@@ -174,6 +173,9 @@ namespace KS.Business.Security
             {
                 if (currentLocalRole == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RoleNotFound));
+
+                localRole = currentLocalRole;
+                localRole.RowVersion = localRoleDto.RowVersion;
 
                 _securityContext.ApplicationLocalRoles.Attach(localRole);
             }
@@ -343,8 +345,7 @@ namespace KS.Business.Security
             int? localGroupId = localGroupDto.Id;
             var localGroup = new ApplicationLocalGroup()
             {
-                Id = localGroupId ?? 0,
-                RowVersion = localGroupDto.RowVersion
+                Id = localGroupId ?? 0
             };
 
             var currentLocalGroup =
@@ -357,6 +358,9 @@ namespace KS.Business.Security
 
                 if (currentLocalGroup == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.GroupNotFound));
+
+                localGroup = currentLocalGroup;
+                localGroup.RowVersion = localGroupDto.RowVersion;
 
                 _securityContext.ApplicationLocalGroups.Attach(localGroup);
             }

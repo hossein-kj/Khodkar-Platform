@@ -35,8 +35,7 @@ namespace KS.Business.ContenManagment
             int? filePathId = filePathDto.Id;
             var filePath = new FilePath()
             {
-                Id = filePathId ?? 0,
-                RowVersion = filePathDto.RowVersion
+                Id = filePathId ?? 0
             };
             var currentFilePath = await _contentManagementContext.FilePaths.AsNoTracking().SingleOrDefaultAsync(fp => fp.Id == filePath.Id);
             string oldUrl = "";
@@ -47,6 +46,10 @@ namespace KS.Business.ContenManagment
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.PathNotFound, ""));
              
                 oldUrl = currentFilePath.Url;
+
+                filePath = currentFilePath;
+                filePath.RowVersion = filePathDto.RowVersion;
+
                 _contentManagementContext.FilePaths.Attach(filePath);
             }
             catch (Exception)
@@ -106,8 +109,7 @@ namespace KS.Business.ContenManagment
             int? localFilePathId = localFilePathDto.Id;
             var localFilePath = new LocalFilePath
             {
-                Id = localFilePathId ?? 0,
-                RowVersion = localFilePathDto.RowVersion
+                Id = localFilePathId ?? 0
             };
 
             var currentLocalFilePath = await _contentManagementContext.LocalFilePaths.Include(md => md.FilePath)
@@ -117,6 +119,9 @@ namespace KS.Business.ContenManagment
                 
                 if (currentLocalFilePath == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TranslateNotFound));
+
+                localFilePath = currentLocalFilePath;
+                localFilePath.RowVersion = localFilePathDto.RowVersion;
 
                 _contentManagementContext.LocalFilePaths.Attach(localFilePath);
             }

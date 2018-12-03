@@ -21,6 +21,7 @@ namespace KS.Core.Data.Contexts.Base
         KeyValue GetUserInfoById(int userId);
         Task<string> GetPermissionOfUrlOrPathAsync(int typeId, int actionKey, string urlOrPath);
         IWebPageCore GetWebPageForView(string url, string type);
+        IWebPageCore GetWebPageForPublish(string url, string type);
         List<KeyValue> GetRolesIdByGroupsId(List<int> groupsId);
         Task<List<KeyValue>> GetListOfDllReferencingPermissionFromeListOfDllIdAsync(int permissionTypeId, int actionKey, List<int> usedDll);
     }

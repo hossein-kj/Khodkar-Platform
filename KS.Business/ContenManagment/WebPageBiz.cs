@@ -222,7 +222,7 @@ namespace KS.Business.ContenManagment
                 }
 
             }
-            return webPage.ToJObject();
+            return webPage?.ToJObject();
         }
 
         private JObject ReturnErrorPage(HttpStatusCode code, string pageType)
@@ -256,7 +256,9 @@ namespace KS.Business.ContenManagment
 
                     //pagePath = pagePath.Replace(Config.MobileSign, Helper.RootUrl);
                 }
-
+                var page = GetWebPage(pagePath, type, aspect);
+                if(page == null)
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(message:"error page not Found!"));
                 return GetWebPage(pagePath, type, aspect);
             }
             catch (Exception ex)
@@ -316,6 +318,9 @@ namespace KS.Business.ContenManagment
                 try
                 {
                     dynamic webPageJson = GetWebPage(url, type, aspect);
+
+                    if(webPageJson == null)
+                        return ReturnErrorPage(HttpStatusCode.TemporaryRedirect, type);
 
                     if (!Settings.IsDebugMode)
                     {
@@ -843,8 +848,7 @@ namespace KS.Business.ContenManagment
             int? webPageId = webPageDto.Id;
             var webPage = new WebPage
             {
-                Id = webPageId ?? 0,
-                RowVersion = webPageDto.RowVersion //BitConverter.GetBytes(Convert.ToInt64(rowVersion, 16)) 
+                Id = webPageId ?? 0
             };
             bool checkIn = webPageDto.CheckIn;
             bool isPublish = webPageDto.Publish;
@@ -867,7 +871,11 @@ namespace KS.Business.ContenManagment
                 if (currentWebpage == null)
                     throw new PageNotFoundException();
 
+                webPage = currentWebpage;
+                webPage.RowVersion = webPageDto.RowVersion;
                 _contentManagementContext.WebPages.Attach(webPage);
+
+               
 
                 if (currentWebpage.EditMode)
                 {
@@ -1122,17 +1130,24 @@ namespace KS.Business.ContenManagment
             if (defaultsFrameWork.Url == webPage.Url)
             {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.FrameWork.ToString(), defaultsTemplate.FrameWorkUrl));
+                CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.FrameWork.ToString(), webPage.Url));
             }
-            if (webPage.TypeId == (int)WebPageType.Form)
+            if (webPage.TypeId == (int) WebPageType.Form)
+            {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Form.ToString(), webPage.Url));
-            else if (webPage.TypeId == (int)WebPageType.Modal)
+                CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.Form.ToString(), webPage.Url));
+            }
+            else if (webPage.TypeId == (int) WebPageType.Modal)
+            {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Modal.ToString(), webPage.Url));
+                CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.Modal.ToString(), webPage.Url));
+            }
             else if (webPage.TypeId == (int) WebPageType.Template)
             {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Template.ToString(), webPage.TemplatePatternUrl));
                 CacheManager.Remove(CacheKey.TemplatePatternUrls.ToString());
+                CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.Template.ToString(), webPage.Url));
             }
-
 
         }
 
@@ -1278,7 +1293,7 @@ namespace KS.Business.ContenManagment
             var pageName = url.Substring(lastIndex);
             var pageUrl = url.Remove(lastIndex);
 
-            var webPageJson = _dataBaseContextManager.GetWebPageForView(url, pageType.ToString()).ToJObject();
+            var webPageJson = _dataBaseContextManager.GetWebPageForPublish(url, pageType.ToString()).ToJObject();
             
             await WriteFileAsync((Config.PagesPath + pageUrl).Replace("//", "/"), pageName + "-" + pageType, ".json", webPageJson.ToString(), true);
             return true;
