@@ -131,6 +131,7 @@ namespace KS.WebSetup.Controllers
                     scripts = new[]
                     {
                         "ContentManagement.GetMasterDataLocalKeyValue.StoredProcedure.sql"
+                        ,"ContentManagement.GetWebPageForPublish.StoredProcedure.sql"
                         , "ContentManagement.GetWebPageForView.StoredProcedure.sql"
                          , "Security.AuthorizeViewDebugScriptOfCode.StoredProcedure.sql"
                           , "Security.AuthorizeViewDebugScriptOfWebPage.StoredProcedure.sql"

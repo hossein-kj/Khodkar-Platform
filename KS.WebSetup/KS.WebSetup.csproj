@@ -114,6 +114,7 @@
     <Content Include="App_Data\security\Security.AspNetUserRoles.Table.sql" />
     <Content Include="App_Data\security\Security.AspNetUsers.Table.sql" />
     <Content Include="App_Data\sp\ContentManagement.GetMasterDataLocalKeyValue.StoredProcedure.sql" />
+    <Content Include="App_Data\sp\ContentManagement.GetWebPageForPublish.StoredProcedure.sql" />
     <Content Include="App_Data\sp\ContentManagement.GetWebPageForView.StoredProcedure.sql" />
     <Content Include="App_Data\sp\Security.AuthorizeViewDebugScriptOfCode.StoredProcedure.sql" />
     <Content Include="App_Data\sp\Security.AuthorizeViewDebugScriptOfWebPage.StoredProcedure.sql" />
