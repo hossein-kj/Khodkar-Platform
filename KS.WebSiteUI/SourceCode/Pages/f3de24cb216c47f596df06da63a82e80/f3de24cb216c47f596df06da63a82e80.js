@@ -468,6 +468,7 @@ var validateRule = {
                 Text: $txtName.val(),
                 Html:$txtHtml.val(),
                 Order: $txtOrder.val(),
+                ShowToSearchEngine:$chkShowToSerachEngin.is(':checked'),
                 Status: $chkStatus.is(':checked'),
                 IsMobile: $chkMobile.is(':checked'),
                 IsLeaf: $chkIsLeaf.is(':checked'),

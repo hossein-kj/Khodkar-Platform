@@ -468,6 +468,7 @@ var validateRule = {
                 Text: $txtName.val(),
                 Html:$txtHtml.val(),
                 Order: $txtOrder.val(),
+                ShowToSearchEngine:$chkShowToSerachEngin.is(':checked'),
                 Status: $chkStatus.is(':checked'),
                 IsMobile: $chkMobile.is(':checked'),
                 IsLeaf: $chkIsLeaf.is(':checked'),
@@ -506,5 +507,6 @@ var validateRule = {
 
 
 
-  ; $(asPageId).append('<span id="asRegisterPage"></span>');as('#asRegisterPage').asRegisterPageEvent(); if (typeof (requestedUrl) != 'undefined')  
-                {$.asLoadPage(requestedUrl,requestedUrl.replace(/\//g, $.asUrlDelimeter));} });
+
+  ; $(asPageId).append('<span id="asRegisterPage"></span>');as('#asRegisterPage').asRegisterPageEvent();
+if (typeof (requestedUrl) != 'undefined')  {$.asLoadPage(requestedUrl,requestedUrl.replace(/\//g, $.asUrlDelimeter));} });

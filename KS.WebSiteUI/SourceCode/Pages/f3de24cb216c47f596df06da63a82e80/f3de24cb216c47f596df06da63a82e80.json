@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "Links Management",
   "Guid": "f3de24cb216c47f596df06da63a82e80",
-  "Version": 11,
+  "Version": 13,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -31,5 +31,5 @@
   "HaveScript": true,
   "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"}]",
   "Language": "en",
-  "RowVersion": "AAAAAAADPv4="
+  "RowVersion": "AAAAAAACeNw="
 }

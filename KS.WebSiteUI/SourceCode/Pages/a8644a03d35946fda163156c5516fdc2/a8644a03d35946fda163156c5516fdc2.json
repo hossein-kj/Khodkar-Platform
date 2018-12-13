@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "مدیریت لینک ها",
   "Guid": "a8644a03d35946fda163156c5516fdc2",
-  "Version": 107,
+  "Version": 109,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -31,5 +31,5 @@
   "HaveScript": true,
   "DependentModules": "[{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asValidate.css?minversion=5\"},{\"url\":\"asValidate.js?minversion=5\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"}]",
   "Language": "fa",
-  "RowVersion": "AAAAAAADPv0="
+  "RowVersion": "AAAAAAACeNs="
 }

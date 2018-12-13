@@ -17,7 +17,7 @@ using KS.DataAccess.Contexts.Base;
 
 namespace KS.Business.ContenManagment
 {
-    public class LinkBiz:BaseBiz, ILinkBiz
+    public class LinkBiz : BaseBiz, ILinkBiz
     {
 
         private readonly IContentManagementContext _contentManagementContext;
@@ -120,12 +120,12 @@ namespace KS.Business.ContenManagment
         public async Task<Link> Save(JObject data)
         {
             dynamic linkDto = data;
-            
+
             string oldUrl = "";
 
             int? linkId = linkDto.Id;
 
-            
+
             var link = new Link()
             {
                 Id = linkId == null ? 0 : linkDto.Id
@@ -134,7 +134,7 @@ namespace KS.Business.ContenManagment
 
             try
             {
-                
+
                 if (currentLink == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LinkNotFound));
                 oldUrl = currentLink.Url;
@@ -148,7 +148,7 @@ namespace KS.Business.ContenManagment
                 _contentManagementContext.Links.Add(link);
             }
 
-       
+
             string linkUrl = linkDto.Url;
             if (linkUrl.IndexOf(Helper.RootUrl, StringComparison.Ordinal) != 0)
                 linkUrl = Helper.RootUrl + linkUrl;
@@ -183,12 +183,13 @@ namespace KS.Business.ContenManagment
             link.Html = linkDto.Html;
             link.Action = linkDto.Action;
             link.Url = linkUrl;
+            link.ShowToSearchEngine = linkDto.ShowToSearchEngine;
 
             var repeatedLink = await _contentManagementContext.Links.Where(sr => sr.Url == link.Url).CountAsync();
-         
+
             if ((repeatedLink > 0 && oldUrl == "") || (repeatedLink > 1 && oldUrl == ""))
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedValue, link.Url));
-          
+
 
             try
             {
@@ -239,7 +240,7 @@ namespace KS.Business.ContenManagment
             }
             var link = await _contentManagementContext.Links.SingleOrDefaultAsync(md => md.Id == id)
                 ;
-     
+
             if (link == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.LinkNotFound));
 
@@ -251,7 +252,7 @@ namespace KS.Business.ContenManagment
 
             if (useCount > 0)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, link.Text));
-         
+
 
             _contentManagementContext.Links.Remove(link);
 
