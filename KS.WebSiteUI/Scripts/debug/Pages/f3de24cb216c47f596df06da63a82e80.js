@@ -464,6 +464,7 @@ var validateRule = {
                 AccessRoleId: accessRoleId,
                 Language:selectedLang,
                 TypeId:$drpLinkType.asDropdown('selected').value,
+                TransactionCode:$txtCode.val(),
                 Action: $txtAction.val(),
                 Text: $txtName.val(),
                 Html:$txtHtml.val(),
