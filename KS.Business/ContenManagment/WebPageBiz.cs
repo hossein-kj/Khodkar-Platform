@@ -36,39 +36,39 @@ namespace KS.Business.ContenManagment
     public class WebPageBiz : IWebPageBiz
     {
 
-        private readonly IContentManagementContext _contentManagementContext;
-        private readonly ISecurityContext _securityContext;
-        private readonly IFileSystemManager _fileSystemManager;
-        private readonly ISourceControl _sourceControl;
-        private readonly IErrorLogManager _errorLogManager;
-        private readonly IWebConfigManager _webConfigManager;
-        private readonly ICompressManager _compressManager;
-        private readonly ICodeTemplate _codeTemplate;
-        private readonly IDataBaseContextManager _dataBaseContextManager;
+        protected readonly IContentManagementContext ContentManagementContext;
+        protected readonly ISecurityContext SecurityContext;
+        protected readonly IFileSystemManager FileSystemManager;
+        protected readonly ISourceControl SourceControl;
+        protected readonly IErrorLogManager ErrorLogManager;
+        protected readonly IWebConfigManager WebConfigManager;
+        protected readonly ICompressManager CompressManager;
+        protected readonly ICodeTemplate CodeTemplate;
+        protected readonly IDataBaseContextManager DataBaseContextManager;
         public WebPageBiz(IContentManagementContext contentManagementContext,
-            ISecurityContext securityContext,IErrorLogManager errorLogManager
+            ISecurityContext securityContext, IErrorLogManager errorLogManager
             , ISourceControl sourceControl, IFileSystemManager fileSystemManager
             , IWebConfigManager webConfigManager, ICompressManager compressManager, ICodeTemplate codeTemplate
             , IDataBaseContextManager dataBaseContextManager)
         {
-            _contentManagementContext = contentManagementContext;
-            _errorLogManager = errorLogManager;
-            _sourceControl = sourceControl;
-            _fileSystemManager = fileSystemManager;
-            _webConfigManager = webConfigManager;
-            _compressManager = compressManager;
-            _codeTemplate = codeTemplate;
-            _dataBaseContextManager = dataBaseContextManager;
-            _securityContext = securityContext;
+            ContentManagementContext = contentManagementContext;
+            ErrorLogManager = errorLogManager;
+            SourceControl = sourceControl;
+            FileSystemManager = fileSystemManager;
+            WebConfigManager = webConfigManager;
+            CompressManager = compressManager;
+            CodeTemplate = codeTemplate;
+            DataBaseContextManager = dataBaseContextManager;
+            SecurityContext = securityContext;
         }
 
         public JObject GetWebPageChangesFromSourceControl(string orderBy, int skip, int take
            , string comment
-            ,string user
+            , string user
            , string fromDateTime
            , string toDateTime
            , string webPageGuid
-            ,string type)
+            , string type)
         {
 
 
@@ -78,7 +78,7 @@ namespace KS.Business.ContenManagment
             return JObject.Parse(JsonConvert.SerializeObject
             (new
             {
-                rows = _sourceControl.GeChangesByPagination(orderBy,
+                rows = SourceControl.GeChangesByPagination(orderBy,
                         skip,
                         take,
                         Config.PagesSourceCodePath + webPageGuid + "/",
@@ -109,10 +109,10 @@ namespace KS.Business.ContenManagment
 
 
             await
-                _fileSystemManager.WriteAsync(
+                FileSystemManager.WriteAsync(
                 (creatDirectoryIfNotExist
-                    ? _fileSystemManager.CreatDirectoryIfNotExist(path)
-                    : _fileSystemManager.RelativeToAbsolutePath(path)) + name + extention, content);
+                    ? FileSystemManager.CreatDirectoryIfNotExist(path)
+                    : FileSystemManager.RelativeToAbsolutePath(path)) + name + extention, content);
         }
 
 
@@ -123,9 +123,9 @@ namespace KS.Business.ContenManagment
             path = path.Replace("//", "/");
 
 
-            return _fileSystemManager.DeleteFile(path + name + extention);
+            return FileSystemManager.DeleteFile(path + name + extention);
         }
-        private async Task<WebPage> GetDefaultsFrameWorkAsync(string frameWorkUrl)
+        protected async Task<WebPage> GetDefaultsFrameWorkAsync(string frameWorkUrl)
         {
             WebPage frameWork;
             if (frameWorkUrl == null)
@@ -141,10 +141,10 @@ namespace KS.Business.ContenManagment
             {
                 frameWork =
                     await
-                        _contentManagementContext.WebPages.Where(
+                        ContentManagementContext.WebPages.Where(
                                 fr =>
                                     fr.Url == frameWorkUrl && fr.Status == 1 &&
-                                    fr.TypeId == (int) WebPageType.FrameWork)
+                                    fr.TypeId == (int)WebPageType.FrameWork)
                             .FirstOrDefaultAsync();
                 if (frameWork == null)
                 {
@@ -193,16 +193,16 @@ namespace KS.Business.ContenManagment
             if (!aspect.HasMobileVersion && Config.MobileFallBack)
             {
                 url = (url + @"/").EndsWith(Config.MobileSign) ?
-                    url.Replace(Config.MobileSign.Substring(0, Config.MobileSign.Length-1), "").Replace("//", "/")
+                    url.Replace(Config.MobileSign.Substring(0, Config.MobileSign.Length - 1), "").Replace("//", "/")
                     : url.Replace(Config.MobileSign, Helper.RootUrl).Replace("//", "/");
-                url = url.EndsWith("/") ? url.Substring(0, url.Length -1 ) : url;
+                url = url.EndsWith("/") ? url.Substring(0, url.Length - 1) : url;
             }
 
 
             IWebPageCore webPage;
             if (!aspect.EnableCache)
             {
-                webPage = _dataBaseContextManager.GetWebPageForView(url, type);
+                webPage = DataBaseContextManager.GetWebPageForView(url, type);
 
             }
             else
@@ -212,13 +212,13 @@ namespace KS.Business.ContenManagment
 
                 if (!pageCache.IsCached)
                 {
-                    webPage = _dataBaseContextManager.GetWebPageForView(url, type);
+                    webPage = DataBaseContextManager.GetWebPageForView(url, type);
                     CacheManager.Store(key, webPage.ToJObject(), slidingExpiration:
                         TimeSpan.FromMinutes(aspect.CacheSlidingExpirationTimeInMinutes));
                 }
                 else
                 {
-                    return (JObject) pageCache.Value;
+                    return (JObject)pageCache.Value;
                 }
 
             }
@@ -234,7 +234,7 @@ namespace KS.Business.ContenManagment
                 var type = ((pageType ?? WebPageType.Form.ToString()) == WebPageType.Modal.ToString()
                     ? WebPageType.Modal
                     : WebPageType.Form).ToString();
-                var pagePath = Config.ErrrorPagesBaseUrl + (int) code;
+                var pagePath = Config.ErrrorPagesBaseUrl + (int)code;
                 if (code == HttpStatusCode.Unauthorized)
                 {
                     pagePath = Config.LoginUrl;
@@ -257,13 +257,13 @@ namespace KS.Business.ContenManagment
                     //pagePath = pagePath.Replace(Config.MobileSign, Helper.RootUrl);
                 }
                 var page = GetWebPage(pagePath, type, aspect);
-                if(page == null)
-                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(message:"error page not Found!"));
+                if (page == null)
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(message: "error page not Found!"));
                 return GetWebPage(pagePath, type, aspect);
             }
             catch (Exception ex)
             {
-                _errorLogManager.LogException(new ExceptionLog()
+                ErrorLogManager.LogException(new ExceptionLog()
                 {
                     Detail = ex.ToString(),
                     Message = ex.Message,
@@ -274,20 +274,20 @@ namespace KS.Business.ContenManagment
 
                 return JObject.Parse(JsonConvert.SerializeObject
                 (new
-                    {
-                        modifyRoleId = 5,
-                        viewRoleId = 6,
-                        enableCache = false,
-                        status = 1,
-                        title = "Error!",
-                        cacheSlidingExpirationTimeInMinutes = 0,
-                        pageId = "if29a53784fb34da1806c6ce945790dc5",
-                        dependentModules = "[]",
-                        param = "{}",
-                        html =
+                {
+                    modifyRoleId = 5,
+                    viewRoleId = 6,
+                    enableCache = false,
+                    status = 1,
+                    title = "Error!",
+                    cacheSlidingExpirationTimeInMinutes = 0,
+                    pageId = "if29a53784fb34da1806c6ce945790dc5",
+                    dependentModules = "[]",
+                    param = "{}",
+                    html =
                         " <span style='display:none' id='if29a53784fb34da1806c6ce945790dc5'></span>Error!"
-                    }, Formatting.None,
-                    new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+                }, Formatting.None,
+                    new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
             }
 
 
@@ -307,7 +307,7 @@ namespace KS.Business.ContenManagment
             var type = (isModal ? WebPageType.Modal : WebPageType.Form).ToString();
             IAspect aspect;
             if (AuthorizeManager.AuthorizeWebPageUrl(url, type, out aspect) || aspect.IsNull)
-            {       
+            {
 
                 if (aspect.IsNull)
                 {
@@ -319,7 +319,7 @@ namespace KS.Business.ContenManagment
                 {
                     dynamic webPageJson = GetWebPage(url, type, aspect);
 
-                    if(webPageJson == null)
+                    if (webPageJson == null)
                         return ReturnErrorPage(HttpStatusCode.TemporaryRedirect, type);
 
                     if (!Settings.IsDebugMode)
@@ -336,7 +336,7 @@ namespace KS.Business.ContenManagment
                 }
                 catch (Exception ex)
                 {
-                    _errorLogManager.LogException(new ExceptionLog()
+                    ErrorLogManager.LogException(new ExceptionLog()
                     {
                         Detail = ex.ToString(),
                         Message = ex.Message,
@@ -362,7 +362,7 @@ namespace KS.Business.ContenManagment
             }
             catch (PageNotFoundException ex)
             {
-                _errorLogManager.LogException(new ExceptionLog()
+                ErrorLogManager.LogException(new ExceptionLog()
                 {
                     Detail = ex.ToString(),
                     Message = ex.Message,
@@ -377,14 +377,14 @@ namespace KS.Business.ContenManagment
             try
             {
                 dynamic webPageJson = JObject.Parse(await
-                _fileSystemManager.ReadAsync(GetWebPageSourceCodePath(guid, SourceType.Json)));
+                FileSystemManager.ReadAsync(GetWebPageSourceCodePath(guid, SourceType.Json)));
 
-            if (webPageJson == null)
-                return null;
+                if (webPageJson == null)
+                    return null;
 
 
 
-        
+
                 if (!AuthorizeManager.IsAuthorizeToViewSourceCodeOfWebPage(Convert.ToString(webPageJson.Guid)))
                     return null;
                 var webPageServices = "";
@@ -393,9 +393,9 @@ namespace KS.Business.ContenManagment
                     JArray servicesCodeArray = webPageJson.Services;
                     var servicesCode = servicesCodeArray.ToObject<List<string>>();
                     var services = await
-                        _contentManagementContext.MasterDataKeyValues
-                        .Where(sr => servicesCode.Contains(sr.Code) && sr.TypeId==(int)EntityIdentity.Service)
-                            .Select(sr => new {sr.Code, sr.PathOrUrl}).ToListAsync();
+                        ContentManagementContext.MasterDataKeyValues
+                        .Where(sr => servicesCode.Contains(sr.Code) && sr.TypeId == (int)EntityIdentity.Service)
+                            .Select(sr => new { sr.Code, sr.PathOrUrl }).ToListAsync();
 
                     var webFormServices = services.Aggregate("",
                         (current, service) => current + ("" + service.Code.Remove(0, 9) +
@@ -436,7 +436,7 @@ namespace KS.Business.ContenManagment
             }
             catch (Exception ex)
             {
-                _errorLogManager.LogException(new ExceptionLog()
+                ErrorLogManager.LogException(new ExceptionLog()
                 {
                     Detail = ex.ToString(),
                     Message = ex.Message,
@@ -493,11 +493,11 @@ namespace KS.Business.ContenManagment
 
         public async Task<JObject> GetWebPageForEditAsync(string url, int typeId)
         {
-           // var fullUrl = LanguageManager.ApplyLanguageAndMobileSignToAjaxRequestAsync(url);
+            // var fullUrl = LanguageManager.ApplyLanguageAndMobileSignToAjaxRequestAsync(url);
 
             var webPage =
                 await
-                    _contentManagementContext.WebPages.Where(
+                    ContentManagementContext.WebPages.Where(
                             fr => fr.Url.ToLower() == url.ToLower() && fr.TypeId == typeId)
                         .FirstOrDefaultAsync();
             if (webPage == null)
@@ -506,31 +506,31 @@ namespace KS.Business.ContenManagment
 
 
             dynamic webPageJson = JObject.Parse(await
-                _fileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.Json)));
+                FileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.Json)));
 
             if (webPageJson == null)
                 return null;
 
-            if(!AuthorizeManager.IsAuthorizeToViewSourceCodeOfWebPage(webPage.Guid))
+            if (!AuthorizeManager.IsAuthorizeToViewSourceCodeOfWebPage(webPage.Guid))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
-            webPageJson.RowVersion =webPage.RowVersion;
+            webPageJson.RowVersion = webPage.RowVersion;
             webPageJson.JavaScript = resource.Javascript;
             webPageJson.Style = resource.Style;
             var lastModifieUser =
-                await _securityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
-            
+                await SecurityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
+
             webPageJson.LastModifieUser = lastModifieUser.UserName;
             webPageJson.LastModifieLocalDateTime = webPage.ModifieLocalDateTime;
             return (JObject)webPageJson;
 
         }
 
-        public async Task<JObject> GetWebPageChangeFromSourceControlAsync(int changeId,string webPageGuid)
+        public async Task<JObject> GetWebPageChangeFromSourceControlAsync(int changeId, string webPageGuid)
         {
 
             var webPage =
                 await
-                    _contentManagementContext.WebPages.Where(
+                    ContentManagementContext.WebPages.Where(
                             fr => fr.Guid.ToLower() == webPageGuid.ToLower())
                         .FirstOrDefaultAsync();
             if (webPage == null)
@@ -539,15 +539,15 @@ namespace KS.Business.ContenManagment
             if (!AuthorizeManager.IsAuthorizeToViewSourceCodeOfWebPage(webPage.Guid))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
 
-            var change = _sourceControl.GeChangeById(changeId, Config.PagesSourceCodePath + webPageGuid + "/");
-            if(change == null)
+            var change = SourceControl.GeChangeById(changeId, Config.PagesSourceCodePath + webPageGuid + "/");
+            if (change == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ChangeNotFound));
 
             if (change.Code != null)
             {
                 dynamic webpageJson = JObject.Parse(change.Code);
                 var lastModifieUser =
-    await _securityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
+    await SecurityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
 
                 webpageJson.LastModifieUser = lastModifieUser.UserName;
                 webpageJson.LastModifieLocalDateTime = webPage.ModifieLocalDateTime;
@@ -563,7 +563,7 @@ namespace KS.Business.ContenManagment
 
             var webPage =
                 await
-                    _contentManagementContext.WebPages.Where(
+                    ContentManagementContext.WebPages.Where(
                             fr => fr.Guid.ToLower() == webPageGuid.ToLower())
                         .FirstOrDefaultAsync();
             if (webPage == null)
@@ -572,7 +572,7 @@ namespace KS.Business.ContenManagment
             if (!AuthorizeManager.IsAuthorizeToViewSourceCodeOfWebPage(webPage.Guid))
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
 
-            var change = _sourceControl.GeChangeById(changeId, Config.PagesSourceCodePath + webPageGuid + "/");
+            var change = SourceControl.GeChangeById(changeId, Config.PagesSourceCodePath + webPageGuid + "/");
             if (change == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ChangeNotFound));
 
@@ -583,7 +583,7 @@ namespace KS.Business.ContenManagment
         }
 
 
-        private string ConvertToValidId(string id)
+        protected string ConvertToValidId(string id)
         {
             return "i" + id;
         }
@@ -601,7 +601,7 @@ namespace KS.Business.ContenManagment
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "WebPage Id"));
 
             }
-            var webPage = await _contentManagementContext.WebPages.SingleOrDefaultAsync(wf => wf.Id == id);
+            var webPage = await ContentManagementContext.WebPages.SingleOrDefaultAsync(wf => wf.Id == id);
 
             if (webPage == null)
                 throw new PageNotFoundException();
@@ -611,28 +611,28 @@ namespace KS.Business.ContenManagment
 
             if (webPage.EditMode)
             {
-                _sourceControl.CheckCodeCheckOute(webPage);
+                SourceControl.CheckCodeCheckOute(webPage);
 
             }
 
             await RemoveCache(webPage);
 
-            _contentManagementContext.WebPages.Remove(webPage);
+            ContentManagementContext.WebPages.Remove(webPage);
 
-            await _contentManagementContext.SaveChangesAsync();
+            await ContentManagementContext.SaveChangesAsync();
 
             var removeDirectory = (Config.PagesSourceCodePath + webPage.Guid + "/").Replace("//", "/");
 
             if (webPage.TypeId == (int)WebPageType.Form || webPage.TypeId == (int)WebPageType.Modal)
                 DeleteWebPage(webPage.Url, webPage.TypeId == (int)WebPageType.Modal);
 
-            _sourceControl.RecycleBin(Config.PagesSourceCodePath, webPage.Guid);
+            SourceControl.RecycleBin(Config.PagesSourceCodePath, webPage.Guid);
 
-            _fileSystemManager.DeleteDirectory(removeDirectory);
+            FileSystemManager.DeleteDirectory(removeDirectory);
 
             if (webPage.HaveScript && webPage.TypeId != (int)WebPageType.FrameWork)
             {
-                 DeleteFile(Config.ScriptDebugPagesPath, webPage.Guid, ".js");
+                DeleteFile(Config.ScriptDebugPagesPath, webPage.Guid, ".js");
                 DeleteFile(Config.ScriptDistPagesPath, webPage.Guid, ".js");
             }
 
@@ -642,7 +642,7 @@ namespace KS.Business.ContenManagment
                 DeleteFile(Config.StyleDistPagesPath, webPage.Guid, ".css");
             }
 
-           
+
             return true;
         }
 
@@ -842,8 +842,8 @@ namespace KS.Business.ContenManagment
 
 
             var services = await
-                _contentManagementContext.MasterDataKeyValues
-                .Where(sr => servicesCode.Contains(sr.Code) && sr.TypeId== (int)EntityIdentity.Service)
+                ContentManagementContext.MasterDataKeyValues
+                .Where(sr => servicesCode.Contains(sr.Code) && sr.TypeId == (int)EntityIdentity.Service)
                 .Select(sr => new { sr.Code, sr.PathOrUrl }).ToListAsync();
             int? webPageId = webPageDto.Id;
             var webPage = new WebPage
@@ -857,7 +857,7 @@ namespace KS.Business.ContenManagment
             int typeId = webPageDto.TypeId;
 
             var currentWebpage = await
-                        _contentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(
+                        ContentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(
                             wf => wf.Url == url && wf.TypeId == typeId);
 
             if (webPage.Id > 0)
@@ -873,13 +873,13 @@ namespace KS.Business.ContenManagment
 
                 webPage = currentWebpage;
                 webPage.RowVersion = webPageDto.RowVersion;
-                _contentManagementContext.WebPages.Attach(webPage);
+                ContentManagementContext.WebPages.Attach(webPage);
 
-               
+
 
                 if (currentWebpage.EditMode)
                 {
-                    _sourceControl.CheckCodeCheckOute(currentWebpage);
+                    SourceControl.CheckCodeCheckOute(currentWebpage);
 
                 }
                 if (currentWebpage != null)
@@ -904,11 +904,11 @@ namespace KS.Business.ContenManagment
             else
             {
 
-                if(currentWebpage != null)
+                if (currentWebpage != null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.RepeatedPath, url));
 
 
-                _contentManagementContext.WebPages.Add(webPage);
+                ContentManagementContext.WebPages.Add(webPage);
             }
 
             try
@@ -938,7 +938,7 @@ namespace KS.Business.ContenManagment
             webPage.EnableCache = webPageDto.EnableCache;
             webPage.EditMode = webPageDto.EditMode;
             webPage.IsMobileVersion = webPageDto.IsMobileVersion;
-           // if (webPage.Id == 0)
+            // if (webPage.Id == 0)
             webPage.Guid = webPageDto.Guid;
 
             var webFormServices = services.Aggregate("", (current, service) => current + ("" + service.Code.Remove(0, 9) +
@@ -949,20 +949,20 @@ namespace KS.Business.ContenManagment
 
             if (webPage.TypeId == (int)WebPageType.FrameWork)
             {
-                if (webPage.Html.IndexOf(_codeTemplate.Title, StringComparison.Ordinal) == -1)
-                    error.Add(_codeTemplate.Title);
-                if (webPage.Html.IndexOf(_codeTemplate.Style, StringComparison.Ordinal) == -1)
-                    error.Add(_codeTemplate.Style);
-                if (webPage.Html.IndexOf(_codeTemplate.PageId, StringComparison.Ordinal) == -1)
-                    error.Add(_codeTemplate.PageId);
-                if (webPage.Html.IndexOf(_codeTemplate.JavaScript, StringComparison.Ordinal) == -1)
-                    error.Add(_codeTemplate.JavaScript);
+                if (webPage.Html.IndexOf(CodeTemplate.Title, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.Title);
+                if (webPage.Html.IndexOf(CodeTemplate.Style, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.Style);
+                if (webPage.Html.IndexOf(CodeTemplate.PageId, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.PageId);
+                if (webPage.Html.IndexOf(CodeTemplate.JavaScript, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.JavaScript);
             }
 
             if (webPage.TypeId == (int)WebPageType.Template)
             {
-                if (webPage.Html.IndexOf(_codeTemplate.PlaceHolder, StringComparison.Ordinal) == -1)
-                    error.Add(_codeTemplate.PlaceHolder);
+                if (webPage.Html.IndexOf(CodeTemplate.PlaceHolder, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.PlaceHolder);
 
             }
             if (error.Count > 0)
@@ -975,7 +975,7 @@ namespace KS.Business.ContenManagment
             var pagesSourceCodePath = Config.PagesSourceCodePath + webPage.Guid + "/";
 
             var json = (await ConvertToJsonAsync(WebPageJsonType.Source, webPage: webPage)).ToString();
-            await _sourceControl.AddChange(pagesSourceCodePath,
+            await SourceControl.AddChange(pagesSourceCodePath,
             webPage.Guid + ".json",
             json,
            (currentWebpage?.Version ?? 0) + 1,
@@ -984,18 +984,18 @@ namespace KS.Business.ContenManagment
             webPage.Version = (currentWebpage?.Version ?? 0) + 1;
 
 
-            
+
             if (isPublish || webPage.Id == 0)
-                await _contentManagementContext.SaveChangesAsync();
+                await ContentManagementContext.SaveChangesAsync();
             else
             {
                 var latestPage = await
-                       _contentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(wp => wp.Id == webPage.Id && wp.RowVersion == webPage.RowVersion);
+                       ContentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(wp => wp.Id == webPage.Id && wp.RowVersion == webPage.RowVersion);
                 if (latestPage == null)
                     throw new DataConcurrencyException();
 
                 await
-                    _contentManagementContext.WebPages.Where(wp => wp.Id == webPage.Id && wp.RowVersion == webPage.RowVersion).UpdateAsync(wp => new WebPage()
+                    ContentManagementContext.WebPages.Where(wp => wp.Id == webPage.Id && wp.RowVersion == webPage.RowVersion).UpdateAsync(wp => new WebPage()
                     {
                         HaveStyle = webPage.HaveStyle,
                         HaveScript = webPage.HaveScript,
@@ -1006,7 +1006,7 @@ namespace KS.Business.ContenManagment
                     });
 
                 latestPage = await
-                       _contentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(wp => wp.Id == webPage.Id);
+                       ContentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(wp => wp.Id == webPage.Id);
 
                 webPage.RowVersion = latestPage.RowVersion;
             }
@@ -1015,23 +1015,23 @@ namespace KS.Business.ContenManagment
 
             json = (await ConvertToJsonAsync(WebPageJsonType.Source, webPage: webPage)).ToString();
 
-            if(checkIn)
-            await WriteFileAsync(pagesSourceCodePath, webPage.Guid, ".json",
-               json, true);
+            if (checkIn)
+                await WriteFileAsync(pagesSourceCodePath, webPage.Guid, ".json",
+                   json, true);
 
 
             if (webPage.HaveScript && checkIn)
             {
-                await _sourceControl.AddChange(pagesSourceCodePath,
-                    webPage.Guid+ ".js",
+                await SourceControl.AddChange(pagesSourceCodePath,
+                    webPage.Guid + ".js",
                     javaScript,
-                    webPage.Version >0? webPage.Version -1:0, 
+                    webPage.Version > 0 ? webPage.Version - 1 : 0,
                     comment);
                 await WriteFileAsync(pagesSourceCodePath, webPage.Guid, ".js", javaScript, true);
             }
             else
             {
-                if (await _fileSystemManager.FileExistAsync(Config.ScriptDebugPagesPath + webPage.Guid + ".js") && !webPage.HaveScript)
+                if (await FileSystemManager.FileExistAsync(Config.ScriptDebugPagesPath + webPage.Guid + ".js") && !webPage.HaveScript)
                 {
                     DeleteFile(Config.ScriptDebugPagesPath, webPage.Guid, ".js");
                     DeleteFile(Config.ScriptDistPagesPath, webPage.Guid, ".js");
@@ -1040,8 +1040,8 @@ namespace KS.Business.ContenManagment
             }
             if (webPage.HaveStyle && checkIn)
             {
-                await _sourceControl.AddChange(pagesSourceCodePath,
-                webPage.Guid+ ".css",
+                await SourceControl.AddChange(pagesSourceCodePath,
+                webPage.Guid + ".css",
                 style,
                 webPage.Version > 0 ? webPage.Version - 1 : 0,
                 comment);
@@ -1050,7 +1050,7 @@ namespace KS.Business.ContenManagment
             else
             {
 
-                if (await _fileSystemManager.FileExistAsync(Config.StyleDebugPagesPath + webPage.Guid + ".css") && !webPage.HaveStyle)
+                if (await FileSystemManager.FileExistAsync(Config.StyleDebugPagesPath + webPage.Guid + ".css") && !webPage.HaveStyle)
                 {
                     DeleteFile(Config.StyleDebugPagesPath, webPage.Guid, ".css");
                     DeleteFile(Config.StyleDistPagesPath, webPage.Guid, ".css");
@@ -1091,8 +1091,8 @@ namespace KS.Business.ContenManagment
                  GetServiceSectionOfScript(webPage) + javaScript
                   + Environment.NewLine + @"  ; $(asPageId).append('<span id=""asRegisterPage""></span>');as('#asRegisterPage').asRegisterPageEvent();"
                 + Environment.NewLine + @"if (typeof (requestedUrl) != 'undefined')  {$.asLoadPage(requestedUrl,requestedUrl.replace(/\//g, $.asUrlDelimeter));} });";
-                _compressManager.CheckJavaScriptCode(finalScript.Replace("---debug---", ""), webPage.Guid);
-                var miniJavaScript = _compressManager.CompressJavaScript(finalScript.Replace("---debug---", ""),
+                CompressManager.CheckJavaScriptCode(finalScript.Replace("---debug---", ""), webPage.Guid);
+                var miniJavaScript = CompressManager.CompressJavaScript(finalScript.Replace("---debug---", ""),
                     webPage.Guid);
 
                 await WriteFileAsync(Config.ScriptDebugPagesPath, webPage.Guid, ".js",
@@ -1103,7 +1103,7 @@ namespace KS.Business.ContenManagment
 
             if (webPage.HaveStyle)
             {
-                var miniStyle = _compressManager.CompressCss(style);
+                var miniStyle = CompressManager.CompressCss(style);
                 await WriteFileAsync(Config.StyleDebugPagesPath, webPage.Guid, ".css", style);
                 if (isPublish)
                     await WriteFileAsync(Config.StyleDistPagesPath, webPage.Guid, ".css", miniStyle);
@@ -1132,17 +1132,17 @@ namespace KS.Business.ContenManagment
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.FrameWork.ToString(), defaultsTemplate.FrameWorkUrl));
                 CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.FrameWork.ToString(), webPage.Url));
             }
-            if (webPage.TypeId == (int) WebPageType.Form)
+            if (webPage.TypeId == (int)WebPageType.Form)
             {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Form.ToString(), webPage.Url));
                 CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.Form.ToString(), webPage.Url));
             }
-            else if (webPage.TypeId == (int) WebPageType.Modal)
+            else if (webPage.TypeId == (int)WebPageType.Modal)
             {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Modal.ToString(), webPage.Url));
                 CacheManager.Remove(CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), WebPageType.Modal.ToString(), webPage.Url));
             }
-            else if (webPage.TypeId == (int) WebPageType.Template)
+            else if (webPage.TypeId == (int)WebPageType.Template)
             {
                 CacheManager.Remove(CacheManager.GetWebPageKey(WebPageType.Template.ToString(), webPage.TemplatePatternUrl));
                 CacheManager.Remove(CacheKey.TemplatePatternUrls.ToString());
@@ -1173,24 +1173,24 @@ namespace KS.Business.ContenManagment
             //    .OrderByDescending(ur => ur.Length).FirstOrDefault() ?? "/";
 
 
-            
+
             var key = CacheManager.GetWebPageKey(WebPageType.Template.ToString(), templatePaternUrl);
-            var defaultsTemplateCache = CacheManager.Get< WebPage>(key);
+            var defaultsTemplateCache = CacheManager.Get<WebPage>(key);
             var defaultsTemplate = defaultsTemplateCache.Value;
             if (!defaultsTemplateCache.IsCached)
             {
                 defaultsTemplate = await
-                _contentManagementContext.WebPages.Where(fr => fr.TemplatePatternUrl == templatePaternUrl && fr.Status == 1)
-                    .FirstOrDefaultAsync() ;
-                if(defaultsTemplate == null)
+                ContentManagementContext.WebPages.Where(fr => fr.TemplatePatternUrl == templatePaternUrl && fr.Status == 1)
+                    .FirstOrDefaultAsync();
+                if (defaultsTemplate == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.TemplateNotFound));
                 if (defaultsTemplate.EnableCache)
                     CacheManager.StoreForEver(key, defaultsTemplate);
-              
+
             }
 
 
-           
+
 
 
             if (!Settings.IsDebugMode)
@@ -1203,25 +1203,25 @@ namespace KS.Business.ContenManagment
 
         }
 
-        private async Task<Dictionary<string, List<string>>> GetFrameWorksByTemplatePaternsUrlsAsync()
+        protected async Task<Dictionary<string, List<string>>> GetFrameWorksByTemplatePaternsUrlsAsync()
         {
             var templatePaternFrameWorksDictioneryCache = CacheManager.Get<Dictionary<string, List<string>>>(CacheKey.TemplatePatternUrls.ToString());
             if (!templatePaternFrameWorksDictioneryCache.IsCached)
             {
                 var templatePaternAndFrameWorks = await
- _contentManagementContext.WebPages.Where(wp => wp.TemplatePatternUrl != null && wp.TemplatePatternUrl.Length > 0)
-     .Select(wp => new KeyValue() {Key = wp.FrameWorkUrl,Value = wp.TemplatePatternUrl})
+ ContentManagementContext.WebPages.Where(wp => wp.TemplatePatternUrl != null && wp.TemplatePatternUrl.Length > 0)
+     .Select(wp => new KeyValue() { Key = wp.FrameWorkUrl, Value = wp.TemplatePatternUrl })
      .ToListAsync();
-                
 
-                var templatePaternFrameWorksDictionery = new Dictionary<string,List<string>>();
+
+                var templatePaternFrameWorksDictionery = new Dictionary<string, List<string>>();
                 foreach (var keyValue in templatePaternAndFrameWorks)
                 {
                     if (templatePaternFrameWorksDictionery.ContainsKey(keyValue.Key))
                         templatePaternFrameWorksDictionery.FirstOrDefault(tf => tf.Key == keyValue.Key)
                             .Value.Add(keyValue.Value);
                     else
-                        templatePaternFrameWorksDictionery.Add(keyValue.Key, new List<string>() {keyValue.Value});
+                        templatePaternFrameWorksDictionery.Add(keyValue.Key, new List<string>() { keyValue.Value });
                 }
                 CacheManager.StoreForEver(CacheKey.TemplatePatternUrls.ToString(), templatePaternFrameWorksDictionery);
                 return templatePaternFrameWorksDictionery;
@@ -1293,8 +1293,8 @@ namespace KS.Business.ContenManagment
             var pageName = url.Substring(lastIndex);
             var pageUrl = url.Remove(lastIndex);
 
-            var webPageJson = _dataBaseContextManager.GetWebPageForPublish(url, pageType.ToString()).ToJObject();
-            
+            var webPageJson = DataBaseContextManager.GetWebPageForPublish(url, pageType.ToString()).ToJObject();
+
             await WriteFileAsync((Config.PagesPath + pageUrl).Replace("//", "/"), pageName + "-" + pageType, ".json", webPageJson.ToString(), true);
             return true;
         }
@@ -1319,8 +1319,8 @@ namespace KS.Business.ContenManagment
             var pageName = url.Substring(lastIndex);
             var pageUrl = url.Remove(lastIndex);
 
-         
-            return DeleteFile(Config.PagesPath+ pageUrl, pageName + "-" + pageType, ".json");
+
+            return DeleteFile(Config.PagesPath + pageUrl, pageName + "-" + pageType, ".json");
         }
 
 
@@ -1329,7 +1329,7 @@ namespace KS.Business.ContenManagment
         //    return "$.asGetWebpageDependentModuleInRunTime(" + webPage.DependentModules + ",{" + webPage.Params + "})";
         //}
 
-        private string DependentModuleToArray(WebPage webPage)
+        protected string DependentModuleToArray(WebPage webPage)
         {
             var dependentModule = webPage.DependentModules;
 
@@ -1338,17 +1338,17 @@ namespace KS.Business.ContenManagment
                 path = path.Substring(1, path.Length - 1);
             if (path[0] == '/')
                 path = path.Substring(1, path.Length - 1);
-           
+
 
             if (webPage.HaveScript)
-                    dependentModule = dependentModule.Length > 2 ?
-                        dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".js?minVersion=" + webPage.Version + "\"},") :
-                        dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".js?minVersion=" + webPage.Version + "\"}");
-                if (webPage.HaveStyle)
-                    dependentModule = dependentModule.Length > 2 ?
-                        dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".css?minVersion=" + webPage.Version + "\"},") :
-                        dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".css?minVersion=" + webPage.Version + "\"}");
-                return dependentModule; 
+                dependentModule = dependentModule.Length > 2 ?
+                    dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".js?minVersion=" + webPage.Version + "\"},") :
+                    dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".js?minVersion=" + webPage.Version + "\"}");
+            if (webPage.HaveStyle)
+                dependentModule = dependentModule.Length > 2 ?
+                    dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".css?minVersion=" + webPage.Version + "\"},") :
+                    dependentModule.Insert(1, "{\"url\":\"" + path + webPage.Guid + ".css?minVersion=" + webPage.Version + "\"}");
+            return dependentModule;
 
         }
 
@@ -1358,44 +1358,44 @@ namespace KS.Business.ContenManagment
                     "}, $.asUrls); ";
         }
 
-        private string GetStartOfScript(WebPage webPage,string debugJsRefrence)
+        protected string GetStartOfScript(WebPage webPage, string debugJsRefrence)
         {
             //if(webPage.TypeId != (int)WebPageType.FrameWork)
             //return "<script type=\"text/javascript\"> $(document).ready(function () {var asPageEvent = '#" + ConvertToValidId(webPage.Guid)  + "'; var asPageId = '." + ConvertToValidId(webPage.Guid)  + ".' + $.asPageClass; var as = function(id){ return $(asPageId).find(id);};var asOnPageDispose = function(){}; $(asPageEvent).on($.asEvent.page.dispose, function (event) { asOnPageDispose()}); ";
-            if(!Settings.IsDebugMode)
-            return "<script type=\"text/javascript\"> $(document).ready(function () { " + GetServiceSectionOfScript (webPage);
+            if (!Settings.IsDebugMode)
+                return "<script type=\"text/javascript\"> $(document).ready(function () { " + GetServiceSectionOfScript(webPage);
 
             return "<script type=\"text/javascript\"> " + debugJsRefrence + "var loadedDebugScript = 0; var asStartAppInDebugMode = " +
                 "function() { loadedDebugScript++; if(loadedDebugScript === refrences.length) { $(document).ready(function () { " +
                    GetServiceSectionOfScript(webPage);
         }
-        private string GetHtml(WebPage webPage,bool replaceCodeTemplate=true)
+        protected string GetHtml(WebPage webPage, bool replaceCodeTemplate = true)
         {
             if (webPage.TypeId != (int)WebPageType.FrameWork)
             {
-                var html = webPage.TypeId != (int)WebPageType.Modal ? "<span style='display:none' id='" + ConvertToValidId(webPage.Guid)  + "'></span>" + (webPage.Html ?? ""): (webPage.Html ?? "");
-          
-                return replaceCodeTemplate ? html.Replace(_codeTemplate.PlaceHolder, "") : html;
+                var html = webPage.TypeId != (int)WebPageType.Modal ? "<span style='display:none' id='" + ConvertToValidId(webPage.Guid) + "'></span>" + (webPage.Html ?? "") : (webPage.Html ?? "");
+
+                return replaceCodeTemplate ? html.Replace(CodeTemplate.PlaceHolder, "") : html;
             }
             return (webPage.Html ?? "");
         }
 
         private string GetWebPageSourceCodePath(string guid, SourceType webPageSourceType)
         {
-            
-                var path = Config.PagesSourceCodePath + guid + "/" + guid;
 
-                switch (webPageSourceType)
-                {
-                    case SourceType.JavaScript:
-                        return path + ".js";
-                    case SourceType.Style:
-                        return path + ".css";
-                    case SourceType.Json:
-                        return path + ".json";
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(webPageSourceType), webPageSourceType, null);
-                }
+            var path = Config.PagesSourceCodePath + guid + "/" + guid;
+
+            switch (webPageSourceType)
+            {
+                case SourceType.JavaScript:
+                    return path + ".js";
+                case SourceType.Style:
+                    return path + ".css";
+                case SourceType.Json:
+                    return path + ".json";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(webPageSourceType), webPageSourceType, null);
+            }
 
         }
         public async Task<JObject> ToJsonAsync(WebPageJsonType webPageJsonType, string webPageUrl)
@@ -1472,7 +1472,7 @@ namespace KS.Business.ContenManagment
                             var servicesUrls = webPage.Services.Split(',');
                             services = servicesUrls.Select(servicesUrl => servicesUrl.Split(':')).Select(temp => "$.asUrls." + temp[0]).ToArray();
                         }
-                      
+
                         return JObject.FromObject(new
                         {
                             webPage.Id,
@@ -1507,19 +1507,19 @@ namespace KS.Business.ContenManagment
                         if (webPage == null)
                             throw new ArgumentNullException(nameof(webPage));
 
-                            var defaultsTemplate = await GetTemplateAsync(webPage.Url);
+                        var defaultsTemplate = await GetTemplateAsync(webPage.Url);
 
-                            return JObject.FromObject(new
-                            {
-                                title = webPage.Title,
-                                url = webPage.Url,
-                                templateUrl = defaultsTemplate.Url,
-                                frameWorkUrl = defaultsTemplate.FrameWorkUrl,
-                                pageId = ConvertToValidId(webPage.Guid),
-                                dependentModules = DependentModuleToArray(webPage),
-                                param = "{" + webPage.Params + "}",
-                                html = GetHtml(webPage)
-                            });
+                        return JObject.FromObject(new
+                        {
+                            title = webPage.Title,
+                            url = webPage.Url,
+                            templateUrl = defaultsTemplate.Url,
+                            frameWorkUrl = defaultsTemplate.FrameWorkUrl,
+                            pageId = ConvertToValidId(webPage.Guid),
+                            dependentModules = DependentModuleToArray(webPage),
+                            param = "{" + webPage.Params + "}",
+                            html = GetHtml(webPage)
+                        });
                     }
 
                 //case WebPageJsonType.Build:
@@ -1558,7 +1558,7 @@ namespace KS.Business.ContenManagment
                             dependentModules = DependentModuleToArray(defaultsTemplateWebForm),
                             param = "{" + defaultsTemplateWebForm.Params + "}",
                             html = GetHtml(defaultsTemplateWebForm),
-                            requestedUrl=location
+                            requestedUrl = location
                         });
                     }
                 case WebPageJsonType.ChangeTemplate:
@@ -1583,7 +1583,7 @@ namespace KS.Business.ContenManagment
 
         }
 
-        private async Task<List<BrowsersCodeInfo>> GetAndSaveMainBundleInfo(string url)
+        protected async Task<List<BrowsersCodeInfo>> GetAndSaveMainBundleInfo(string url)
         {
             //if(SourceControl.BrowsersCodeInfos == null)
             //    SourceControl.BrowsersCodeInfos = new List<BrowsersCodeInfo>();
@@ -1614,7 +1614,7 @@ namespace KS.Business.ContenManagment
 
             if (bundle == null)
             {
-                var dbBundle = await _contentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(bd => bd.PathOrUrl == bundleUrl);
+                var dbBundle = await ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(bd => bd.PathOrUrl == bundleUrl);
                 if (dbBundle != null)
                 {
 
@@ -1628,18 +1628,18 @@ namespace KS.Business.ContenManagment
 
                     CacheManager.StoreForEver(CacheManager.GetBrowsersCodeInfoKey(CacheKey.BrowsersCodeInfo.ToString(),
                         bundleUrl), new BrowsersCodeInfo()
-                    {
-                        BundleUrl = bundleUrl,
-                        CdnUrl = dbBundle.SecondPathOrUrl,
-                        HasCdn = dbBundle.Key == 1,
-                        Version = dbBundle.Version.ToString()
-                    });
+                        {
+                            BundleUrl = bundleUrl,
+                            CdnUrl = dbBundle.SecondPathOrUrl,
+                            HasCdn = dbBundle.Key == 1,
+                            Version = dbBundle.Version.ToString()
+                        });
                 }
                 else
                 {
-                    var lang = await _contentManagementContext.LanguageAndCultures.FirstOrDefaultAsync(ln => ln.Language == url);
+                    var lang = await ContentManagementContext.LanguageAndCultures.FirstOrDefaultAsync(ln => ln.Language == url);
 
-                    if(lang != null)
+                    if (lang != null)
                     {
                         //SourceControl.BrowsersCodeInfos.Add(new BrowsersCodeInfo()
                         //{
@@ -1651,20 +1651,20 @@ namespace KS.Business.ContenManagment
                         CacheManager.StoreForEver(
                             CacheManager.GetBrowsersCodeInfoKey(CacheKey.BrowsersCodeInfo.ToString(),
                                 bundleUrl), new BrowsersCodeInfo()
-                            {
-                                BundleUrl = url,
-                                HasCdn = false,
-                                Version = lang.Version.ToString()
-                            });
+                                {
+                                    BundleUrl = url,
+                                    HasCdn = false,
+                                    Version = lang.Version.ToString()
+                                });
                     }
                 }
 
             }
             return CacheManager.GetForCacheKey<BrowsersCodeInfo>(CacheKey.BrowsersCodeInfo.ToString()).ToList(); // SourceControl.BrowsersCodeInfos;
         }
-        public async Task<string> ToStringAsync(string url)
+        public virtual async Task<string> ToStringAsync(string url)
         {
-           
+
             const int arabicYeCharCode = 1610;
             const int persianYeCharCode = 1740;
             const int arabicKeCharCode = 1603;
@@ -1699,9 +1699,9 @@ namespace KS.Business.ContenManagment
             {
                 if (Settings.Language == "fa")
                 {
-                    url = url.Replace(Convert.ToString((char) arabicYeCharCode),
-                            Convert.ToString((char) persianYeCharCode))
-                        .Replace(Convert.ToString((char) arabicKeCharCode), Convert.ToString((char) persianKeCharCode));
+                    url = url.Replace(Convert.ToString((char)arabicYeCharCode),
+                            Convert.ToString((char)persianYeCharCode))
+                        .Replace(Convert.ToString((char)arabicKeCharCode), Convert.ToString((char)persianKeCharCode));
                 }
                 if (url[url.Length - 1] == '/')
                     url = url.Remove(url.Length - 1);
@@ -1728,15 +1728,15 @@ namespace KS.Business.ContenManagment
 
 
 
-            var html = defaultsFrameWorkWebForm.Html.Replace(_codeTemplate.StylesPath,
+            var html = defaultsFrameWorkWebForm.Html.Replace(CodeTemplate.StylesPath,
                 (Settings.IsDebugMode ? (Config.StyleDebugPath) : (Config.StyleDistPath)).Substring(1));
 
 
 
-            if (html.IndexOf(_codeTemplate.StyleRefrencesStart, StringComparison.Ordinal) > -1)
+            if (html.IndexOf(CodeTemplate.StyleRefrencesStart, StringComparison.Ordinal) > -1)
             {
-                var startIndexOfSryleRefrences = html.IndexOf(_codeTemplate.StyleRefrencesStart, StringComparison.Ordinal) + _codeTemplate.StyleRefrencesStart.Length;
-                var endIndexOfSryleRefrences = html.IndexOf(_codeTemplate.StyleRefrencesEnd, StringComparison.Ordinal);
+                var startIndexOfSryleRefrences = html.IndexOf(CodeTemplate.StyleRefrencesStart, StringComparison.Ordinal) + CodeTemplate.StyleRefrencesStart.Length;
+                var endIndexOfSryleRefrences = html.IndexOf(CodeTemplate.StyleRefrencesEnd, StringComparison.Ordinal);
                 var styleRefrences = html.Substring(startIndexOfSryleRefrences, endIndexOfSryleRefrences - startIndexOfSryleRefrences);
                 var cssRefrencesOutPut = "";
                 var cssRefrences = styleRefrences.Split(',');
@@ -1777,18 +1777,18 @@ namespace KS.Business.ContenManagment
                     }
                 }
 
-                html = html.Replace(html.Substring(startIndexOfSryleRefrences - _codeTemplate.StyleRefrencesStart.Length,
-              _codeTemplate.StyleRefrencesStart.Length + styleRefrences.Length + _codeTemplate.StyleRefrencesEnd.Length), cssRefrencesOutPut);
+                html = html.Replace(html.Substring(startIndexOfSryleRefrences - CodeTemplate.StyleRefrencesStart.Length,
+              CodeTemplate.StyleRefrencesStart.Length + styleRefrences.Length + CodeTemplate.StyleRefrencesEnd.Length), cssRefrencesOutPut);
             }
 
 
 
-            html = html.Replace(_codeTemplate.ScriptsPath,
-                (Settings.IsDebugMode ? (_codeTemplate.GetScriptDebugPathByDebugId(debug)) : (Config.ScriptDistPath)).Substring(1));
+            html = html.Replace(CodeTemplate.ScriptsPath,
+                (Settings.IsDebugMode ? (CodeTemplate.GetScriptDebugPathByDebugId(debug)) : (Config.ScriptDistPath)).Substring(1));
 
             if (defaultsFrameWorkWebForm.HaveStyle)
             {
-                html = html.Replace(_codeTemplate.Style, "<link rel='stylesheet' type='text/css' href='" +
+                html = html.Replace(CodeTemplate.Style, "<link rel='stylesheet' type='text/css' href='" +
                                                   (Settings.IsDebugMode
                                                       ? (Config.StyleDebugPagesPath)
                                                       : (Config.StyleDistPagesPath)).Substring(1)
@@ -1797,20 +1797,20 @@ namespace KS.Business.ContenManagment
             }
             else
             {
-                html = html.Replace(_codeTemplate.Style, "");
+                html = html.Replace(CodeTemplate.Style, "");
             }
 
 
-            var configs = _webConfigManager.GetSettingListByOption();
+            var configs = WebConfigManager.GetSettingListByOption();
             var injectedConfig = "";
             var open = "";
             var close = "";
             foreach (var config in configs)
             {
-                if(config.InjectToJavaScript)
+                if (config.InjectToJavaScript)
                 {
                     JavaScriptType type;
-                    Enum.TryParse<JavaScriptType>(config.JavaScriptType,out type);
+                    Enum.TryParse<JavaScriptType>(config.JavaScriptType, out type);
                     switch (type)
                     {
                         case JavaScriptType.Object:
@@ -1841,7 +1841,7 @@ namespace KS.Business.ContenManagment
 
                 foreach (var template in frameWork.Value)
                 {
-                    injectedFrameWorkAndTemplatePattern += "'" +  template + "',";
+                    injectedFrameWorkAndTemplatePattern += "'" + template + "',";
                 }
 
                 injectedFrameWorkAndTemplatePattern = injectedFrameWorkAndTemplatePattern.TrimEnd(',');
@@ -1853,12 +1853,12 @@ namespace KS.Business.ContenManagment
 
             var jsRefrencesOutPut = "";
             var debugJsRefrence = "";
-            if (html.IndexOf(_codeTemplate.JavaScriptRefrencesStart, StringComparison.Ordinal) > -1)
+            if (html.IndexOf(CodeTemplate.JavaScriptRefrencesStart, StringComparison.Ordinal) > -1)
             {
-                var startIndexOfJavascriptRefrences = html.IndexOf(_codeTemplate.JavaScriptRefrencesStart,
+                var startIndexOfJavascriptRefrences = html.IndexOf(CodeTemplate.JavaScriptRefrencesStart,
                                                           StringComparison.Ordinal)
-                                                      + _codeTemplate.JavaScriptRefrencesStart.Length;
-                var endIndexOfJavascriptRefrences = html.IndexOf(_codeTemplate.JavaScriptRefrencesEnd,
+                                                      + CodeTemplate.JavaScriptRefrencesStart.Length;
+                var endIndexOfJavascriptRefrences = html.IndexOf(CodeTemplate.JavaScriptRefrencesEnd,
                     StringComparison.Ordinal);
                 var javaScriptRefrences = html.Substring(startIndexOfJavascriptRefrences,
                     endIndexOfJavascriptRefrences - startIndexOfJavascriptRefrences);
@@ -1923,9 +1923,9 @@ namespace KS.Business.ContenManagment
                     html =
                         html.Replace(
                             html.Substring(
-                                startIndexOfJavascriptRefrences - _codeTemplate.JavaScriptRefrencesStart.Length,
-                                _codeTemplate.JavaScriptRefrencesStart.Length + javaScriptRefrences.Length +
-                                _codeTemplate.JavaScriptRefrencesEnd.Length), jsRefrencesOutPut);
+                                startIndexOfJavascriptRefrences - CodeTemplate.JavaScriptRefrencesStart.Length,
+                                CodeTemplate.JavaScriptRefrencesStart.Length + javaScriptRefrences.Length +
+                                CodeTemplate.JavaScriptRefrencesEnd.Length), jsRefrencesOutPut);
                 }
                 else
                 {
@@ -1995,20 +1995,20 @@ namespace KS.Business.ContenManagment
                     html =
                         html.Replace(
                             html.Substring(
-                                startIndexOfJavascriptRefrences - _codeTemplate.JavaScriptRefrencesStart.Length,
-                                _codeTemplate.JavaScriptRefrencesStart.Length + javaScriptRefrences.Length +
-                                _codeTemplate.JavaScriptRefrencesEnd.Length), "");
+                                startIndexOfJavascriptRefrences - CodeTemplate.JavaScriptRefrencesStart.Length,
+                                CodeTemplate.JavaScriptRefrencesStart.Length + javaScriptRefrences.Length +
+                                CodeTemplate.JavaScriptRefrencesEnd.Length), "");
                 }
             }
 
 
 
 
-            html = html.Replace(_codeTemplate.Template, GetHtml(defaultsTemplateWebForm, false))
-                    .Replace(_codeTemplate.PageId,
+            html = html.Replace(CodeTemplate.Template, GetHtml(defaultsTemplateWebForm, false))
+                    .Replace(CodeTemplate.PageId,
                         ConvertToValidId(defaultsTemplateWebForm.Guid))
 
-                    .Replace(_codeTemplate.JavaScript,
+                    .Replace(CodeTemplate.JavaScript,
                         GetStartOfScript(defaultsFrameWorkWebForm, debugJsRefrence) +
 
                          resourceFrameWork.Javascript.Insert(resourceFrameWork.Javascript.IndexOf("{",
@@ -2023,8 +2023,8 @@ namespace KS.Business.ContenManagment
                             //",frameWorkUrl:'" + defaultsTemplateWebForm.FrameWorkUrl + "'," +
                             "pageId:'" + ConvertToValidId(defaultsTemplateWebForm.Guid) + "'" +
 
-                            "}" + _codeTemplate.PageParams) + " ;});" + (Settings.IsDebugMode ? "}};" + jsRefrencesOutPut : "") + "</script>");
-      
+                            "}" + CodeTemplate.PageParams) + " ;});" + (Settings.IsDebugMode ? "}};" + jsRefrencesOutPut : "") + "</script>");
+
 
 
             //try
@@ -2032,29 +2032,29 @@ namespace KS.Business.ContenManagment
 
 
 
-                // TODo : Add SEO For Your Bussiness
+            // TODo : Add SEO For Your Bussiness
 
-                if (finalUrl?.IndexOf(Config.LogOffSign, StringComparison.OrdinalIgnoreCase) > -1)
-                    return html.Replace(_codeTemplate.PageParams,
-                        ",logOff:" + "'/',"
-                    );
-               
-                var finalUrlWithOutQueryString = (finalUrl.IndexOf(Config.QueryStringSign, StringComparison.Ordinal) > -1 ? 
-                    finalUrl.Remove(finalUrl.IndexOf(Config.QueryStringSign, StringComparison.Ordinal)) :
-                    finalUrl).Replace("#", "");
-                    dynamic webPage = await GetWebPageForViewAsync(finalUrlWithOutQueryString);
-                    return html.Replace(_codeTemplate.PageParams,
-                        ",pageParams:{" +
-                        "param:" + (string)webPage.param +""+
-                        ",dependentModules:" + (string)webPage.dependentModules +
-                        ",url:'" + webPage.url + "'," +
-                        "title:'" + webPage.title + "'," +
-                        //"templateUrl:'" + webPage.templateUrl + "'," +
-                        //"frameWorkUrl:'" + webPage.frameWorkUrl + "'," +
-                        "pageId:'" + webPage.pageId + "'" +
-                        "},")
-                    .Replace(_codeTemplate.Title, (string)webPage.title).Replace(_codeTemplate.PlaceHolder,
-                         (string)webPage.html);
+            if (finalUrl?.IndexOf(Config.LogOffSign, StringComparison.OrdinalIgnoreCase) > -1)
+                return html.Replace(CodeTemplate.PageParams,
+                    ",logOff:" + "'/',"
+                );
+
+            var finalUrlWithOutQueryString = (finalUrl.IndexOf(Config.QueryStringSign, StringComparison.Ordinal) > -1 ?
+                finalUrl.Remove(finalUrl.IndexOf(Config.QueryStringSign, StringComparison.Ordinal)) :
+                finalUrl).Replace("#", "");
+            dynamic webPage = await GetWebPageForViewAsync(finalUrlWithOutQueryString);
+            return html.Replace(CodeTemplate.PageParams,
+                ",pageParams:{" +
+                "param:" + (string)webPage.param + "" +
+                ",dependentModules:" + (string)webPage.dependentModules +
+                ",url:'" + webPage.url + "'," +
+                "title:'" + webPage.title + "'," +
+                //"templateUrl:'" + webPage.templateUrl + "'," +
+                //"frameWorkUrl:'" + webPage.frameWorkUrl + "'," +
+                "pageId:'" + webPage.pageId + "'" +
+                "},")
+            .Replace(CodeTemplate.Title, (string)webPage.title).Replace(CodeTemplate.PlaceHolder,
+                 (string)webPage.html);
 
 
             //}
@@ -2073,20 +2073,20 @@ namespace KS.Business.ContenManagment
 
         }
 
-        private async Task<WebPageResource> GetResorces(WebPage webPage)
+        protected async Task<WebPageResource> GetResorces(WebPage webPage)
         {
             var resources = new WebPageResource();
 
             if (webPage.HaveScript)
-            resources.Javascript = await _fileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.JavaScript));
+                resources.Javascript = await FileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.JavaScript));
             if (webPage.HaveStyle)
 
-                resources.Style = await _fileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.Style));
+                resources.Style = await FileSystemManager.ReadAsync(GetWebPageSourceCodePath(webPage.Guid, SourceType.Style));
 
             return resources;
         }
 
-        sealed class WebPageResource
+        protected sealed class WebPageResource
         {
             public string Javascript { get; set; }
             public string Style { get; set; }
