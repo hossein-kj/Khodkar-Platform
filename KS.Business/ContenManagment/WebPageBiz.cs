@@ -1697,6 +1697,8 @@ namespace KS.Business.ContenManagment
             List<string> urlParameters;
             if (url != null)
             {
+                url = url.ToLower();
+
                 if (Settings.Language == "fa")
                 {
                     url = url.Replace(Convert.ToString((char)arabicYeCharCode),
