@@ -8,7 +8,7 @@ using MigrationInfo = KS.Core.Model.Develop.MigrationInfo;
 
 namespace KS.Core.EntityFramework
 {
-    public class RemoteMigration: BaseMigration, IMigration
+    public class RemoteMigration : BaseMigration, IMigration
     {
         public override MigrationCode GenerateMigration(MigrationInfo migrationInfo)
         {
@@ -48,9 +48,9 @@ namespace KS.Core.EntityFramework
             {
                 throw new KhodkarInvalidException(ex.Detail.ErrorDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DevelopServerException();
+                throw new DevelopServerException(ex.Message);
             }
         }
 
@@ -81,9 +81,9 @@ namespace KS.Core.EntityFramework
             {
                 throw new KhodkarInvalidException(ex.Detail.ErrorDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DevelopServerException();
+                throw new DevelopServerException(ex.Message);
             }
         }
 
@@ -115,9 +115,9 @@ namespace KS.Core.EntityFramework
             {
                 throw new KhodkarInvalidException(ex.Detail.ErrorDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DevelopServerException();
+                throw new DevelopServerException(ex.Message);
             }
         }
 
@@ -160,19 +160,19 @@ namespace KS.Core.EntityFramework
 
 
 
-                //binding.MaxBufferSize = 999999999;
+                binding.MaxBufferSize = 999999999;
 
-                //binding.MaxReceivedMessageSize = 999999999;
+                binding.MaxReceivedMessageSize = 999999999;
 
-                //binding.ReaderQuotas.MaxArrayLength = 2147483647;
+                binding.ReaderQuotas.MaxArrayLength = 2147483647;
 
-                //binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
+                binding.ReaderQuotas.MaxBytesPerRead = 2147483647;
 
-                //binding.ReaderQuotas.MaxDepth = 2147483647;
+                binding.ReaderQuotas.MaxDepth = 2147483647;
 
-                //binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+                binding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
 
-                //binding.ReaderQuotas.MaxStringContentLength = 2147483647;
+                binding.ReaderQuotas.MaxStringContentLength = 2147483647;
 
                 var endpointAddress = new EndpointAddress("http://localhost:51249/DevlopService");
 
@@ -210,9 +210,9 @@ namespace KS.Core.EntityFramework
             {
                 throw new KhodkarInvalidException(ex.Detail.ErrorDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DevelopServerException();
+                throw new DevelopServerException(ex.Message);
             }
 
         }
