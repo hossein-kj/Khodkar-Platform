@@ -1817,7 +1817,7 @@
         if (url.toLowerCase().indexOf($.asQueryStringSign) > -1)
             url = url.replace(new RegExp(url.substring(url.toLowerCase().indexOf($.asQueryStringSign)), "gi"), "")
             
-
+         url = url.replace(new RegExp(" ", "gi"), "%");
             
         var loadPage = function (data) {
 
