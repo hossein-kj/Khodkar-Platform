@@ -494,7 +494,8 @@
     $.asInitService = function (serviceUrl, params) {
         $.asEach(params, function (parameter) {
 
-            serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), (encodeURIComponent(parameter.value)).replace(new RegExp("%25", "gi"), "%20"));
+            // serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), (encodeURIComponent(parameter.value)).replace(new RegExp("%25", "gi"), "%20"));
+             serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), parameter.value);
         });
         return serviceUrl;
     }
