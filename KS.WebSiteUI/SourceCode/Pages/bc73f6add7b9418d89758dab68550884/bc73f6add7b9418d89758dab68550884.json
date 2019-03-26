@@ -1,6 +1,6 @@
 ﻿{
   "Id": 14,
-  "Html": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <meta name=\"description\" content=\"\">\r\n    <meta name=\"author\" content=\"\">\r\n<link rel=\"shortcut icon\" href=\"/Content/images/main/favicon.ico\"/>\r\n    <title>@asTitle</title>\r\n\r\n   @asStyleRefrencesStart@asCore.css@asStyleRefrencesEnd@\r\n @asStyle\r\n \r\n</head>\r\n\r\n<body class=\"@asPageId\">\r\n  @asTemplate\r\n\r\n       <script src=\"@asScriptsPath@modernizr.js\"></script>  \r\n        <script src=\"@asScriptsPath@jquery.js\"></script>  \r\n    <script src=\"@asScriptsPath@jquery.signalR.js\"></script>  \r\n     @asJavaScriptRefrencesStart@en,libs.js,asCore.js@asJavaScriptRefrencesEnd@\r\n     \r\n\r\n \r\n\r\n    @asJavaScript\r\n    \r\n         <script src=\"/signalr/hubs\"></script>\r\n</body>\r\n</html>",
+  "Html": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    @asMetaTags\r\n    <link rel=\"shortcut icon\" href=\"/Content/images/main/favicon.ico\"/>\r\n    <title>@asTitle</title>\r\n\r\n   @asStyleRefrencesStart@asCore.css@asStyleRefrencesEnd@\r\n @asStyle\r\n \r\n</head>\r\n\r\n<body class=\"@asPageId\">\r\n  @asTemplate\r\n\r\n       <script src=\"@asScriptsPath@modernizr.js\"></script>  \r\n        <script src=\"@asScriptsPath@jquery.js\"></script>  \r\n    <script src=\"@asScriptsPath@jquery.signalR.js\"></script>  \r\n     @asJavaScriptRefrencesStart@en,libs.js,asCore.js@asJavaScriptRefrencesEnd@\r\n     \r\n\r\n \r\n\r\n    @asJavaScript\r\n    \r\n         <script src=\"/signalr/hubs\"></script>\r\n</body>\r\n</html>",
   "Url": "/en/admin/cms/framework/defaults",
   "EditMode": false,
   "Params": "",
@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "Khodkar FrameWork",
   "Guid": "bc73f6add7b9418d89758dab68550884",
-  "Version": 35,
+  "Version": 37,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -30,5 +30,5 @@
   "HaveScript": true,
   "DependentModules": "[]",
   "Language": "en",
-  "RowVersion": "AAAAAAAA4pI="
+  "RowVersion": "AAAAAAADU7g="
 }

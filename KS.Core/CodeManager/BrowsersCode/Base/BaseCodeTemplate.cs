@@ -15,7 +15,9 @@ namespace KS.Core.CodeManager.BrowsersCode.Base
         public virtual string ScriptsPath => "@asScriptsPath@";
         public virtual string StylesPath => "@asStylesPath@";
         public virtual string Title => "@asTitle";
-
+        public virtual string MetaTags => "@asMetaTags";
+        public virtual string MetaTagsStart => "@asMetaTagsStart@";
+        public virtual string MetaTagsEnd => "@asMetaTagsEnd@";
         public virtual string PlaceHolder => "@asPlaceHolder";
         public virtual string ServicePrefix => "$.asUrls";
 
@@ -39,9 +41,9 @@ namespace KS.Core.CodeManager.BrowsersCode.Base
                                                    " addDependency(@asDependencyKey@()); " +
                                                    "} " +
                                                    DependencyKeyEnd;
-public virtual string GetScriptDebugPathByDebugId(DebugUser debug)
+        public virtual string GetScriptDebugPathByDebugId(DebugUser debug)
         {
-            var debugId = debug == null ? "" : Config.DebugIdSign + "/" +  debug.Guid + "/";
+            var debugId = debug == null ? "" : Config.DebugIdSign + "/" + debug.Guid + "/";
             return Config.ScriptDebugPath + debugId;
         }
     }

@@ -39,6 +39,8 @@
     $btnPrev=as("#btnPrev"),
     $txtComment=as("#txtComment"),
     $txtVersion = as("#cmsWebForm_version"),
+    $divMetaTag=as("#divMetaTag"),
+    $txtMetaTag=as("#txtMetaTag"),
     $winSourceManager=$.asModalManager.get({url:$.asModalManager.urls.sourceManager}),
     $winSourceComparator=$.asModalManager.get({url:$.asModalManager.urls.sourceComparator}),
     servicesId= [],
@@ -366,6 +368,8 @@ var getwebform = function (formUrl, pageTypeId) {
                 $codeEditorStyle.asCodeEditor('setValue', webForm.Style)
             else
                 $codeEditorStyle.asCodeEditor('setValue', '')
+                
+            $txtMetaTag.val(webForm.MetaTags);
             as("#divLastModifiUser").html(webForm.LastModifieUser);
             as("#divLastModifiLocalDataTime").html(webForm.LastModifieLocalDateTime);
             $txtTitle.val(webForm.Title)
@@ -787,7 +791,7 @@ var bindEvent = function () {
                 $codeEditorHtml.asCodeEditor('setValue', '');
             }
 
-                
+            $txtMetaTag.val(webForm.MetaTags);                
             as("#divLastModifiUser").html(webForm.LastModifieUser);
             as("#divLastModifiLocalDataTime").html(webForm.LastModifieLocalDateTime);
             $txtTitle.val(webForm.Title)
@@ -982,7 +986,7 @@ as("#cmsWebForm_cancelRestor").click(function () {
                 ViewRoleId: viewRoleId,
                 ModifyRoleId: modifyRoleId,
                 AccessRoleId: accessRoleId,
-                // Tools: tools.join(','),
+                MetaTags: $txtMetaTag.val(),
                 JavaScript: js,
                 Html: html,
                 Style: css,
@@ -1117,7 +1121,7 @@ var changeEditorToolbar = function(editor){
     }
 
     var initPageType = function(type){
-                        if (type == 15) {
+                if (type == 15) {
                     $("#cmsWebFom_frameWork").show()
                     $("#cmsWebFom_template").show()
                 }
@@ -1130,6 +1134,13 @@ var changeEditorToolbar = function(editor){
                 }
                 else {
                     $divParams.show()
+                   
+                }
+                if (type == 16) {
+                    $divMetaTag.show()
+                }
+                else {
+                    $divMetaTag.hide()
                    
                 }
     }

@@ -27,6 +27,9 @@ namespace KS.Core.CodeManager.BrowsersCode.Base
         string StylesPath { get; }
         string Template { get; }
         string Title { get; }
+        string MetaTags { get; }
+        string MetaTagsStart { get; }
+        string MetaTagsEnd { get; }
 
         string GetScriptDebugPathByDebugId(DebugUser debug);
     }

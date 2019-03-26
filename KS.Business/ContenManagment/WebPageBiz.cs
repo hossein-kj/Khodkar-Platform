@@ -259,7 +259,7 @@ namespace KS.Business.ContenManagment
                 var page = GetWebPage(pagePath, type, aspect);
                 if (page == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(message: "error page not Found!"));
-                return GetWebPage(pagePath, type, aspect);
+                return page;
             }
             catch (Exception ex)
             {
@@ -518,8 +518,18 @@ namespace KS.Business.ContenManagment
             webPageJson.Style = resource.Style;
             var lastModifieUser =
                 await SecurityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
+            if (lastModifieUser != null)
+                webPageJson.LastModifieUser = lastModifieUser.UserName;
 
-            webPageJson.LastModifieUser = lastModifieUser.UserName;
+            var startIndex = webPage.Html.IndexOf(CodeTemplate.MetaTagsStart, StringComparison.Ordinal) + CodeTemplate.MetaTagsStart.Length;
+            var endIndex = webPage.Html.IndexOf(CodeTemplate.MetaTagsEnd, StringComparison.Ordinal);
+
+
+            if (startIndex > -1 && endIndex > -1 && startIndex <= endIndex)
+            {
+                webPageJson.MetaTags = webPage.Html.Substring(startIndex, endIndex - startIndex);
+            }
+
             webPageJson.LastModifieLocalDateTime = webPage.ModifieLocalDateTime;
             return (JObject)webPageJson;
 
@@ -547,9 +557,19 @@ namespace KS.Business.ContenManagment
             {
                 dynamic webpageJson = JObject.Parse(change.Code);
                 var lastModifieUser =
-    await SecurityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
+                    await SecurityContext.Users.SingleOrDefaultAsync(us => us.Id == webPage.CreateUserId);
+                if (lastModifieUser != null)
+                    webpageJson.LastModifieUser = lastModifieUser.UserName;
 
-                webpageJson.LastModifieUser = lastModifieUser.UserName;
+                var startIndex = webPage.Html.IndexOf(CodeTemplate.MetaTagsStart, StringComparison.Ordinal) + CodeTemplate.MetaTagsStart.Length;
+                var endIndex = webPage.Html.IndexOf(CodeTemplate.MetaTagsEnd, StringComparison.Ordinal);
+
+
+                if (startIndex > -1 && endIndex > -1 && startIndex <= endIndex)
+                {
+                    webpageJson.MetaTags = webPage.Html.Substring(startIndex, endIndex - startIndex);
+                }
+
                 webpageJson.LastModifieLocalDateTime = webPage.ModifieLocalDateTime;
 
                 return (JObject)webpageJson;
@@ -882,12 +902,11 @@ namespace KS.Business.ContenManagment
                     SourceControl.CheckCodeCheckOute(currentWebpage);
 
                 }
-                if (currentWebpage != null)
-                {
-                    webPage.ViewRoleId = currentWebpage.ViewRoleId;
-                    webPage.ModifyRoleId = currentWebpage.ModifyRoleId;
-                    webPage.AccessRoleId = currentWebpage.AccessRoleId;
-                }
+
+                webPage.ViewRoleId = currentWebpage.ViewRoleId;
+                webPage.ModifyRoleId = currentWebpage.ModifyRoleId;
+                webPage.AccessRoleId = currentWebpage.AccessRoleId;
+
 
                 AuthorizeManager.SetAndCheckModifyAndAccessRole(webPage, webPageDto);
                 webPage.EditMode = webPageDto.EditMode;
@@ -919,10 +938,17 @@ namespace KS.Business.ContenManagment
             {
                 webPage.CacheSlidingExpirationTimeInMinutes = 0;
             }
+
+            webPage.TypeId = webPageDto.TypeId;
+
+            string metaTags = webPageDto.MetaTags;
             webPage.Html = webPageDto.Html;
+
+
             webPage.Url = url;
             string javaScript = webPageDto.JavaScript;
             string style = webPageDto.Style;
+
             webPage.TemplatePatternUrl = webPageDto.TemplatePatternUrl;
             webPage.Params = webPageDto.Params;
             webPage.FrameWorkUrl = webPageDto.FrameWorkUrl;
@@ -934,7 +960,7 @@ namespace KS.Business.ContenManagment
 
             webPage.Title = webPageDto.Title;
             webPage.Status = webPageDto.Status;
-            webPage.TypeId = webPageDto.TypeId;
+
             webPage.EnableCache = webPageDto.EnableCache;
             webPage.EditMode = webPageDto.EditMode;
             webPage.IsMobileVersion = webPageDto.IsMobileVersion;
@@ -957,6 +983,8 @@ namespace KS.Business.ContenManagment
                     error.Add(CodeTemplate.PageId);
                 if (webPage.Html.IndexOf(CodeTemplate.JavaScript, StringComparison.Ordinal) == -1)
                     error.Add(CodeTemplate.JavaScript);
+                if (webPage.Html.IndexOf(CodeTemplate.MetaTags, StringComparison.Ordinal) == -1)
+                    error.Add(CodeTemplate.MetaTags);
             }
 
             if (webPage.TypeId == (int)WebPageType.Template)
@@ -975,11 +1003,19 @@ namespace KS.Business.ContenManagment
             var pagesSourceCodePath = Config.PagesSourceCodePath + webPage.Guid + "/";
 
             var json = (await ConvertToJsonAsync(WebPageJsonType.Source, webPage: webPage)).ToString();
+
             await SourceControl.AddChange(pagesSourceCodePath,
-            webPage.Guid + ".json",
-            json,
-           (currentWebpage?.Version ?? 0) + 1,
-            comment);
+           webPage.Guid + ".json",
+           json,
+          (currentWebpage?.Version ?? 0) + 1,
+           comment);
+
+            var html = webPage.Html;
+
+            if (webPage.TypeId == (int)WebPageType.Form)
+            {
+                webPage.Html = CodeTemplate.MetaTagsStart + metaTags + CodeTemplate.MetaTagsEnd + html;
+            }
 
             webPage.Version = (currentWebpage?.Version ?? 0) + 1;
 
@@ -1008,16 +1044,19 @@ namespace KS.Business.ContenManagment
                 latestPage = await
                        ContentManagementContext.WebPages.AsNoTracking().SingleOrDefaultAsync(wp => wp.Id == webPage.Id);
 
+                if (latestPage == null)
+                    throw new PageNotFoundException();
+
                 webPage.RowVersion = latestPage.RowVersion;
             }
 
+            webPage.Html = html;
 
-
-            json = (await ConvertToJsonAsync(WebPageJsonType.Source, webPage: webPage)).ToString();
+            var jsonSource = (await ConvertToJsonAsync(WebPageJsonType.Source, webPage: webPage)).ToString();
 
             if (checkIn)
                 await WriteFileAsync(pagesSourceCodePath, webPage.Guid, ".json",
-                   json, true);
+                   jsonSource, true);
 
 
             if (webPage.HaveScript && checkIn)
@@ -1064,14 +1103,6 @@ namespace KS.Business.ContenManagment
                     await PublishWebPageAsync(webPage.Url, webPage.TypeId == (int)WebPageType.Modal);
                     //await PublishWebPageAsync(webPage.Url, webPage, webPage.TypeId == (int)WebPageType.Modal);
                 }
-
-
-
-
-
-
-
-
             }
 
 
@@ -1698,7 +1729,6 @@ namespace KS.Business.ContenManagment
             if (url != null)
             {
                 url = url.ToLower();
-
                 if (Settings.Language == "fa")
                 {
                     url = url.Replace(Convert.ToString((char)arabicYeCharCode),
@@ -2055,8 +2085,9 @@ namespace KS.Business.ContenManagment
                 //"frameWorkUrl:'" + webPage.frameWorkUrl + "'," +
                 "pageId:'" + webPage.pageId + "'" +
                 "},")
-            .Replace(CodeTemplate.Title, (string)webPage.title).Replace(CodeTemplate.PlaceHolder,
-                 (string)webPage.html);
+            .Replace(CodeTemplate.Title, (string)webPage.title)
+            .Replace(CodeTemplate.MetaTags, (string)webPage.metaTags)
+            .Replace(CodeTemplate.PlaceHolder, (string)webPage.html);
 
 
             //}

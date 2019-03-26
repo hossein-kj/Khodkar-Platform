@@ -32,7 +32,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
 
         public AuthorizePagesPathAsynchOperation(AsyncCallback callback, HttpContext context,
             IErrorLogManager errorLogManager,
-            IDataBaseContextManager dataBaseContextManager,Object state = null)
+            IDataBaseContextManager dataBaseContextManager, Object state = null)
         {
             _callback = callback;
             _context = context;
@@ -47,7 +47,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartAsyncTask), null);
         }
 
-        private void SetErrorPage(HttpStatusCode code,string pageType)
+        private void SetErrorPage(HttpStatusCode code, string pageType)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
 
                 }
 
- 
+
 
                 _context.Response.WriteFile(path.Replace("~", ""));
             }
@@ -120,7 +120,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
             var queryString = _context.Request.QueryString;
             var url = queryString["url"];
             var type = queryString["type"];
-         
+
             try
             {
                 if (url == null || type == null)
@@ -135,7 +135,7 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
 
                     if (AuthorizeManager.AuthorizeWebPageUrl(url, type, out aspect) || url.Contains(Config.ErrrorPagesBaseUrl.Substring(1)))
                     {
-                        if(aspect.Status == 0)
+                        if (aspect.Status == 0)
                             SetErrorPage(HttpStatusCode.TemporaryRedirect, type);
                         else
                         {
@@ -162,20 +162,20 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
 
                                 if (!pageCache.IsCached)
                                 {
-                                    CacheManager.Store(key, _dataBaseContextManager.GetWebPageForPublish(url, type).ToJObject(),
+                                    CacheManager.Store(key, _dataBaseContextManager.GetWebPageForView(url, type).ToJObject(),
                                         slidingExpiration:
                                         TimeSpan.FromMinutes(aspect.CacheSlidingExpirationTimeInMinutes));
                                     pageCache = CacheManager.Get<dynamic>(key);
 
                                 }
-                              
-                                    _context.Response.Write(pageCache.Value.ToString());
-                                
+
+                                _context.Response.Write(pageCache.Value.ToString());
+
                             }
                             else
                             {
 
-                                
+
                                 var path = _context.Request.RawUrl.IndexOf("?", StringComparison.Ordinal) > 0
                            ? _context.Request.RawUrl.Remove(_context.Request.RawUrl.IndexOf("?",
                                StringComparison.Ordinal))
@@ -191,9 +191,9 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
                                     //path = path.Replace(Config.MobileSign, Helper.RootUrl);
                                 }
 
-                           
 
-                                    _context.Response.WriteFile(path);
+
+                                _context.Response.WriteFile(path);
                             }
 
 
@@ -211,11 +211,11 @@ namespace KS.Core.Security.Handlers.AuthorizePagesPath
                 SetErrorPage(HttpStatusCode.NotFound, type);
 
                 _errorLogManager.LogException(new ExceptionLog()
-               {
-                   Detail = ex.ToString(),
-                   Message = ex.Message,
-                   Source = ex.GetType().FullName
-               });
+                {
+                    Detail = ex.ToString(),
+                    Message = ex.Message,
+                    Source = ex.GetType().FullName
+                });
             }
 
             _completed = true;

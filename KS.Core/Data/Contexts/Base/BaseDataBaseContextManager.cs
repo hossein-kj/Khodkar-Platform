@@ -11,7 +11,8 @@ using KS.Core.Utility;
 using KS.Core.Data.Contexts.SqlServer.Base;
 using KS.Core.Model.ContentManagement;
 using KS.Core.Model.Core;
-
+using KS.Core.CodeManager.BrowsersCode;
+using KS.Core.CodeManager.BrowsersCode.Base;
 
 namespace KS.Core.Data.Contexts.Base
 {
@@ -19,10 +20,11 @@ namespace KS.Core.Data.Contexts.Base
     {
 
         private readonly ISqlHelper _sqlHelper;
-
-        protected BaseDataBaseContextManager(ISqlHelper sqlHelper)
+        private readonly ICodeTemplate _codeTemplate;
+        protected BaseDataBaseContextManager(ISqlHelper sqlHelper, ICodeTemplate codeTemplate)
         {
             _sqlHelper = sqlHelper;
+            _codeTemplate = codeTemplate;
         }
 
         //public static string GetEceptionMessage(ExceptionKey exceptionName, string language)
@@ -98,7 +100,7 @@ namespace KS.Core.Data.Contexts.Base
                           new SqlParameter("@codeId", SqlDbType.Int){Value = codeId}
             }).FirstOrDefault();
         }
-        public virtual int AuthorizeViewDebugScriptOfWebPage(string guid, int userId,int typeId,int actionKey,int permissionTypeId)
+        public virtual int AuthorizeViewDebugScriptOfWebPage(string guid, int userId, int typeId, int actionKey, int permissionTypeId)
         {
             return _sqlHelper.ExecuteReader<int>(CommandType.StoredProcedure,
                 "[Security].[AuthorizeViewDebugScriptOfWebPage]"
@@ -112,7 +114,7 @@ namespace KS.Core.Data.Contexts.Base
             }).FirstOrDefault();
         }
 
-        public virtual int AuthorizeViewDebugScriptOfCode(int bundleTypeId,int codeTypeId, string path, int userId, int actionKey, int permissionTypeId)
+        public virtual int AuthorizeViewDebugScriptOfCode(int bundleTypeId, int codeTypeId, string path, int userId, int actionKey, int permissionTypeId)
         {
             return _sqlHelper.ExecuteReader<int>(CommandType.StoredProcedure,
                 "[Security].[AuthorizeViewDebugScriptOfCode]"
@@ -194,7 +196,7 @@ namespace KS.Core.Data.Contexts.Base
 
         public virtual IWebPageCore GetWebPageForView(string url, string type)
         {
-            return _sqlHelper.ExecuteReader<IWebPageCore>(CommandType.StoredProcedure,
+            var webPage = _sqlHelper.ExecuteReader<IWebPageCore>(CommandType.StoredProcedure,
                 "[ContentManagement].[GetWebPageForView]"
                 , r => new WebPageCore()
                 {
@@ -202,21 +204,40 @@ namespace KS.Core.Data.Contexts.Base
                     Title = r["Title"].ToString(),
                     Html = r["Html"].ToString(),
                     DependentModules = r["DependentModules"].ToString(),
-                    PageId =  r["PageId"].ToString(),
+                    PageId = r["PageId"].ToString(),
                     Param = r["Params"].ToString(),
                     HaveStyle = Convert.ToBoolean(r["HaveStyle"].ToString()),
                     HaveScript = Convert.ToBoolean(r["HaveScript"].ToString()),
-                    Version= r["Version"].ToString()
+                    Version = r["Version"].ToString()
                 }, new[]
             {
               new SqlParameter("@Url", SqlDbType.NVarChar,1024){Value = url},
               new SqlParameter("@Type", SqlDbType.NVarChar,10){Value = type}
             }).FirstOrDefault();
+
+            if (webPage == null)
+                return null;
+
+            var startIndex = webPage.Html.IndexOf(_codeTemplate.MetaTagsStart, StringComparison.Ordinal) + _codeTemplate.MetaTagsStart.Length;
+            var endIndex = webPage.Html.IndexOf(_codeTemplate.MetaTagsEnd, StringComparison.Ordinal);
+
+
+            if (startIndex <= -1 || endIndex <= -1 || startIndex > endIndex)
+                return webPage;
+
+            var metaTags = webPage.Html.Substring(startIndex, endIndex - startIndex);
+
+            webPage.MetaTags = metaTags;
+
+            webPage.Html = webPage.Html.Replace(webPage.Html.Substring(startIndex - _codeTemplate.MetaTagsStart.Length,
+                _codeTemplate.MetaTagsStart.Length + metaTags.Length + _codeTemplate.MetaTagsEnd.Length), "");
+
+            return webPage;
         }
 
         public virtual IWebPageCore GetWebPageForPublish(string url, string type)
         {
-            return _sqlHelper.ExecuteReader<IWebPageCore>(CommandType.StoredProcedure,
+            var webPage = _sqlHelper.ExecuteReader<IWebPageCore>(CommandType.StoredProcedure,
                 "[ContentManagement].[GetWebPageForPublish]"
                 , r => new WebPageCore()
                 {
@@ -234,6 +255,24 @@ namespace KS.Core.Data.Contexts.Base
               new SqlParameter("@Url", SqlDbType.NVarChar,1024){Value = url},
               new SqlParameter("@Type", SqlDbType.NVarChar,10){Value = type}
             }).FirstOrDefault();
+
+            if (webPage == null)
+                return null;
+
+            var startIndex = webPage.Html.IndexOf(_codeTemplate.MetaTagsStart, StringComparison.Ordinal) + _codeTemplate.MetaTagsStart.Length;
+            var endIndex = webPage.Html.IndexOf(_codeTemplate.MetaTagsEnd, StringComparison.Ordinal);
+
+
+            if (startIndex <= -1 || endIndex <= -1 || startIndex > endIndex)
+                return webPage;
+
+            var metaTags = webPage.Html.Substring(startIndex, endIndex - startIndex);
+
+
+            webPage.Html = webPage.Html.Replace(webPage.Html.Substring(startIndex - _codeTemplate.MetaTagsStart.Length,
+                _codeTemplate.MetaTagsStart.Length + metaTags.Length + _codeTemplate.MetaTagsEnd.Length), "");
+
+            return webPage;
         }
 
         public virtual IAspect GetAspectForMasterDataKeyValueUrl(int actionKey, string url)

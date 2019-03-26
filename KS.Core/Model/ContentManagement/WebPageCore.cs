@@ -9,6 +9,7 @@ namespace KS.Core.Model.ContentManagement
         private string _dependentModules;
         private string _html;
         public string Title { get; set; }
+        public string MetaTags { get; set; }
         public string Url { get; set; }
 
         public string PageId
@@ -31,19 +32,20 @@ namespace KS.Core.Model.ContentManagement
         }
         public bool HaveScript { get; set; }
         public bool HaveStyle { get; set; }
-        public string Version{ get; set; }
+        public string Version { get; set; }
 
 
-    public JObject ToJObject()
+        public JObject ToJObject()
         {
             return JObject.FromObject(new
             {
-                title=Title,
+                title = Title,
+                metaTags = MetaTags,
                 url = Url,
-                pageId=PageId,
-                dependentModules= DependentModules,
-                param= "{" + Param + "}",
-                html= Html
+                pageId = PageId,
+                dependentModules = DependentModules,
+                param = "{" + Param + "}",
+                html = Html
             });
         }
 
@@ -52,18 +54,18 @@ namespace KS.Core.Model.ContentManagement
             var dependentModules = _dependentModules;
             if (HaveStyle)
             {
-                
-                dependentModules= dependentModules.Replace("[", "[{\"url\":\"" + Config.PagesPath.Substring(2) 
-                    + _pageId + ".css?minVersion=" + Version + "\"}" + (_dependentModules.Length > 2 ? ",":""));
+
+                dependentModules = dependentModules.Replace("[", "[{\"url\":\"" + Config.PagesPath.Substring(2)
+                    + _pageId + ".css?minVersion=" + Version + "\"}" + (_dependentModules.Length > 2 ? "," : ""));
             }
 
             if (HaveScript)
             {
                 dependentModules = dependentModules.Replace("[", "[{\"url\":\"" + Config.PagesPath.Substring(2)
-                    + _pageId + ".js?minVersion=" + Version + "\"}" + ((_dependentModules.Length > 2 || HaveStyle )? "," : ""));
+                    + _pageId + ".js?minVersion=" + Version + "\"}" + ((_dependentModules.Length > 2 || HaveStyle) ? "," : ""));
             }
 
-            return dependentModules ;
+            return dependentModules;
         }
     }
 }
