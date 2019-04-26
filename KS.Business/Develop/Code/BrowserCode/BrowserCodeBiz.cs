@@ -32,7 +32,7 @@ namespace KS.Business.Develop.Code.BrowserCode
         public BrowserCodeBiz(ISourceControl sourceControl,
             IContentManagementContext contentManagementContext, IFileSystemManager fileSystemManager
             , IWebConfigManager webConfigManager, ICompressManager compressManager, IBundleManager bundleManager
-            ,ISecurityContext securityContext)
+            , ISecurityContext securityContext)
             : base(sourceControl, contentManagementContext, fileSystemManager
                   , webConfigManager, securityContext)
         {
@@ -58,10 +58,10 @@ namespace KS.Business.Develop.Code.BrowserCode
             var code = await Save((JObject)masterDataKeyValue, true);
             return code;
         }
-        public async Task<MasterDataKeyValue> SaveBundleOrBundleSource(JObject data,bool isSource = false)
+        public async Task<MasterDataKeyValue> SaveBundleOrBundleSource(JObject data, bool isSource = false)
         {
             dynamic bundleOrSource = data;
-            
+
             int id = bundleOrSource.Id;
             var isNew = id == 0;
             var dependency = new List<string>();
@@ -72,14 +72,14 @@ namespace KS.Business.Develop.Code.BrowserCode
             {
                 int bundleId = bundleOrSource.ParentId;
                 var bundle = await
-                    ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(md => md.Id == bundleId);
+                    ContentManagementContext.MasterDataKeyValues.AsNoTracking().FirstOrDefaultAsync(md => md.Id == bundleId);
 
                 if (bundle == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ParentRecordNotFound));
-            
+
 
                 var code = await
-                       ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(
+                       ContentManagementContext.MasterDataKeyValues.AsNoTracking().FirstOrDefaultAsync(
                            md => md.Id == bundle.ParentId);
                 if (code == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ParentRecordNotFound));
@@ -94,7 +94,7 @@ namespace KS.Business.Develop.Code.BrowserCode
 
                 if (bundle.Value == 1)
                 {
-                   
+
                     if (
                         sourcePathOrUrl.ToLower()
                             .IndexOf(bundle.PathOrUrl.ToLower().Replace("~", code.PathOrUrl.ToLower()),
@@ -106,11 +106,11 @@ namespace KS.Business.Develop.Code.BrowserCode
             else
             {
                 dependencyKey = bundleOrSource.DependencyKey;
-                if(dependencyKey != null)
+                if (dependencyKey != null)
                 {
                     JArray dependencyArray = bundleOrSource.Dependency;
-                    if(dependencyArray != null)
-                    dependency = dependencyArray.ToObject<List<string>>();
+                    if (dependencyArray != null)
+                        dependency = dependencyArray.ToObject<List<string>>();
                 }
             }
             int key = 0;
@@ -123,24 +123,24 @@ namespace KS.Business.Develop.Code.BrowserCode
             {
                 // ignored
             }
-            
+
             if (!isNew && !isSource)
             {
-               
-                
-                    var bundleEntity = await
-                        ContentManagementContext.MasterDataKeyValues.Where(md => md.Id == id)
-                            .FirstOrDefaultAsync();
-                    if (bundleEntity == null)
-                        throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.BundleNotFound));
-               
-            var code = await
-                       ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(
-                           md => md.Id == bundleEntity.ParentId);
+
+
+                var bundleEntity = await
+                    ContentManagementContext.MasterDataKeyValues.AsNoTracking().Where(md => md.Id == id)
+                        .FirstOrDefaultAsync();
+                if (bundleEntity == null)
+                    throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.BundleNotFound));
+
+                var code = await
+                           ContentManagementContext.MasterDataKeyValues.AsNoTracking().FirstOrDefaultAsync(
+                               md => md.Id == bundleEntity.ParentId);
 
                 if (code == null)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.ParentRecordNotFound));
-            
+
 
                 if (code.EditMode)
                 {
@@ -150,30 +150,30 @@ namespace KS.Business.Develop.Code.BrowserCode
 
                 int value = 0;
 
-                    try
+                try
+                {
+                    value = bundleOrSource.Value;
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+                //oneByOne Bundle
+                if (value == 1 && ((bundleEntity.Value ?? 0) == 0))
+                {
+
+                    var sources = await
+                        ContentManagementContext.MasterDataKeyValues.AsNoTracking().Where(
+                                md => md.ParentId == id && md.TypeId == (int)EntityIdentity.BundleSource)
+                            .ToListAsync();
+                    if (sources.Any(source => source.PathOrUrl.ToLower()
+                                                  .IndexOf(bundleEntity.PathOrUrl.ToLower().Replace("~", code.PathOrUrl.ToLower()),
+                                                      StringComparison.Ordinal) != 0))
                     {
-                        value = bundleOrSource.Value;
+                        throw new KhodkarInvalidException(
+                            LanguageManager.ToAsErrorMessage(ExceptionKey.SourceOfOneByOneBundleNotValid));
                     }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-                    //oneByOne Bundle
-                    if (value == 1 && ((bundleEntity.Value ?? 0) == 0))
-                    {
-                       
-                        var sources = await
-                            ContentManagementContext.MasterDataKeyValues.Where(
-                                    md => md.ParentId == id && md.TypeId == (int) EntityIdentity.BundleSource)
-                                .ToListAsync();
-                        if (sources.Any(source => source.PathOrUrl.ToLower()
-                                                      .IndexOf(bundleEntity.PathOrUrl.ToLower().Replace("~", code.PathOrUrl.ToLower()),
-                                                          StringComparison.Ordinal) != 0))
-                        {
-                            throw new KhodkarInvalidException(
-                                LanguageManager.ToAsErrorMessage(ExceptionKey.SourceOfOneByOneBundleNotValid));
-                        }
-                    }
+                }
                 if (bundleEntity.Code != codeName + id && dependencyKey != bundleEntity.Code)
                     await SourceControl.AddOrUpdateDependencyEngineAsync(new BundleDependency()
                     {
@@ -187,35 +187,35 @@ namespace KS.Business.Develop.Code.BrowserCode
             }
             return await base.Save(JObject.Parse(JsonConvert.SerializeObject
             (new
-                {
-                    Id = id,
-                    Code = string.IsNullOrEmpty(dependencyKey) ? codeName + id : dependencyKey,
-                    SecondCode = string.Join(",", dependency.ToArray()),
-                    bundleOrSource.Description,
-                    bundleOrSource.Name,
-                    EditMode = false,
-                    EnableCache = false,
-                    Guid = SecureGuid.NewGuid().ToString("N"),
-                    IsLeaf = false,
-                    IsType = false,
-                    Language = Config.DefaultsLanguage,
-                    bundleOrSource.ModifyRoleId,
-                    bundleOrSource.ParentId,
-                    bundleOrSource.RowVersion,
-                    Key = key,
-                    bundleOrSource.Value,
-                    Status = 1,
-                    TypeId = isSource ? (int) EntityIdentity.BundleSource : (int) EntityIdentity.Bundle,
-                    IsPath = true,
-                    IsPathSecond = false,
-                    PathOrUrlProtocolId = (int)Protocol.PathProtocol,
-                    bundleOrSource.PathOrUrl,
-                    bundleOrSource.SecondPathOrUrl,
-                    bundleOrSource.ViewRoleId,
-                    bundleOrSource.AccessRoleId,
-                    bundleOrSource.IsNew
-                }, Formatting.None,
-                new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore})), false);
+            {
+                Id = id,
+                Code = string.IsNullOrEmpty(dependencyKey) ? codeName + id : dependencyKey,
+                SecondCode = string.Join(",", dependency.ToArray()),
+                bundleOrSource.Description,
+                bundleOrSource.Name,
+                EditMode = false,
+                EnableCache = false,
+                Guid = SecureGuid.NewGuid().ToString("N"),
+                IsLeaf = false,
+                IsType = false,
+                Language = Config.DefaultsLanguage,
+                bundleOrSource.ModifyRoleId,
+                bundleOrSource.ParentId,
+                bundleOrSource.RowVersion,
+                Key = key,
+                bundleOrSource.Value,
+                Status = 1,
+                TypeId = isSource ? (int)EntityIdentity.BundleSource : (int)EntityIdentity.Bundle,
+                IsPath = true,
+                IsPathSecond = false,
+                PathOrUrlProtocolId = (int)Protocol.PathProtocol,
+                bundleOrSource.PathOrUrl,
+                bundleOrSource.SecondPathOrUrl,
+                bundleOrSource.ViewRoleId,
+                bundleOrSource.AccessRoleId,
+                bundleOrSource.IsNew
+            }, Formatting.None,
+                new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })), false);
 
 
         }
@@ -226,7 +226,7 @@ namespace KS.Business.Develop.Code.BrowserCode
 
             var code = await ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(md => md.Id == id
             && (md.TypeId == (int)EntityIdentity.Script || md.TypeId == (int)EntityIdentity.Style));
-            if(code == null)
+            if (code == null)
                 throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
 
             var bundlesCount = ContentManagementContext.MasterDataKeyValues.Count(md => md.ParentId == id
@@ -239,7 +239,7 @@ namespace KS.Business.Develop.Code.BrowserCode
         {
             dynamic dataDto = data;
             int id = dataDto.Id;
-            if(isSource)
+            if (isSource)
             {
                 var sourceEntity = await
                    ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(md => md.Id == id);
@@ -261,14 +261,14 @@ namespace KS.Business.Develop.Code.BrowserCode
                 if (code.EditMode)
                     SourceControl.CheckCodeCheckOute(code);
 
-                var sourcesCount = await ContentManagementContext.MasterDataKeyValues.Where(md=>md.ParentId == bundleEntity.Id)
+                var sourcesCount = await ContentManagementContext.MasterDataKeyValues.Where(md => md.ParentId == bundleEntity.Id)
            .CountAsync();
                 if (sourcesCount > 0)
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.InUseItem, bundleEntity.Name));
-         
+
             }
 
-            var dependency = !isSource ? await GetBundleDependencyForDependencyEngieen(id): new List<KeyValue>();
+            var dependency = !isSource ? await GetBundleDependencyForDependencyEngieen(id) : new List<KeyValue>();
             var bundle = await base.Delete(data);
             if (isSource) return true;
 
@@ -286,7 +286,7 @@ namespace KS.Business.Develop.Code.BrowserCode
             var path = "";
             if (bundle.PathOrUrl.IndexOf(".css", StringComparison.Ordinal) > -1)
             {
-                path = Config.StyleDebugPath + (bundle.PathOrUrl[0] == '/' ? bundle.PathOrUrl.Substring(1) : bundle.PathOrUrl).Replace("~/","");
+                path = Config.StyleDebugPath + (bundle.PathOrUrl[0] == '/' ? bundle.PathOrUrl.Substring(1) : bundle.PathOrUrl).Replace("~/", "");
             }
             else
             {
@@ -300,7 +300,7 @@ namespace KS.Business.Develop.Code.BrowserCode
             return DeleteFile(path);
         }
 
-        private string Transform(MasterDataKeyValue bundle,string localHost,string source, string dist)
+        private string Transform(MasterDataKeyValue bundle, string localHost, string source, string dist)
         {
 
             FileSystemManager.CreatDirectoryIfNotExist(AuthorizeManager.AuthorizeActionOnPath
@@ -330,24 +330,24 @@ namespace KS.Business.Develop.Code.BrowserCode
 
             _bundleManager.AddBundle(bundleOption);
 
-           
+
             var bundleNmae = "~/BrowsersCodeOutPut/" + bundle.Guid + "/" + bundle.Version + "/" + bundlePath
                 .Replace(".", "-");
             var url = bundleNmae.Replace("~", localHost);
             string contents;
-          
-                using (var wc = new System.Net.WebClient())
-                {
-                    wc.Encoding = Encoding.UTF8;
-                    contents = wc.DownloadString(url);
-                }
+
+            using (var wc = new System.Net.WebClient())
+            {
+                wc.Encoding = Encoding.UTF8;
+                contents = wc.DownloadString(url);
+            }
 
             _bundleManager.RemoveBundle(bundleNmae);
             return contents;
         }
         public async Task<bool> Compile(JObject data, string localHost)
         {
-           
+
             dynamic bundleDto = data;
             int id = bundleDto.Id;
             bool isPublish = bundleDto.IsPublish;
@@ -356,13 +356,13 @@ namespace KS.Business.Develop.Code.BrowserCode
             var bundleBySources = await ContentManagementContext.MasterDataKeyValues.Where(cd => cd.Id == id ||
             (cd.ParentId == id && cd.TypeId == (int)EntityIdentity.BundleSource)).ToListAsync();
             var bundle = bundleBySources.FirstOrDefault(bn => bn.Id == id);
-       
+
             var sources = bundleBySources.Where(sr => sr.ParentId == id).ToList();
             if (bundle == null)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.BundleNotFound));
             if (sources.Count == 0)
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.BundleHasNoSource));
-             CheckAccess(bundle);
+            CheckAccess(bundle);
 
             var code = await ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(cd => cd.Id == bundle.ParentId);
             if (code.EditMode)
@@ -371,7 +371,7 @@ namespace KS.Business.Develop.Code.BrowserCode
             bundle.Version++;
             await ContentManagementContext.SaveChangesAsync();
 
-            if(bundle.Value == 1)
+            if (bundle.Value == 1)
             {
 
                 foreach (var source in sources)
@@ -393,7 +393,7 @@ namespace KS.Business.Develop.Code.BrowserCode
                                ActionKey.WriteToDisk));
 
                         await WriteFileAsync(debugpath,
-                                  "", "", Transform(bundle,localHost,source.PathOrUrl, debugpath));
+                                  "", "", Transform(bundle, localHost, source.PathOrUrl, debugpath));
 
 
                         if (isPublish)
@@ -418,13 +418,13 @@ namespace KS.Business.Develop.Code.BrowserCode
                         }
 
                     }
-                    else if(source.PathOrUrl.IndexOf(".js", StringComparison.OrdinalIgnoreCase) == -1 
+                    else if (source.PathOrUrl.IndexOf(".js", StringComparison.OrdinalIgnoreCase) == -1
                         && source.PathOrUrl.IndexOf(".css", StringComparison.OrdinalIgnoreCase) == -1)
                     {
                         debugpath =
                             source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.StyleDebugPath).Replace("//", "/");
 
-                        debugpath = debugpath.Remove(debugpath.LastIndexOf(".", StringComparison.Ordinal)) + ".js" ;
+                        debugpath = debugpath.Remove(debugpath.LastIndexOf(".", StringComparison.Ordinal)) + ".js";
 
                         FileSystemManager.CreatDirectoryIfNotExist(
                                    AuthorizeManager.AuthorizeActionOnPath(
@@ -432,22 +432,22 @@ namespace KS.Business.Develop.Code.BrowserCode
                                        ActionKey.WriteToDisk));
 
                         await WriteFileAsync(debugpath,
-                                   "", "", Transform(bundle,localHost,source.PathOrUrl, debugpath));
+                                   "", "", Transform(bundle, localHost, source.PathOrUrl, debugpath));
 
 
 
                         if (isPublish)
                         {
 
-                           
+
                             var minContent = "";
-                        
-                           var  distpath = source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.ScriptDistPath).Replace("//", "/");
+
+                            var distpath = source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.ScriptDistPath).Replace("//", "/");
                             distpath = debugpath.Remove(distpath.LastIndexOf(".", StringComparison.Ordinal)) + ".js";
                             minContent = _compressManager.CompressJavaScript(
                                      await FileSystemManager.ReadAsync(AuthorizeManager.AuthorizeActionOnPath(source.PathOrUrl, ActionKey.ReadFromDisk)), source.PathOrUrl);
 
-                          
+
 
                             FileSystemManager.CreatDirectoryIfNotExist(
                                     AuthorizeManager.AuthorizeActionOnPath(
@@ -459,9 +459,9 @@ namespace KS.Business.Develop.Code.BrowserCode
 
                         }
                     }
-                    else 
+                    else
                     {
-                      
+
                         debugpath = source.PathOrUrl.IndexOf(".css", StringComparison.OrdinalIgnoreCase) > -1 ?
                             source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.StyleDebugPath).Replace("//", "/") :
                             source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.ScriptDebugPath).Replace("//", "/");
@@ -483,7 +483,7 @@ namespace KS.Business.Develop.Code.BrowserCode
                             if (source.PathOrUrl.IndexOf(".css", StringComparison.OrdinalIgnoreCase) > -1)
                             {
                                 distpath = source.PathOrUrl.ToLower().Replace(code.PathOrUrl.ToLower(), Config.StyleDistPath).Replace("//", "/");
-                                minContent = _compressManager.CompressCss(await 
+                                minContent = _compressManager.CompressCss(await
                                     FileSystemManager.ReadAsync(AuthorizeManager.AuthorizeActionOnPath(source.PathOrUrl, ActionKey.ReadFromDisk)));
                             }
                             else
@@ -538,24 +538,24 @@ namespace KS.Business.Develop.Code.BrowserCode
 
             var path = "";
             var bundleNmae = "~/BrowsersCodeOutPut/" + bundle.Guid + "/" + bundle.Version + "/" + bundlePath
-                .Replace(".","-");
+                .Replace(".", "-");
             var url = bundleNmae.Replace("~", localHost);
             string contents;
-    
-                using (var wc = new System.Net.WebClient())
-                {
-                    wc.Encoding = Encoding.UTF8;
-                    contents = wc.DownloadString(url);
-                }
+
+            using (var wc = new System.Net.WebClient())
+            {
+                wc.Encoding = Encoding.UTF8;
+                contents = wc.DownloadString(url);
+            }
 
             if (bundlePath.IndexOf(".css", StringComparison.Ordinal) > -1)
             {
-                path = Config.StyleDebugPath + (bundlePath[0] == '/' ? bundlePath.Substring(1) : bundlePath);                        
+                path = Config.StyleDebugPath + (bundlePath[0] == '/' ? bundlePath.Substring(1) : bundlePath);
             }
             else
             {
                 path = Config.ScriptDebugPath + (bundlePath[0] == '/' ? bundlePath.Substring(1) : bundlePath);
-             
+
             }
             FileSystemManager.CreatDirectoryIfNotExist(AuthorizeManager.AuthorizeActionOnPath(path.Substring(0, path.LastIndexOf("/", StringComparison.Ordinal)), ActionKey.WriteToDisk));
             await WriteFileAsync(path,
@@ -569,14 +569,14 @@ namespace KS.Business.Develop.Code.BrowserCode
                     path = Config.StyleDistPath + (bundlePath[0] == '/' ? bundlePath.Substring(1) : bundlePath);
 
                     minContent = _compressManager.CompressCss(contents);
-            
+
                 }
                 else
                 {
                     path = Config.ScriptDistPath + (bundlePath[0] == '/' ? bundlePath.Substring(1) : bundlePath);
-                  
 
-                    minContent = _compressManager.CompressJavaScript(contents,path);
+
+                    minContent = _compressManager.CompressJavaScript(contents, path);
 
                 }
                 FileSystemManager.CreatDirectoryIfNotExist(AuthorizeManager.AuthorizeActionOnPath(path.Substring(0, path.LastIndexOf("/", StringComparison.Ordinal)), ActionKey.WriteToDisk));
@@ -627,14 +627,14 @@ namespace KS.Business.Develop.Code.BrowserCode
         public async Task<List<KeyValue>> GetBundleDependencyForDependencyEngieen(int bundleId)
         {
             var bundle =
-                await ContentManagementContext.MasterDataKeyValues.FirstOrDefaultAsync(md => md.Id == bundleId)
-                    ;
+                await ContentManagementContext.MasterDataKeyValues.AsNoTracking().FirstOrDefaultAsync(md => md.Id == bundleId);
+
             var dependencys = new string[] { };
-            if (!string.IsNullOrEmpty(bundle.SecondCode))
+            if (!string.IsNullOrEmpty(bundle?.SecondCode))
                 dependencys = bundle.SecondCode.Split(',');
 
 
-            return await ContentManagementContext.MasterDataKeyValues
+            return await ContentManagementContext.MasterDataKeyValues.AsNoTracking()
                 .Where(md => dependencys.Contains(md.Id.ToString()))
                 .Select(md => new KeyValue() { Key = (md.Code == BundleCode + md.Id ? null : md.Code), Value = md.PathOrUrl }).ToListAsync();
 
@@ -652,10 +652,10 @@ namespace KS.Business.Develop.Code.BrowserCode
 
             return await ContentManagementContext.MasterDataKeyValues
                 .Where(md => dependencys.Contains(md.Id.ToString()))
-                .Select(md=>new KeyValue() {Key = md.Id.ToString(),Value = md.PathOrUrl}).ToListAsync();
+                .Select(md => new KeyValue() { Key = md.Id.ToString(), Value = md.PathOrUrl }).ToListAsync();
 
         }
- 
+
     }
 
     sealed class BundleRequest
