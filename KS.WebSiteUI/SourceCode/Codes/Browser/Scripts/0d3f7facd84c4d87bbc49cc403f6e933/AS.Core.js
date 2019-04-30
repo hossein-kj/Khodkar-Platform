@@ -455,7 +455,7 @@
             //        $($.asPlaceHolder).html(data.page);
             //    }
             //}); 
-
+             $.asAccountManager.returnUrl=$.asUrlDelimeter;
         },
         otherHandler: function () {
 
