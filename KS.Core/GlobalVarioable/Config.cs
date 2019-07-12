@@ -47,6 +47,7 @@ namespace KS.Core.GlobalVarioable
         public static string DefaultsGetWebPagesServiceUrl { get; set; }
         public static int AspectCacheSlidingExpirationTimeInMinutes { get; set; }
         public static int GroupCacheSlidingExpirationTimeInMinutes { get; set; }
-    public static bool EnableActionLog { get; set; }
+        public static int MasterDataLocalKeyValueCacheSlidingExpirationTimeInMinutes { get; set; }
+        public static bool EnableActionLog { get; set; }
     }
 }

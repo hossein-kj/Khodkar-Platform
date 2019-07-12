@@ -15,7 +15,7 @@ namespace KS.WebSiteUI
     {
         public void GlobalRegistration(HttpConfiguration config)
         {
-            
+
 
             AreaRegistration.RegisterAllAreas();
             //GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -73,6 +73,7 @@ namespace KS.WebSiteUI
             Config.LoginUrl = ConfigurationManager.AppSettings["LoginUrl"];
             Config.AspectCacheSlidingExpirationTimeInMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["AspectCacheSlidingExpirationTimeInMinutes"]);
             Config.GroupCacheSlidingExpirationTimeInMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["GroupCacheSlidingExpirationTimeInMinutes"]);
+            Config.MasterDataLocalKeyValueCacheSlidingExpirationTimeInMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["MasterDataLocalKeyValueCacheSlidingExpirationTimeInMinutes"]);
             Config.EnableActionLog = Convert.ToBoolean(ConfigurationManager.AppSettings["EnableActionLog"]);
         }
     }
