@@ -1,26 +1,26 @@
 ﻿"use strict";
 (function () {
-    $.as = function (params) {
-        if (params.pageId) {
-            this.pageId = params.pageId
-            this.as = function (id) {
+    $.as=function(params){
+        if(params.pageId){
+            this.pageId=params.pageId
+            this.as=function(id){
                 var pageId = this.pageId
-                var temp = $(pageId).find(id);
-                temp.selector = this.pageId + ' ' + id;
-                return temp;
+                var temp = $(pageId).find(id); 
+                temp.selector=this.pageId+' '+id;
+                 return temp;
             }
-        } else {
+        }else{
             var temp = $(params);
-            if (params.selector) {
-                temp.selector = params.selector;
-            } else if (temp.hasClass("asPage")) {
-                temp.selector = "";
+            if(params.selector){
+            temp.selector=params.selector;
+            }else if(temp.hasClass("asPage")){
+                temp.selector="";
                 var classes = temp.attr('class').split(' ');
-                for (var i = 0; i < classes.length; i++) {
-                    temp.selector += "." + classes[i];
+                for(var i=0; i<classes.length; i++){
+                    temp.selector+="." + classes[i];
                 }
             }
-            return temp;
+             return temp;
         }
     }
     $.asDebugMessageTimeOut = 10000000
@@ -34,8 +34,8 @@
             login: 'loginSuccessed',
             logoff: 'logoffSuccessed',
             queryStringChange: 'queryStringChange',
-            fontLoad: 'fontLoad',
-            fontLoaded: 'fontLoaded'
+            fontLoad:'fontLoad',
+            fontLoaded:'fontLoaded'
         },
         page: {
             dataLoading: "pageDataLoading",
@@ -46,8 +46,8 @@
             ready: "pageReady",
             queryStringChange: 'queryStringChange',
             beforeSendAjaxRequest: 'beforeSendAjaxRequest'
-        }, modal: {
-            reopen: "modalReopened"
+        },modal:{
+            reopen:"modalReopened"
         }
 
     };
@@ -57,11 +57,11 @@
     $.asGetPageEventName = function (selector) {
         return "#" + selector.selector.substring(1, selector.selector.indexOf("." + $.asPageClass))
     }
-
-    $.asCallDisposeEventOfAllPage = function () {
+ 
+    $.asCallDisposeEventOfAllPage = function(){
         $.each($.asPage.ids, function (key, val) {
             $("#" + key).trigger($.asEvent.page.dispose, [])
-        });
+            });
     }
 
     //#region bind event
@@ -94,24 +94,20 @@
 
         $($.asEvent.global).on("info", function (ex, message, userVisible, errorMesage, logable) {
             if (userVisible) {
-                $.toaster({
-                    priority: 'info', title: $.asRes[$.asLang].info, message: message, settings: {
-                        'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut : $.asReleaseMessageTimeOut
-                        , 'debyg': $.asDebugMode()
-                    }
-                });
+                $.toaster({ priority: 'info', title: $.asRes[$.asLang].info, message: message, settings: {
+                    'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut:$.asReleaseMessageTimeOut 
+                    ,'debyg':$.asDebugMode()
+                } });
             }
         });
 
         $($.asEvent.global).on("warning", function (ex, message, userVisible, errorMesage, logable) {
             if (userVisible) {
-                $.toaster({
-                    priority: 'warning', title: $.asRes[$.asLang].warning, message: message, settings: {
-                        'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut : $.asReleaseMessageTimeOut
-                        , 'debyg': $.asDebugMode()
-
-                    }
-                });
+                $.toaster({ priority: 'warning', title: $.asRes[$.asLang].warning, message: message, settings: {
+                    'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut:$.asReleaseMessageTimeOut 
+                    ,'debyg':$.asDebugMode()
+                    
+                } });
             }
         });
 
@@ -129,16 +125,14 @@
                 //    showCloseButton: true
                 //});
 
-                $.toaster({
-                    priority: 'danger', title: $.asRes[$.asLang].error, message: message, settings: {
-                        'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut : $.asReleaseMessageTimeOut
-                        , 'debyg': $.asDebugMode()
-
-                    }
-                });
+                $.toaster({ priority: 'danger', title: $.asRes[$.asLang].error, message: message, settings: {
+                    'timeout': $.asDebugMode() === true ? $.asDebugMessageTimeOut:$.asReleaseMessageTimeOut 
+                    ,'debyg':$.asDebugMode()
+                    
+                } });
             }
         });
-        $($.asEvent.global).on("success", function (load, message, userVisible, errorMesage, logable, showTime) {
+        $($.asEvent.global).on("success", function (load, message, userVisible, errorMesage, logable,showTime) {
 
             //$("<div>" + message + "</div>").asNotification({
             //    width: 250,
@@ -152,12 +146,10 @@
             //    showCloseButton: true
             //});
 
-            $.toaster({
-                priority: 'success', title: $.asRes[$.asLang].message, message: message, settings: {
-                    'timeout': showTime === null ? ($.asDebugMode() === true ? $.asDebugMessageTimeOut : $.asReleaseMessageTimeOut) : showTime
-                        , 'debyg': $.asDebugMode()
-                }
-            });
+            $.toaster({ priority: 'success', title: $.asRes[$.asLang].message, message: message, settings: { 
+                   'timeout':showTime===null ? ($.asDebugMode() === true ? $.asDebugMessageTimeOut:$.asReleaseMessageTimeOut ):showTime
+                    ,'debyg':$.asDebugMode()
+                } });
         });
         $($.asEvent.global).on($.asEvent.global.login,
             function () {
@@ -178,11 +170,11 @@
 
         $(pageEvent).one($.asEvent.page.dataLoaded, function (event) {
             $(pageEvent).trigger($.asEvent.page.ready, [])
-
-
-
-            $($.asEvent.global).trigger($.asEvent.global.fontLoad, []);
-
+            
+        
+                    
+             $($.asEvent.global).trigger($.asEvent.global.fontLoad, []);
+             
         });
     }
 
@@ -209,31 +201,31 @@
             $.asCookies.set($.asCoockiesName.asIsDebugMode, { IsDebugMode: val }, { expires: 10000000 })
         }
         else {
-            try {
-                if ($.asStorage.getItem($.asCoockiesName.asIsDebugMode) !== null) {
+               try{
+            if ($.asStorage.getItem($.asCoockiesName.asIsDebugMode) !== null) {
                     return $.asStorage.getItem($.asCoockiesName.asIsDebugMode) == "true"
-                }
-                else {
-                    return false;
-                }
-            } catch (err) {
-                return false
             }
+            else {
+                return false;
+            }
+            }catch(err){
+                  return false 
+               }
         }
 
     }
 
-    $.asGetScriptPath = function () {
-        var debugId = $.asStorage.getItem($.asDebugId) === null ? "" : $.asDebugIdSign + "/" + $.asStorage.getItem($.asDebugId) + "/"
+    $.asGetScriptPath = function(){
+        var debugId = $.asStorage.getItem($.asDebugId) === null ? "": $.asDebugIdSign + "/" + $.asStorage.getItem($.asDebugId)+ "/"
         var path = $.asDebugMode() === true ? $.asDebugBaceScriptUrl + debugId : $.asBaceScriptUrl
-        return path ? path : "/scripts/dist/"
+        return path ? path:"/scripts/dist/"
     }
-
-    $.asGetStylePath = function () {
+    
+    $.asGetStylePath = function(){
         var path = $.asDebugMode() === true ? $.asDebugBaceStyleUrl : $.asBaceStyleUrl
-        return path ? path : "/content/dist/"
+        return path?path:"/content/dist/"
     }
-
+    
     $.asCacheSuffix = "version=1"
     $.asCurrentTemplateUrl = ""
     $.asCurrentFrameWorkUrl = ""
@@ -322,7 +314,7 @@
             if ($.asAccountManager.returnQueryString === null)
                 $.asAccountManager.returnQueryString = state.data.queryString
             History.pushState({ pageUrl: pageUrl, placeHolder: 'body', pureUrl: $.asLang + loginUrl }, '/' + $.asLang + loginUrl, '/' + loginUrl)
-
+          
             //$.asShowMessage({ template: "error", message: 'نیاز به ورود مجدد' });
         } else {
             var $pageSelector = $("body");
@@ -342,7 +334,7 @@
                     //$('body').addClass('as-loading')
                     History.pushState({ pageUrl: pageUrl, placeHolder: 'body', pureUrl: url + $.asUrlDelimeter }, url, url)
                     $($.asEvent.global).trigger($.asEvent.global.logoff, []);
-
+                   
                 }
             }, { removeOverlay: false })
         }
@@ -353,39 +345,39 @@
 
     $.asAccountManager = {
         mainHandler: function () {
-
+         
             if ($.asAccountManager.returnUrl !== $.asUrlDelimeter) {
                 var reg = new RegExp($.asUrlDelimeter, "gi");
-                var returnUrlIsByQuer = false;
+                var returnUrlIsByQuer=false;
 
                 var url = []
                 var qSign = $.asQueryStringSign.replace(new RegExp($.asQueryStringSign, "gi"), $.asQueryStringShadowSign).toLowerCase()
-
+               
                 if ($.asAccountManager.returnUrl.toLowerCase().indexOf(qSign.toLowerCase()) > -1) {
 
                     url = $.asAccountManager.returnUrl.split(qSign)
-                } else if ($.asAccountManager.returnUrl.toLowerCase().indexOf($.asQueryStringSign.toLowerCase()) > -1) {
-                    url = $.asAccountManager.returnUrl.split($.asQueryStringSign)
-                    returnUrlIsByQuer = true
+                }else if($.asAccountManager.returnUrl.toLowerCase().indexOf($.asQueryStringSign.toLowerCase()) > -1){
+                     url = $.asAccountManager.returnUrl.split($.asQueryStringSign)
+                     returnUrlIsByQuer=true
                 }
-
+              
                 //url = url.substring(url.indexOf(qSign))
                 //console.log(url)
                 //console.log($.asAccountManager.returnUrl)
 
                 if (url.length === 2) {
-                    if (returnUrlIsByQuer) {
-                        History.pushState({
-                            pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.returnUrl }]),
+                  if(returnUrlIsByQuer){
+                              History.pushState({
+                            pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.returnUrl}]),
                             placeHolder: 'body',
                             pureUrl: url[0]
                         },
-                      $.asAccountManager.returnUrl,
-                      $.asAccountManager.returnUrl)
-                    } else {
+                            $.asAccountManager.returnUrl,
+                            $.asAccountManager.returnUrl)
+                  }else{
                         var query = ($.asAccountManager.returnQueryString !== null && typeof ($.asAccountManager.returnQueryString) != "undefined")
                             ? $.asQueryStringSign + $.asAccountManager.returnQueryString : ""
-
+                            
                         History.pushState({
                             pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: url[0] + query }]),
                             placeHolder: 'body',
@@ -393,11 +385,11 @@
                         },
                             url[0].replace(reg, "/") + query,
                             url[0].replace(reg, "/") + query)
-                    }
+                  }
 
                 } else if ($.asAccountManager.returnQueryString !== null && typeof ($.asAccountManager.returnQueryString) != "undefined") {
 
-
+                    
                     History.pushState({
                         pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.returnUrl + $.asQueryStringSign + $.asAccountManager.returnQueryString }]),
                         placeHolder: 'body',
@@ -407,27 +399,27 @@
                         $.asAccountManager.returnUrl.replace(reg, "/") + $.asQueryStringSign + $.asAccountManager.returnQueryString)
                 } else {
 
-
-                    if ($.asAccountManager.returnUrl.toLowerCase().indexOf($.asAccountManager.loginUrl.replace(/\//g, $.asUrlDelimeter).toLowerCase()) > -1 ||
-                    $.asAccountManager.returnUrl.toLowerCase().indexOf($.asAccountManager.loginUrl.toLowerCase()) > -1) {
-
+                    
+                    if($.asAccountManager.returnUrl.toLowerCase().indexOf($.asAccountManager.loginUrl.replace(/\//g, $.asUrlDelimeter).toLowerCase()) >-1 || 
+                    $.asAccountManager.returnUrl.toLowerCase().indexOf($.asAccountManager.loginUrl.toLowerCase()) >-1){
+                        
+                                        History.pushState({
+                    pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.url.replace(/\//g, $.asUrlDelimeter) }]),
+                    placeHolder: 'body',
+                    pureUrl: $.asAccountManager.url
+                },
+                    $.asAccountManager.url,
+                    $.asAccountManager.url);
+                    }else{
                         History.pushState({
-                            pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.url.replace(/\//g, $.asUrlDelimeter) }]),
-                            placeHolder: 'body',
-                            pureUrl: $.asAccountManager.url
-                        },
-    $.asAccountManager.url,
-    $.asAccountManager.url);
-                    } else {
-                        History.pushState({
-                            pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.returnUrl }]),
-                            placeHolder: 'body',
-                            pureUrl: $.asAccountManager.returnUrl
-                        },
+                        pageUrl: $.asInitService($.asReloadUrl, [{ name: "@url", value: $.asAccountManager.returnUrl }]),
+                        placeHolder: 'body',
+                        pureUrl: $.asAccountManager.returnUrl
+                    },
                         $.asAccountManager.returnUrl.replace(reg, "/"),
                         $.asAccountManager.returnUrl.replace(reg, "/"))
                     }
-
+                    
                 }
             } else {
                 History.pushState({
@@ -463,19 +455,19 @@
             //        $($.asPlaceHolder).html(data.page);
             //    }
             //}); 
-            $.asAccountManager.returnUrl = $.asUrlDelimeter;
+             $.asAccountManager.returnUrl=$.asUrlDelimeter;
         },
         otherHandler: function () {
 
         },
-        setToken: function (username, token) {
+        setToken:function(username,token){
             $.asCookies.set($.asCoockiesName.asIsAuthenticated, { IsAuthenticated: true }, { expires: 10000000 })
             $.asStorage.setItem($.asLoginAccessToken, token)
             $.asStorage.setItem($.asUserName, username)
-
+            
             if (token) {
                 $.connection.hub.stop();
-                $.connection.hub.qs = { 'BearerToken': token }
+                $.connection.hub.qs={'BearerToken':token}
                 $.connection.hub.start();
             }
         },
@@ -503,7 +495,7 @@
         $.asEach(params, function (parameter) {
 
             // serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), (encodeURIComponent(parameter.value)).replace(new RegExp("%25", "gi"), "%20"));
-            serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), parameter.value);
+             serviceUrl = serviceUrl.replace(new RegExp(parameter.name, "gi"), parameter.value);
         });
         return serviceUrl;
     }
@@ -514,36 +506,36 @@
     //        urls = pageParams.loadScriptAndStyle.urls || [];
     //    return designTimeModuleArray.concat(urls)
     //}
-
-    $.asModalManager = {
-        modals: {},
-        urls: {
-            login: "/login/"
-        },
-        get: function (params) {
-            var defaultsParams = $.extend({ isGlobal: false, id: $.asuniqueId() }, params)
+    
+        $.asModalManager = {
+        modals:{},
+       urls:{
+        login:"/login/"
+       },
+       get:function(params){
+            var defaultsParams = $.extend({ isGlobal: false, id:$.asuniqueId() }, params)
             var modal = $.asModalManager.modals[defaultsParams.url]
-
-            if (modal && ((defaultsParams.isGlobal && $("#divGlobalModal").length > 0) || (!defaultsParams.isGlobal && $("#divLocalModal").length > 0))) {
-                if ($("#" + modal.attr('id')).length > 0)
+            
+             if(modal && ((defaultsParams.isGlobal && $("#divGlobalModal").length > 0) || (!defaultsParams.isGlobal && $("#divLocalModal").length > 0))){
+                if($("#"+modal.attr('id')).length > 0)
                     return modal;
             }
-
+            
             if ($("#divGlobalModal").length === 0) {
-                $("body").append("<div style='display:none' id='divGlobalModal'></div>");
+                    $("body").append("<div style='display:none' id='divGlobalModal'></div>"  );
             }
             if ($("#divLocalModal").length === 0) {
-                $($.asPlaceHolder).append("<div style='display:none' id='divLocalModal'></div>");
+                    $($.asPlaceHolder).append("<div style='display:none' id='divLocalModal'></div>"  );
             }
-            if (defaultsParams.isGlobal) {
-                $("#divGlobalModal").append("<div id='" + defaultsParams.id + "'></div>");
-            } else {
-                $("#divLocalModal").append("<div id='" + defaultsParams.id + "'></div>");
-            }
-            $.asModalManager.modals[defaultsParams.url] = $("#" + defaultsParams.id)
+            if(defaultsParams.isGlobal){
+                    $("#divGlobalModal").append("<div id='" + defaultsParams.id  + "'></div>"  );
+            } else{
+                     $("#divLocalModal").append("<div id='" + defaultsParams.id  + "'></div>"  );
+                }
+            $.asModalManager.modals[defaultsParams.url]=$("#"+defaultsParams.id)
             return $.asModalManager.modals[defaultsParams.url];
-        }
-
+       }
+       
     }
     $.asGetWebpageDependentModuleInRunTime = function (designTimeModuleArray, pageParams) {
 
@@ -579,13 +571,13 @@
         //dispose call
         $("." + currentPageId + "." + $.asPageClass).data('dataItems', [])
         $(currentPageEvent).trigger($.asEvent.page.dispose, [])
-
+   
         //if (defaultsParam.isModal === false)
         $(currentPageEvent).off()
         delete $.asPage.ids[currentPageId]
 
         if (defaultsParam.$holder.selector === "body") {
-            $.asCallDisposeEventOfAllPage()
+           $.asCallDisposeEventOfAllPage()
         }
         if (defaultsParam.replaceHtml === true) {
             defaultsParam.$holder.removeClass(defaultsParam.$holder.data($._asPageId) + " " + $.asPageClass)
@@ -730,11 +722,11 @@
     //    $($.asGlobalMessageBox).asMessageBox('open', message, onOk);
     //};
     $.asShowMessage = function (params) {
-        var defaultsParam = $.extend({ template: "success", userVisible: true, logable: false, showTime: null }, params);
+        var defaultsParam = $.extend({ template: "success", userVisible: true, logable: false,showTime:null }, params);
         //if (defaultsParam.resMessage)
         //    $($.asEvent.global).trigger(defaultsParam.template, [$.asRes[$.asLang][defaultsParam.resMessage], defaultsParam.userVisible, defaultsParam.errorMesage, defaultsParam.logable]);
         //else
-        $($.asEvent.global).trigger(defaultsParam.template, [defaultsParam.message, defaultsParam.userVisible, defaultsParam.errorMesage, defaultsParam.logable, defaultsParam.showTime]);
+        $($.asEvent.global).trigger(defaultsParam.template, [defaultsParam.message, defaultsParam.userVisible, defaultsParam.errorMesage, defaultsParam.logable,defaultsParam.showTime]);
     };
     $.asSort = function (params) {
         if (params.datatype != 'array') {
@@ -947,7 +939,7 @@
         if (defaultsParams.removeChildLessParent === true) {
             defaultsParams.list = $.asParseTree(defaultsParams);
         }
-
+       
         var treeList = [];
         var lookup = {};
         defaultsParams.list.forEach(function (obj) {
@@ -1098,12 +1090,12 @@
 
         headers = $.asSetLanguageAndCulterForCurrentRequest(headers)
         headers.isDebugMode = $.asDebugMode()
-        headers.isMobileMode = $.asStorage.getItem($.asCoockiesName.asIsMobileMode).IsMobileMode;
+        headers.isMobileMode =  $.asStorage.getItem($.asCoockiesName.asIsMobileMode).IsMobileMode;
         var isAuth = $.asCookies.getJSON($.asCoockiesName.asIsAuthenticated)
         if (typeof (isAuth) === "undefined")
-            headers.isAuthenticated = false;
-        else
-            headers.isAuthenticated = isAuth.IsAuthenticated;
+            headers.isAuthenticated =  false;
+            else
+            headers.isAuthenticated =  isAuth.IsAuthenticated;
         return $.extend(headers, customeHeaders)
     }
     //#region error Handler
@@ -1132,9 +1124,9 @@
                     }, { overLay: false })
                 }, 1000);
             }
-        } else if (jqXHR.status === 404) {
-            $.asNotFound($.asRes[$.asLang].url);
-        } else if (jqXHR.responseText != null) {
+        }else  if (jqXHR.status === 404) {
+            $.asNotFound( $.asRes[$.asLang].url);
+            }else if (jqXHR.responseText != null) {
             var respnse = jqXHR.responseText.replace(/\s/g, '');
             if (respnse.length > 0) {
                 var error = { ExceptionMessage: null }
@@ -1158,16 +1150,16 @@
                             else
                                 $.asShowMessage({ template: "error", message: error.ExceptionMessage });
                         }
-                    } else {
-                        $.asConsole.error(error)
+                    } else{
+                         $.asConsole.error(error)
                         //$.asShowMessage({ template: "error", message: error.ExceptionMessage });
                     }
-
+                       
                 } else {
-                    if (error.asError != null)
-                        $.asShowMessage({ template: "error", message: error.asError });
+                    if(error.asError != null)
+                    $.asShowMessage({ template: "error", message: error.asError });
                     else
-                        $.asShowMessage({ template: "error", message: $.asRes[$.asLang].ajaxError + " " + errorThrown });
+                    $.asShowMessage({ template: "error", message: $.asRes[$.asLang].ajaxError + " " + errorThrown });
                 }
             } else
                 $.asShowMessage({ template: "error", message: $.asRes[$.asLang].ajaxError + " " + errorThrown });
@@ -1194,15 +1186,15 @@
             culture: "IR",
             country: "ایران",
             rightToLeft: true,
-            version: 1,
+            version:1,
             showUncaughtError: false,
-            frameWorkAndTemplatePattern: {},
+            frameWorkAndTemplatePattern:{},
             isAuthenticatedUrl: "/Defaults/IsAuthenticated",
             loginServiceUrl: '/Token',
             loginUrl: '/login',
             logOffUrl: '/Defaults/logOff',
             logOffSign: 'LogOff',
-            debugIdSign: 'debugid',
+            debugIdSign:'debugid',
             formUrl: "/Defaults/GetWebPage",
             reloadUrl: "/Defaults/Reload",
             changeTemplateUrl: "/Defaults/ChangeTemplate",
@@ -1221,39 +1213,39 @@
             languageAndCultureCoockie: 'asLanguageAndCulture',
             isMobileModeCoockie: 'asIsMobileMode',
             isDebugModeCoockie: 'asIsDebugMode',
-            isAuthenticatedCoockie: 'asIsAuthenticated',
-            javaScriptPolyFillsFolder: "polyfills",
-            javaScriptLibraryFolder: "libs",
+            isAuthenticatedCoockie:'asIsAuthenticated',
+            javaScriptPolyFillsFolder:"polyfills",
+            javaScriptLibraryFolder:"libs",
             modalUrls: {},
             unLinkClasses: []
         }, params);
-
-
-        $($.asEvent.global).on($.asEvent.global.fontLoad,
-              defaultsParam.onFontLoad)
-
-        $($.asEvent.global).on($.asEvent.global.fontLoaded, function () {
-            setTimeout(defaultsParam.onFontLoaded, 2000);
-        })
-
+        
+         
+          $($.asEvent.global).on($.asEvent.global.fontLoad,
+                defaultsParam.onFontLoad)
+            
+         $($.asEvent.global).on($.asEvent.global.fontLoaded,function(){
+                     setTimeout(defaultsParam.onFontLoaded, 2000);
+         })
+        
         $.asModalManager.urls = $.extend(defaultsParam.modalUrls, $.asModalManager.urls)
-
-
-
+        
+      
+        
         $.asCoockiesName = {
             asLanguageAndCulture: defaultsParam.languageAndCultureCoockie,
             asIsDebugMode: defaultsParam.isDebugModeCoockie,
             asIsMobileMode: defaultsParam.isMobileModeCoockie,
-            asIsAuthenticated: defaultsParam.isAuthenticatedCoockie
+            asIsAuthenticated:defaultsParam.isAuthenticatedCoockie
         }
-
-        $.asCookies.set($.asCoockiesName.asIsMobileMode, { IsMobileMode: false }, { expires: 10000000 })
+        
+         $.asCookies.set($.asCoockiesName.asIsMobileMode, { IsMobileMode: false }, { expires: 10000000 })
         $.asStorage.setJson($.asCoockiesName.asIsMobileMode, {
-            IsMobileMode: false
-        })
-
+         IsMobileMode: false
+      })
+      
         $.asCacheSuffix = "version=" + defaultsParam.version
-        $.asDebugIdSign = defaultsParam.debugIdSign
+        $.asDebugIdSign =defaultsParam.debugIdSign
         $.asDebugId = $.asDebugIdSign
         $.asUrlDelimeter = defaultsParam.urlDelimeter
         $.asQueryStringSign = defaultsParam.queryStringSign
@@ -1286,10 +1278,10 @@
         $.asDebugBaceStyleUrl = defaultsParam.debugBaceStyleUrl
         $.asDebugBaceScriptUrl = defaultsParam.debugBaceScriptUrl
         $.asAccountManager.url = "/" + $.asLang + defaultsParam.loginSuccessedUrl
-
-        $.asJavaScriptPolyFillsFolder = defaultsParam.javaScriptPolyFillsFolder
-        $.asJavaScriptLibraryFolder = defaultsParam.javaScriptLibraryFolder
-
+        
+        $.asJavaScriptPolyFillsFolder=defaultsParam.javaScriptPolyFillsFolder
+        $.asJavaScriptLibraryFolder=defaultsParam.javaScriptLibraryFolder
+        
         $.asThumbnailPath = defaultsParam.thumbnailPath
         $.asSetLanguageAndCulter($.asLang, $.asCulture, $.asCountry, $.asRightToLeft, true);
         $('body').addClass($.asPageClass)
@@ -1307,7 +1299,7 @@
                 });
                 $($.asEvent.global).trigger($.asEvent.global.beforeSendAjaxRequest, [settings])
             },
-            complete: function () {
+            complete:function(){
                 $($.asEvent.global).trigger($.asEvent.global.fontLoaded, []);
             }
         });
@@ -1337,13 +1329,13 @@
 
         // Bind to StateChange Event
         History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
-
+       
             var state = History.getState(); // Note: We are using History.getState() instead of event.state
-            if (state.data.pageUrl === undefined) {
-                var url = $.asUrlAsParameter(state.hash.substring(1))
-                state.data.pureUrl = url
-
-                state.data.pageUrl = $.asInitService($.asFormUrl, [{ name: "@url", value: url }, { name: "/@isModal", value: "" }])
+            if(state.data.pageUrl === undefined){
+                var url =$.asUrlAsParameter(state.hash.substring(1))
+                state.data.pureUrl=url
+                
+                 state.data.pageUrl = $.asInitService($.asFormUrl, [{name: "@url", value: url}, { name: "/@isModal", value: "" }])
             }
             //if ($.asBrowserLastState.data === state.data) return;
             //if (typeof ($.asBrowserLastState.data) !== "undefined")
@@ -1393,14 +1385,14 @@
 
                     if (lastStateUrl !== currentStateUrl || ($.asBrowserLastState.data.pageUrl.indexOf($.asInitService($.asReloadUrl, [{ name: "/@url", value: "" }])) > -1) || (typeof (state.data.queryString) == "undefined" && typeof ($.asBrowserLastState.data.queryString) != "undefined")) {
                         $.asBrowserLastState = state
-
-
+                        
+                        
                         var url = decodeURIComponent(state.data.pageUrl)
-                        url = url.indexOf($.asQueryStringShadowSign) > -1 ?
-               url.replace(url.substring(url.toLowerCase().indexOf($.asQueryStringShadowSign)), "") : url
-
-
-
+                         url = url.indexOf($.asQueryStringShadowSign) > -1 ?
+                url.replace(url.substring(url.toLowerCase().indexOf($.asQueryStringShadowSign)), "") : url
+                        
+                        
+                        
                         $._asLoadPage(url, state.data.placeHolder)
                     }
                 } else {
@@ -1420,24 +1412,26 @@
             else {
                 if (typeof (defaultsParam.loadPage) != "undefined")
                     $.asLoadPage(defaultsParam.loadPage.location, defaultsParam.loadPage.url)
-                else {
-                    if (defaultsParam.pageParams.url) {
-
-                        if (defaultsParam.pageParams.url !== window.location.pathname) {
-
-                            if (defaultsParam.pageParams.url === "/" + $.asLang + $.asAccountManager.loginUrl || defaultsParam.pageParams.url === $.asAccountManager.loginUrl) {
-                                if ($.asAccountManager.loginUrl != window.location.pathname) {
-                                    $.asAccountManager.returnUrl = decodeURIComponent(window.location.pathname)
-
-                                }
-
-                            }
-
-                        }
-                    }
-                    $.asSetupPage(defaultsParam.pageParams)
+                else{
+                        if(defaultsParam.pageParams.url)
+                                {
+                                   
+                                       if(defaultsParam.pageParams.url !== window.location.pathname)
+                                      {
+                        
+                                        if(defaultsParam.pageParams.url === "/" + $.asLang + $.asAccountManager.loginUrl || defaultsParam.pageParams.url === $.asAccountManager.loginUrl){
+                                            if($.asAccountManager.loginUrl != window.location.pathname){
+                                                 $.asAccountManager.returnUrl = decodeURIComponent(window.location.pathname)
+                                                
+                                            }
+                                            
+                                        }
+                                       
+                                      }
+                               }
+                     $.asSetupPage(defaultsParam.pageParams)
                 }
-
+                    
 
             }
 
@@ -1450,7 +1444,7 @@
         var path = $.asGetScriptPath();
         if (Modernizr.matchmedia) {
 
-            polyFills.push({ url: path + $.asJavaScriptLibraryFolder + '/enquire.js', kind: 'js' })
+            polyFills.push({ url: path + $.asJavaScriptLibraryFolder +'/enquire.js', kind: 'js' })
 
         } else {
             polyFills.push({ url: path + $.asJavaScriptPolyFillsFolder + '/respond-matchmedia-enquire.js', kind: 'js' })
@@ -1463,8 +1457,8 @@
 
 
 
-        var pageSelector = $("body");
-        pageSelector.selector = "body";
+    var pageSelector = $("body");
+    pageSelector.selector="body";
         pageSelector
      .asLoadModule({
          urls: polyFills,
@@ -1510,75 +1504,75 @@
      })
 
         // Declare a proxy to reference the hub. 
-
-        var notificationManager = $.connection.notificationHub;
-        // Create a function that the hub can call to broadcast messages.
-        notificationManager.client.broadcastMessage = function (template, message) {
-            $.asShowMessage({ template: template, message: $.asRes[$.asLang][message] ? $.asRes[$.asLang][message] : message })
-        };
-
-
-
-
-
-
-
-
-
-
-
-
-        var hidden = "hidden";
-
+       
+            var notificationManager = $.connection.notificationHub;
+            // Create a function that the hub can call to broadcast messages.
+            notificationManager.client.broadcastMessage = function (template,message) {
+                $.asShowMessage({ template: template, message: $.asRes[$.asLang][message] ? $.asRes[$.asLang][message]:message })
+            };
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            var hidden = "hidden";
+        
         var onchange = function (evt) {
             var v = "visible", h = "hidden",
                 evtMap = {
-                    focus: v, focusin: v, pageshow: v, blur: h, focusout: h, pagehide: h
+                  focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h
                 };
-
+        
             evt = evt || window.event;
-            if (evt.type in evtMap) {
-                if (evtMap[evt.type] === "visible") {
-                    // Start the connection.
+            if (evt.type in evtMap){
+                if(evtMap[evt.type] === "visible"){
+                   // Start the connection.
                     $.connection.hub.start();
-                } else {
-                    $.connection.hub.stop();
+                }else{
+                     $.connection.hub.stop();
                 }
             }
-
+              
             else
-                if ((this[hidden] ? "hidden" : "visible") === "visible") {
-                    // Start the connection.
+              if((this[hidden] ? "hidden" : "visible") === "visible"){
+                   // Start the connection.
                     $.connection.hub.start();
-                } else {
-                    $.connection.hub.stop();
+                }else{
+                     $.connection.hub.stop();
                 }
-        }
-
-        // Standards:
-        if (hidden in document)
+          }
+          
+          // Standards:
+          if (hidden in document)
             document.addEventListener("visibilitychange", onchange);
-        else if ((hidden = "mozHidden") in document)
+          else if ((hidden = "mozHidden") in document)
             document.addEventListener("mozvisibilitychange", onchange);
-        else if ((hidden = "webkitHidden") in document)
+          else if ((hidden = "webkitHidden") in document)
             document.addEventListener("webkitvisibilitychange", onchange);
-        else if ((hidden = "msHidden") in document)
+          else if ((hidden = "msHidden") in document)
             document.addEventListener("msvisibilitychange", onchange);
-            // IE 9 and lower:
-        else if ("onfocusin" in document)
+          // IE 9 and lower:
+          else if ("onfocusin" in document)
             document.onfocusin = document.onfocusout = onchange;
-            // All others:
-        else
+          // All others:
+          else
             window.onpageshow = window.onpagehide
             = window.onfocus = window.onblur = onchange;
+        
 
-
-
-        // set the initial state (but only if browser supports the Page Visibility API)
-        if (document[hidden] !== undefined)
-            onchange({ type: document[hidden] ? "blur" : "focus" });
-
-
+        
+          // set the initial state (but only if browser supports the Page Visibility API)
+          if( document[hidden] !== undefined )
+            onchange({type: document[hidden] ? "blur" : "focus"});
+            
+    
 
     };
     $.asSetLanguageAndCulter = function (lang, culture, country, rightToLeft, noChangeUrl) {
@@ -1634,38 +1628,38 @@
 
     //#region route
     $(document).delegate('a', 'click', function (e) {
-        if ($(this).attr('target') === "_blank")
-            return;
+         if($(this).attr('target') === "_blank")
+           return;
         var noLink = false, className
         if (e.which === 1 && !e.metaKey && !e.shiftKey) {
-
+            
             if (typeof ($(this).attr('href')) == "undefined")
                 return true;
-
+                
             var href = $(this).attr('href').toLowerCase()
-
+            
             if (href.indexOf("javascript:") > -1 || href.indexOf("javascript :") > -1)
                 return false;
-
+            
             var isModal = false
-            if (href.length > 1) {
-                var modalUrl = ("/" + href + "/").replace("//", "/").toLowerCase()
-
+            if(href.length > 1){
+                 var modalUrl =  ("/" + href + "/" ).replace("//","/").toLowerCase()
+               
                 $.each($.asModalManager.urls, function (index, value) {
+                  
+                    if(("/" + value+ "/" ).replace("//","/").toLowerCase() === modalUrl){
+                           var $winLogin= $.asModalManager.get({url:value,isglobal:true})
+                             $winLogin.asModal()
+                             $winLogin.asModal('load', $.asInitService($.asFormUrl,[{name:"@url",value:$.asUrlAsParameter(value)},{name:"@isModal",value:true}]))
+                              isModal = true
+                              return false
+                           }
 
-                    if (("/" + value + "/").replace("//", "/").toLowerCase() === modalUrl) {
-                        var $winLogin = $.asModalManager.get({ url: value, isglobal: true })
-                        $winLogin.asModal()
-                        $winLogin.asModal('load', $.asInitService($.asFormUrl, [{ name: "@url", value: $.asUrlAsParameter(value) }, { name: "@isModal", value: true }]))
-                        isModal = true
-                        return false
-                    }
-
-                })
-            }
-            if (isModal)
-                return false;
-
+                 })
+              }
+            if(isModal)
+            return false;
+            
             if (this.className) {
                 className = this.className
                 $.each($.asUnLinkClasses, function (index, value) {
@@ -1704,30 +1698,30 @@
 
         return false
     })
-
-    $.asGetCurrentPageTemplatePatternAndTemplate = function (pageUrl) {
-        var newTemplateUrls = ""
-        var newFrameWorkUrls = ""
-        if (pageUrl) {
-            pageUrl = pageUrl.toLowerCase()
-            $.asFrameWorkAndTemplatePattern
-            $.each($.asFrameWorkAndTemplatePattern, function (key, value) {
-                $.each(value, function (k, v) {
-                    if (pageUrl.indexOf(v.toLowerCase()) === 0) {
-                        if (newTemplateUrls.length < v.length) {
-                            newTemplateUrls = v.toLowerCase()
-                            newFrameWorkUrls = key
-                        }
-                    }
-
-                });
-            });
-        }
-        return {
-            templateUrl: newTemplateUrls,
-            frameWorkUrl: newFrameWorkUrls
-        }
-    }
+    
+    $.asGetCurrentPageTemplatePatternAndTemplate = function(pageUrl){
+                var newTemplateUrls=""
+                var newFrameWorkUrls=""
+                if(pageUrl){
+                     pageUrl=pageUrl.toLowerCase()
+                     $.asFrameWorkAndTemplatePattern
+                     $.each($.asFrameWorkAndTemplatePattern, function (key, value) {
+                        $.each(value, function (k, v) {
+                            if(pageUrl.indexOf(v.toLowerCase()) === 0){
+                                if(newTemplateUrls.length < v.length){
+                                       newTemplateUrls = v.toLowerCase()
+                                       newFrameWorkUrls = key
+                                }
+                            }
+                               
+                        });
+                    });
+                }
+                return {
+                    templateUrl:newTemplateUrls,
+                    frameWorkUrl:newFrameWorkUrls
+                }
+            }
     $.asSetupPage = function (params, placeHolder, replaceHtml, isModal, pageParams) {
 
         if (typeof (replaceHtml) == "undefined")
@@ -1755,14 +1749,14 @@
         } else {
             $holder = placeHolder
             if ($(pageEvent).length === 0) {
-
-                $($.asPlaceHolder).append("<span style='display:none' id='" + params.pageId + "'></span>");
+    
+                $( $.asPlaceHolder).append("<span style='display:none' id='" + params.pageId  + "'></span>"  );
             }
         }
 
-        var pageTemplatePatternAndFrameWork = $.asGetCurrentPageTemplatePatternAndTemplate(params.url)
-        $.asCurrentTemplateUrl = pageTemplatePatternAndFrameWork.templateUrl
-        $.asCurrentFrameWorkUrl = pageTemplatePatternAndFrameWork.frameWorkUrl
+             var pageTemplatePatternAndFrameWork = $.asGetCurrentPageTemplatePatternAndTemplate(params.url)
+              $.asCurrentTemplateUrl = pageTemplatePatternAndFrameWork.templateUrl
+              $.asCurrentFrameWorkUrl = pageTemplatePatternAndFrameWork.frameWorkUrl
         // if (typeof params.templateUrl !== 'undefined') {
 
         //     $.asCurrentTemplateUrl = params.templateUrl
@@ -1774,13 +1768,13 @@
 
 
         $.asSetWebPageData({ data: params, $holder: $holder, replaceHtml: replaceHtml });
-        if (params.dependentModules === "[]")
-            params.dependentModules = []
-        if (params.param === "{}")
-            params.param = {}
-
+        if(params.dependentModules === "[]")
+            params.dependentModules=[]
+        if(params.param === "{}")
+           params.param={}
+           
         var pageSelector = $(asPageId);
-        pageSelector.selector = asPageId;
+        pageSelector.selector=asPageId;
         pageSelector
             .asLoadModule({
                 urls: $.asGetWebpageDependentModuleInRunTime(params.dependentModules, params.param),
@@ -1789,7 +1783,7 @@
                         respond.update()
                     $.asPageLoadComplete(params, asPageId)
                     try {
-
+                        
                         $(pageEvent).trigger($.asEvent.page.loaded, [params.requestedUrl, pageParams])
                     } catch (err) {
                         $.asShowMessage({ template: "error", message: err })
@@ -1827,95 +1821,97 @@
 
         if (url.toLowerCase().indexOf($.asQueryStringSign) > -1)
             url = url.replace(new RegExp(url.substring(url.toLowerCase().indexOf($.asQueryStringSign)), "gi"), "")
-
-        url = url.replace(new RegExp(" ", "gi"), "%");
-
+            
+         url = url.replace(new RegExp(" ", "gi"), "%");
+            
         var loadPage = function (data) {
 
-            // if (typeof data.templateUrl !== 'undefined') {
-
-            //     if ($.asCurrentTemplateUrl !== data.templateUrl && $.asCurrentTemplateUrl !== "") {
-            //         if ($.asCurrentFrameWorkUrl !== data.frameWorkUrl && $.asCurrentFrameWorkUrl !== "") {
-            //             window.location.assign("/" + url.substring(url.indexOf($.asFormUrl + "/")))
-            //         } else {
-            //             var pageUrl = $.asChangeTemplateUrl + "/" + data.url.replace(/\//gi, $.asUrlDelimeter);
-            //             $('body')
-            //                 .asAjax({
-            //                     url: pageUrl,
-            //                     type: "get",
-            //                     success: function (template) {
-            //                         $('body').removeClass("modal-open");
-            //                         $.asSetupPage(template, 'body', true)
-            //                         $.asSetupPage(data, holder, true)
-            //                     }
-            //                 })
-            //         }
-            //     }
-            //     else {
-            //         $.asSetupPage(data, holder, true)
-            //     }
-            // }
-
-            if (typeof data.url !== 'undefined') {
-                var pageTemplatePatternAndFrameWork = $.asGetCurrentPageTemplatePatternAndTemplate(data.url)
-                if ($.asCurrentTemplateUrl !== pageTemplatePatternAndFrameWork.templateUrl && $.asCurrentTemplateUrl !== "") {
-                    if ($.asCurrentFrameWorkUrl !== pageTemplatePatternAndFrameWork.frameWorkUrl && $.asCurrentFrameWorkUrl !== "") {
-                        location.reload()
-                        // window.location.assign("/" + url.substring(url.indexOf($.asFormUrl + "/")))
-                    } else {
-
-                        $.asCurrentTemplateUrl = pageTemplatePatternAndFrameWork.templateUrl
-                        $.asCurrentFrameWorkUrl = pageTemplatePatternAndFrameWork.frameWorkUrl
-
-                        var pageUrl = $.asChangeTemplateUrl + "/" + data.url.replace(/\//gi, $.asUrlDelimeter);
-                        var $pageSelector = $('body');
-                        $pageSelector.selector = "body";
-                        $pageSelector
-                            .asAjax({
-                                url: pageUrl,
-                                type: "get",
-                                success: function (template) {
-                                    $('body').removeClass("modal-open");
-                                    $.asSetupPage(template, 'body', true)
-                                    $.asSetupPage(data, holder, true)
-                                }
-                            })
+                // if (typeof data.templateUrl !== 'undefined') {
+                
+                //     if ($.asCurrentTemplateUrl !== data.templateUrl && $.asCurrentTemplateUrl !== "") {
+                //         if ($.asCurrentFrameWorkUrl !== data.frameWorkUrl && $.asCurrentFrameWorkUrl !== "") {
+                //             window.location.assign("/" + url.substring(url.indexOf($.asFormUrl + "/")))
+                //         } else {
+                //             var pageUrl = $.asChangeTemplateUrl + "/" + data.url.replace(/\//gi, $.asUrlDelimeter);
+                //             $('body')
+                //                 .asAjax({
+                //                     url: pageUrl,
+                //                     type: "get",
+                //                     success: function (template) {
+                //                         $('body').removeClass("modal-open");
+                //                         $.asSetupPage(template, 'body', true)
+                //                         $.asSetupPage(data, holder, true)
+                //                     }
+                //                 })
+                //         }
+                //     }
+                //     else {
+                //         $.asSetupPage(data, holder, true)
+                //     }
+                // }
+                
+                if (typeof data.url !== 'undefined') {
+                    var pageTemplatePatternAndFrameWork = $.asGetCurrentPageTemplatePatternAndTemplate(data.url)
+                    if ($.asCurrentTemplateUrl !== pageTemplatePatternAndFrameWork.templateUrl && $.asCurrentTemplateUrl !== "") {
+                        if ($.asCurrentFrameWorkUrl !== pageTemplatePatternAndFrameWork.frameWorkUrl && $.asCurrentFrameWorkUrl !== "") {
+                            location.reload()
+                            // window.location.assign("/" + url.substring(url.indexOf($.asFormUrl + "/")))
+                        } else {
+                            
+                             $.asCurrentTemplateUrl = pageTemplatePatternAndFrameWork.templateUrl
+                             $.asCurrentFrameWorkUrl = pageTemplatePatternAndFrameWork.frameWorkUrl
+                            
+                            var pageUrl = $.asChangeTemplateUrl + "/" + data.url.replace(/\//gi, $.asUrlDelimeter);
+                            var $pageSelector = $('body');
+                            $pageSelector.selector="body";
+                            $pageSelector
+                                .asAjax({
+                                    url: pageUrl,
+                                    type: "get",
+                                    success: function (template) {
+                                        $('body').removeClass("modal-open");
+                                        $.asSetupPage(template, 'body', true)
+                                        $.asSetupPage(data, holder, true)
+                                    }
+                                })
+                        }
+                    }
+                    else {
+                        $.asSetupPage(data, holder, true)
                     }
                 }
                 else {
                     $.asSetupPage(data, holder, true)
                 }
-            }
-            else {
-                $.asSetupPage(data, holder, true)
-            }
 
 
-        }
+            }
         $.as(holder).asAjax({
             url: url,
             type: "get",
             success: function (data) {
-
-                if (data.url) {
-
-                    if (data.url !== url.replace($.asFormUrl.substring(0, $.asFormUrl.toLowerCase().indexOf("@")), "/").replace(new RegExp($.asUrlDelimeter, "gi"), "/").replace("//", "/")) {
-
-                        if (data.url === "/" + $.asLang + $.asAccountManager.loginUrl || data.url === $.asAccountManager.loginUrl) {
-
-                            $.asAccountManager.returnUrl = decodeURIComponent(url.replace($.asFormUrl.substring(0, $.asFormUrl.toLowerCase().indexOf("@")), "/").replace(new RegExp($.asUrlDelimeter, "gi"), "/").replace("//", "/"))
-
-                        }
-
+               
+               if(data.url)
+            {
+               
+                   if(data.url !== url.replace($.asFormUrl.substring(0, $.asFormUrl.toLowerCase().indexOf("@")),"/").replace(new RegExp($.asUrlDelimeter, "gi"), "/").replace("//","/"))
+                  {
+                       
+                    if(data.url === "/" + $.asLang + $.asAccountManager.loginUrl || data.url === $.asAccountManager.loginUrl){
+                       
+                          $.asAccountManager.returnUrl = decodeURIComponent(url.replace($.asFormUrl.substring(0, $.asFormUrl.toLowerCase().indexOf("@")),"/").replace(new RegExp($.asUrlDelimeter, "gi"), "/").replace("//","/"))
+                          
                     }
-                }
-
+                  
+                  }
+             }
+               
                 loadPage(data)
 
             },
-            error: function (data) {
-
-                loadPage(data.responseJSON)
+            error:function(data){
+             
+                 loadPage(data.responseJSON)
             }
         })
 
@@ -2109,39 +2105,39 @@
             contentType: 'application/json; charset=utf-8',
             type: 'get',
         }, params);
-
-        if (defaultsParam.dataType === undefined) {
+       
+        if(defaultsParam.dataType === undefined){
             defaultsParam = $.extend({
-                dataFilter: function (data) {
-                    try {
-                        data = JSON.parse(data);
-                        if (data != null) {
-                            if (typeof (data["odata.metadata"]) != "undefined") {
-                                if (typeof (data["odata.count"]) != "undefined") {
-                                    var jsonData = {
-                                        total: data["odata.count"],
-                                        rows: data.value
-                                    }
-                                    return JSON.stringify(jsonData)
+                       dataFilter: function (data) {
+                                  try {
+                    data = JSON.parse(data);
+                    if (data != null) {
+                        if (typeof (data["odata.metadata"]) != "undefined") {
+                            if (typeof (data["odata.count"]) != "undefined") {
+                                var jsonData = {
+                                    total: data["odata.count"],
+                                    rows: data.value
                                 }
-                                return JSON.stringify(data.value)
+                                return JSON.stringify(jsonData)
                             }
-                            else
-                                return JSON.stringify(data)
-                        } else {
-                            return JSON.stringify([])
-                        }
-                        //console.log(data)
-                    } catch (err) {
-                        if (err.message === "Unexpected token < in JSON at position 0") {
-                            $.asConsole.error("Invalid Jsaon Data :")
-                            throw data
+                            return JSON.stringify(data.value)
                         }
                         else
-                            throw err
+                            return JSON.stringify(data)
+                    } else {
+                        return JSON.stringify([])
                     }
+                    //console.log(data)
+                } catch (err) {
+                    if (err.message === "Unexpected token < in JSON at position 0") {
+                        $.asConsole.error("Invalid Jsaon Data :")
+                        throw data
+                    }
+                    else
+                        throw err
                 }
-            }, defaultsParam)
+            }
+            },defaultsParam)
         }
         return $.ajax(defaultsParam);
     };
@@ -2153,18 +2149,18 @@
 
             var url = state.data.pureUrl
             var pageUrl = state.data.pageUrl
-
-            if (url === undefined) {
-                url = state.data.pureUrl = $.asUrlAsParameter(state.hash.substring(1))
-                pageUrl = $.asInitService($.asFormUrl, [{ name: "@url", value: url }, { name: "/@isModal", value: "" }])
+            
+            if(url === undefined){
+                 url = state.data.pureUrl=$.asUrlAsParameter(state.hash.substring(1))
+                pageUrl = $.asInitService($.asFormUrl, [{name: "@url", value: url}, { name: "/@isModal", value: "" }])
             }
             // if(url){
-            if (url.toLowerCase().indexOf($.asQueryStringSign) > -1)
+                 if (url.toLowerCase().indexOf($.asQueryStringSign) > -1)
                 url = url.replace(new RegExp(url.substring(url.toLowerCase().indexOf($.asQueryStringSign)), "gi"), "")
             if (url.toLowerCase().indexOf($.asQueryStringSign.replace(new RegExp($.asQueryStringSign, "gi"), $.asQueryStringShadowSign)) > -1)
                 url = url.replace(url.substring(url.toLowerCase().indexOf($.asQueryStringSign.replace(new RegExp($.asQueryStringSign, "gi"), $.asQueryStringShadowSign))), "")
 
-
+           
 
             if (pageUrl.toLowerCase().indexOf($.asQueryStringSign) > -1)
                 pageUrl = pageUrl.replace(new RegExp(pageUrl.substring(pageUrl.toLowerCase().indexOf($.asQueryStringSign)), "gi"), "")
@@ -2176,7 +2172,7 @@
             //     url = state.data.pureUrl=$.asUrlAsParameter(state.hash.substring(1))
             //     pageUrl = $.asFormUrl + "/" + url
             // }
-
+           
 
             History.pushState({ pureUrl: state.data.pureUrl, queryString: q, pageUrl: pageUrl + $.asQueryStringSign + q, loadPage: false }, q, ("/" + url.replace(reg, "/") + $.asQueryStringSign + q)
             .replace(new RegExp("//", "gi"), "/"))
@@ -2339,10 +2335,10 @@
 
         var $elamn = $.as(this), currentContext
         var defaultsSetting = $.extend({ overLay: true, overlayClass: 'as-overlay', loadingText: $.asWaitingView, validate: true, removeOverlay: true }, setting);
-        if (defaultsSetting.dataAdepter !== true) {
+        if (defaultsSetting.dataAdepter !== true){
             currentContext = $._asDataRequested(this);
         }
-
+            
         //if (typeof (source.page) != "undefined")
         //{
 
@@ -2422,52 +2418,52 @@
             complete: function (jqXHR, textStatus) {
                 if (defaultsSetting.overLay && defaultsSetting.removeOverlay === true)
                     $($elamn).loadingOverlay('remove', { loadingClass: 'as-loading', overlayClass: defaultsSetting.overlayClass });
-                if (defaultsSetting.dataAdepter !== true && defaultsParam.type === "get") {
+                if (defaultsSetting.dataAdepter !== true && defaultsParam.type.toLowerCase() === "get") {
                     $._asDataLoaded(currentContext.pageId, currentContext.pageEvent, currentContext.id)
                 }
             }
         }, params)
 
-
-        if (defaultsParam.dataType === undefined) {
+                
+            if(defaultsParam.dataType === undefined){
             defaultsParam = $.extend({
-                dataFilter: function (data) {
-
-
-                    try {
-
-                        data = JSON.parse(data);
-                        if (data != null) {
-                            if (typeof (data["odata.metadata"]) != "undefined") {
-                                if (typeof (data["odata.count"]) != "undefined") {
-                                    var jsonData = {
-                                        total: data["odata.count"],
-                                        rows: data.value
-                                    }
-                                    return JSON.stringify(jsonData)
+                       dataFilter: function (data) {
+                        
+                           
+                                                 try {
+                                    
+                    data = JSON.parse(data);
+                    if (data != null) {
+                        if (typeof (data["odata.metadata"]) != "undefined") {
+                            if (typeof (data["odata.count"]) != "undefined") {
+                                var jsonData = {
+                                    total: data["odata.count"],
+                                    rows: data.value
                                 }
-                                return JSON.stringify(data.value)
+                                return JSON.stringify(jsonData)
                             }
-                            else
-                                return JSON.stringify(data)
-                        } else {
-                            return JSON.stringify([])
-                        }
-                        //console.log(data)
-                    } catch (err) {
-                        if (err.message === "Unexpected token < in JSON at position 0") {
-                            $.asConsole.error("Invalid Jsaon Data :")
-                            throw data
+                            return JSON.stringify(data.value)
                         }
                         else
-                            throw err
+                            return JSON.stringify(data)
+                    } else {
+                        return JSON.stringify([])
                     }
-
-
+                    //console.log(data)
+                } catch (err) {
+                    if (err.message === "Unexpected token < in JSON at position 0") {
+                        $.asConsole.error("Invalid Jsaon Data :")
+                        throw data
+                    }
+                    else
+                        throw err
                 }
-            }, defaultsParam)
+                           
+                
+            }
+            },defaultsParam)
         }
-
+        
         if (typeof defaultsSetting.$form !== 'undefined' && defaultsParam.data === undefined)
             defaultsParam.data = defaultsSetting.$form.asSerializeObject()
 
@@ -2751,7 +2747,7 @@
     $.fn.asLogin = function (params) {
         if (typeof (Storage) !== "undefined") {
             var $elamn = $.as(this);
-
+            
             if ($.type(params) === "string") {
                 //if (params === "logout")
                 //    $.asStorage.removeItem($.asLoginAccessToken)
@@ -2776,10 +2772,10 @@
 
                     data: loginData,
                     success: function (data) {
-                        if (data.debugId) {
-                            $.asStorage.setItem($.asDebugId, data.debugId)
+                        if(data.debugId){
+                             $.asStorage.setItem($.asDebugId, data.debugId)
                         }
-                        $.asAccountManager.setToken(user.username, data.access_token)
+                        $.asAccountManager.setToken(user.username,data.access_token)
                         // $.asCookies.set($.asCoockiesName.asIsAuthenticated, { IsAuthenticated: true }, { expires: 10000000 })
                         // $.asStorage.setItem($.asLoginAccessToken, data.access_token)
                         // $.asStorage.setItem($.asUserName, user.username)
@@ -2792,13 +2788,13 @@
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         // if (jqXHR.responseText != null) {
-                        try {
-                            $.asShowMessage({ template: "error", message: JSON.parse(jqXHR.responseJSON.error).asError })
-                        }
-                        catch (err) {
-                            $.asShowMessage({ template: "error", message: $.asRes[$.asLang].InvalidLogin })
-                        }
-
+                            try {
+                                    $.asShowMessage({ template: "error", message: JSON.parse(jqXHR.responseJSON.error).asError  })
+                                }
+                                catch(err) {
+                                    $.asShowMessage({ template: "error", message: $.asRes[$.asLang].InvalidLogin })
+                                }
+                           
                         // }
                     }
                 }, { $form: defaultsParams.$form, overlayClass: 'as-overlay-absolute' })
@@ -2912,7 +2908,7 @@
 
         var pageEvent = $.asGetPageEventName(this)
 
-        var prm = $.extend({ loadedCount: 0, mustLoad: options.urls.length, baceScriptUrl: $.asGetScriptPath(), baceStyleUrl: $.asGetStylePath(), pageEvent: pageEvent }, options);
+        var prm = $.extend({ loadedCount: 0, mustLoad: options.urls.length, baceScriptUrl:$.asGetScriptPath(), baceStyleUrl: $.asGetStylePath(), pageEvent: pageEvent }, options);
 
         $(counterId).html(prm.loadedCount + "/" + prm.mustLoad)
         var callBackFunc = function () {
@@ -2925,7 +2921,7 @@
                 $.each(prm.urls, function (index, value) {
                     $.asModule.loaded[value.url.toLowerCase()] = true
                 })
-
+            
                 prm.loadedCallback();
                 $($page).loadingOverlay('remove', { loadingClass: 'as-loading-module', overlayClass: 'as-overlay-module' });
             }
@@ -2935,12 +2931,12 @@
         var callBackErrorFunc = function () {
             $.asShowMessage({ template: "error", message: $.asRes[$.asLang].ajaxError + " " + $.asRes[$.asLang].pleaseRetry });
         };
-
-        if (prm.urls.length === 0) {
+        
+        if(prm.urls.length === 0){
             prm.loadedCount--
-            callBackFunc()
+             callBackFunc()
         }
-
+               
 
         var loadCss = function (params) {
 
@@ -3385,7 +3381,7 @@
                 value = $.extend({ kind: value.url.substring(value.url.lastIndexOf(".") + 1, value.url.indexOf("?")) }, value);
             else
                 value = $.extend({ kind: value.url.substring(value.url.lastIndexOf(".") + 1) }, value);
-
+                
             //  if(value.url.toLowerCase().indexOf("?") > -1){
             //           var currentUrlParts = value.url.toLowerCase().split("?")
             //           $.each($.asModule.loaded, function (index, value) {
@@ -3397,24 +3393,24 @@
             //               }
             //           })
             //       }
-
+                 
             if (value.kind === "css") {
                 //if ($.inArray(value.url, $.asLoaderCssJs.currentStyle) >= 0) {
                 //    callBackFunc()
                 //} else {
                 //$.asLoaderCssJs.currentStyle.push(value.url)
                 //$.asLoaderCssJs.loadingCssJs.push(value.url)
-
+                
                 if ($.asModule.loaded[value.url.toLowerCase()] !== true) {
-
+                  
                     loadCss({
-                        url: (value.url[0] === "/" || value.url[0] === "~") ? value.url : prm.baceStyleUrl + value.url,
+                        url: (value.url[0] === "/" || value.url[0] === "~" ) ? value.url : prm.baceStyleUrl + value.url,
                         loadedCallback: callBackFunc,
                         errorCallback: callBackErrorFunc
                     })
                 }
-                else {
-
+                else{
+                      
                     callBackFunc()
                 }
                 //}
@@ -3424,21 +3420,21 @@
                 //} else {
                 //    $.asLoaderCssJs.currentScript.push(value.url)
                 //    $.asLoaderCssJs.loadingCssJs.push(value.url)
-
-
+                
+                
                 //   if ($.asModule.loaded[value.url.toLowerCase()] !== true) {
-
-                loadJs({
-                    url: (value.url[0] === "/" || value.url[0] === "~") ? value.url : prm.baceScriptUrl + value.url,
-                    loadedCallback: callBackFunc,
-                    errorCallback: callBackErrorFunc
-                })
+  
+                 loadJs({
+                     url: (value.url[0] === "/" || value.url[0] === "~") ? value.url : prm.baceScriptUrl + value.url,
+                     loadedCallback: callBackFunc,
+                     errorCallback: callBackErrorFunc
+                 })
                 // }
                 // else{
-
+                       
                 //     callBackFunc()
                 // }
-
+            
 
                 //}
             }
@@ -3451,24 +3447,24 @@
 (function ($) {
     "use strict";
     $.fn.asRegisterPageEvent = function (params) {
-
+        
         var $plugin = $.as(this);
         var source, dataAdepter, page = this
-
+        
 
         if ($.type(params) === "string") {
 
         } else {
             var loadComplete = function (data) {
 
-
+      
             }
 
-            params = $.extend({ source: {} }, params);
-            source = $.extend({ datatype: "json", order: 'asc', orderby: 'order', loadComplete: loadComplete, page: page, localData: { name: "test", order: "1" } }, params.source);
-
+            params = $.extend({ source:{}}, params);
+            source = $.extend({ datatype: "json", order: 'asc', orderby: 'order', loadComplete: loadComplete, page: page ,localData: {name:"test",order:"1"}}, params.source);
+         
             dataAdepter = $.extend({ extraSettings: { loadingText: $.asWaitingViewSmall } }, params.dataAdepter)
-
+     
 
 
 
@@ -3481,8 +3477,8 @@
             // traverse all nodes
             this.each(function () {
 
-                $plugin = $.as(this);
-                $plugin.asDataAdepter(source, dataAdepter)
+                    $plugin = $.as(this);
+                    $plugin.asDataAdepter(source, dataAdepter)
 
             });
 
@@ -3493,20 +3489,20 @@
 })(jQuery);
 //#endregion
 
-//#region polyfill for ie < 9
-Array.prototype.indexOf || (Array.prototype.indexOf = function (d, e) {
-    var a;
-    if (null == this) throw new TypeError('"this" is null or not defined');
-    var c = Object(this),
-        b = c.length >>> 0;
-    if (0 === b) return -1;
-    a = +e || 0;
-    Infinity === Math.abs(a) && (a = 0);
-    if (a >= b) return -1;
-    for (a = Math.max(0 <= a ? a : b - Math.abs(a), 0) ; a < b;) {
-        if (a in c && c[a] === d) return a;
-        a++
-    }
-    return -1
-});
-//#region polyfill;
+ //#region polyfill for ie < 9
+    Array.prototype.indexOf || (Array.prototype.indexOf = function (d, e) {
+        var a;
+        if (null == this) throw new TypeError('"this" is null or not defined');
+        var c = Object(this),
+            b = c.length >>> 0;
+        if (0 === b) return -1;
+        a = +e || 0;
+        Infinity === Math.abs(a) && (a = 0);
+        if (a >= b) return -1;
+        for (a = Math.max(0 <= a ? a : b - Math.abs(a), 0) ; a < b;) {
+            if (a in c && c[a] === d) return a;
+            a++
+        }
+        return -1
+    });
+    //#region polyfill;
