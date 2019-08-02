@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "قالب پیش فرض",
   "Guid": "1ff8fbaeb3bc4967861c0a224c83d07b",
-  "Version": 90,
+  "Version": 94,
   "EnableCache": true,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -28,5 +28,5 @@
   "HaveScript": true,
   "DependentModules": "[{\"url\":\"asOffCanvas.css?minversion=25\"},{\"url\":\"asOffCanvas.js?minversion=25\"},{\"url\":\"asPopovers.js?minversion=4\"},{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asMegaMenu.css?minversion=10\"},{\"url\":\"asMegaMenu.js?minversion=10\"},{\"url\":\"asFixedNav.css?minversion=5\"},{\"url\":\"asFixedNav.js?minversion=5\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
   "Language": "fa",
-  "RowVersion": "AAAAAAADQA8="
+  "RowVersion": "AAAAAAAEDxo="
 }

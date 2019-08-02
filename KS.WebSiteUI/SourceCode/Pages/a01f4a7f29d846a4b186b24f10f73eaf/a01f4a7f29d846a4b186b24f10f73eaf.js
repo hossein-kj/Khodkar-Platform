@@ -1,6 +1,6 @@
 ﻿var 
     $drpLanguge= as("#defaultTemplate_drp_languge"),
-    $winLogin= $.asModalManager.get({url:$.asModalManager.urls.login,isglobal:true}),
+    $winLogin= $.asModalManager.get({url:$.asModalManager.urls.login,isGlobal:true}),
     $mainMenu=as("#defaultTemplate_menu"),
     menuUrl= $.asInitService($.asUrls.cms_link_public_getAll,[{name:'@lang',value:$.asLang},{name:'@isMobile',value:false}]),
   

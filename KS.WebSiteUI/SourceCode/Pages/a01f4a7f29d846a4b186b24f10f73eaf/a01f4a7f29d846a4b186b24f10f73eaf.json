@@ -12,7 +12,7 @@
   "AccessRoleId": 5,
   "Title": "Alternative Template",
   "Guid": "a01f4a7f29d846a4b186b24f10f73eaf",
-  "Version": 34,
+  "Version": 36,
   "EnableCache": false,
   "CacheSlidingExpirationTimeInMinutes": 0,
   "Services": [
@@ -28,5 +28,5 @@
   "HaveScript": true,
   "DependentModules": "[{\"url\":\"asOffCanvas.css?minversion=25\"},{\"url\":\"asOffCanvas.js?minversion=25\"},{\"url\":\"asPopovers.js?minversion=4\"},{\"url\":\"asDropdown.css?minversion=11\"},{\"url\":\"asDropdown.js?minversion=11\"},{\"url\":\"asMegaMenu.css?minversion=10\"},{\"url\":\"asMegaMenu.js?minversion=10\"},{\"url\":\"asFixedNav.css?minversion=5\"},{\"url\":\"asFixedNav.js?minversion=5\"},{\"url\":\"asFlexSelect.css?minversion=41\"},{\"url\":\"asFlexSelect.js?minversion=41\"},{\"url\":\"asModal.css?minversion=47\"},{\"url\":\"asModal.js?minversion=47\"}]",
   "Language": "en",
-  "RowVersion": "AAAAAAADQAo="
+  "RowVersion": "AAAAAAAEDx0="
 }

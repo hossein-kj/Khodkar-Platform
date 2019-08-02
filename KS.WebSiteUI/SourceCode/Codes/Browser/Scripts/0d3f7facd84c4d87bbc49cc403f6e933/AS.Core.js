@@ -1648,7 +1648,7 @@
                 $.each($.asModalManager.urls, function (index, value) {
                   
                     if(("/" + value+ "/" ).replace("//","/").toLowerCase() === modalUrl){
-                           var $winLogin= $.asModalManager.get({url:value,isglobal:true})
+                           var $winLogin= $.asModalManager.get({url:value,isGlobal:true})
                              $winLogin.asModal()
                              $winLogin.asModal('load', $.asInitService($.asFormUrl,[{name:"@url",value:$.asUrlAsParameter(value)},{name:"@isModal",value:true}]))
                               isModal = true
