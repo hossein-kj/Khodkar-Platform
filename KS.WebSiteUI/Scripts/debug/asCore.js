@@ -58,10 +58,28 @@
         return "#" + selector.selector.substring(1, selector.selector.indexOf("." + $.asPageClass))
     }
  
-    $.asCallDisposeEventOfAllPage = function(){
-        $.each($.asPage.ids, function (key, val) {
-            $("#" + key).trigger($.asEvent.page.dispose, [])
-            });
+    $.asCallDisposeEventOfAllPage = function(justLocalModal){
+
+        try{
+           if(justLocalModal){
+              $.each($.asPage.ids, function (key, val) {
+                  var modalId = $("." + key + "." + $.asPageClass).attr("id")
+                  var modalParams = $.asModalManager.modalsParams[modalId];
+                    if(modalParams){
+                       if(!modalParams.isGlobal)
+                            $("#" + key).trigger($.asEvent.page.dispose, [])
+                    }
+                }); 
+            }else{
+               $.each($.asPage.ids, function (key, val) {
+                $("#" + key).trigger($.asEvent.page.dispose, [])
+                }); 
+            }
+               
+           }catch(err){
+               $.asConsole.dir(err)
+           }
+
     }
 
     //#region bind event
@@ -508,6 +526,7 @@
     //}
     
         $.asModalManager = {
+        modalsParams:{},
         modals:{},
        urls:{
         login:"/login/"
@@ -571,6 +590,10 @@
         //dispose call
         $("." + currentPageId + "." + $.asPageClass).data('dataItems', [])
         $(currentPageEvent).trigger($.asEvent.page.dispose, [])
+        
+          if(!defaultsParam.isModal){
+            $.asCallDisposeEventOfAllPage(true);
+        }
    
         //if (defaultsParam.isModal === false)
         $(currentPageEvent).off()

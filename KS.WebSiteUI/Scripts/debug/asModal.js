@@ -850,11 +850,12 @@
                     success: function(data) {
                         $pop.empty();
                         $pop.html(data);
+                        $pop.modal('handleUpdate');
                     }
                 }, { overlayClass: 'as-overlay-relative' });
             } else if (params === "load") {
                
-                var modalParams = $pop.data("defaultsParams")
+                var modalParams = $.asModalManager.modalsParams[$pop.attr("id")] //$pop.data("defaultsParams")
                    if (pageParams)
                     modalParams.pageParams = pageParams
                   
@@ -868,7 +869,7 @@
                 var loadModal =function (data) {
                         modalParams.isFirstLoad=false;
                         modalParams.pageId = data.pageId
-                        $pop.data("defaultsParams", modalParams);
+                        $.asModalManager.modalsParams[$pop.attr("id")] = modalParams // $pop.data("defaultsParams", modalParams);
                         //$.asSetWebPageData({ $holder: $pop, isModal: true, data: data })
                         $.asSetupPage(data, $pop, true, true, modalParams.pageParams)
                         //$pop.html(data.page);
@@ -888,13 +889,13 @@
                 }, { overlayClass: 'as-overlay-relative' });
                 }else{
                     
-                    $pop.data("defaultsParams", modalParams);
+                    $.asModalManager.modalsParams[$pop.attr("id")] = modalParams //$pop.data("defaultsParams", modalParams);
                    $pop.asModal('show')
                     $("#" + modalParams.pageId).trigger($.asEvent.modal.reopen, [modalParams.pageParams])
                 }
 
             } else {
-                $pop.modal($pop.data("defaultsParams"))
+                 $pop.modal($.asModalManager.modalsParams[$pop.attr("id")])
                 return $pop.modal(params)
             }
         } else {
@@ -904,7 +905,7 @@
             //// traverse all nodes
             this.each(function () {
                 $pop = $.as(this);
-                $pop.data("defaultsParams", defaultsParams)
+                 $.asModalManager.modalsParams[$pop.attr("id")] = defaultsParams//$pop.data("defaultsParams", defaultsParams)
             //$.asLoadScriptAndStyle({
             //    urls: [
             //        { url: 'asModal.css', kind: 'css' }

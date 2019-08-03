@@ -49,7 +49,7 @@
         }
         /*asOdataQueryBuilder@End*/
 
-        /*asModal@Start*/ function asModal() {  return [{ url: 'asModal.css?minversion=47' },{ url:'asModal.js?minversion=47' }].concat();  }  if (source.indexOf('asModal') >= 0) { addDependency(asModal()); } /*asModal@End*/ 
+        /*asModal@Start*/ function asModal() {  return [{ url: 'asModal.css?minversion=53' },{ url:'asModal.js?minversion=53' }].concat();  }  if (source.indexOf('asModal') >= 0) { addDependency(asModal()); } /*asModal@End*/ 
  
  
  
