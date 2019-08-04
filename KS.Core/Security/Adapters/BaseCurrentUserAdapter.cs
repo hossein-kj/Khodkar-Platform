@@ -95,7 +95,7 @@ namespace KS.Core.Security.Adapters
         public virtual string UserIdentity => HttpContext.Current.User == null ? (Thread.CurrentPrincipal.Identity.Name ?? "") : (HttpContext.Current.User.Identity.Name ?? "");
 
 
-        public virtual string Ip => System.Web.HttpContext.Current.Request.UserHostAddress;
+        public virtual string Ip => System.Web.HttpContext.Current == null ? "" : System.Web.HttpContext.Current.Request.UserHostAddress ?? "";
 
         public virtual bool LogOff(ISessionManager sessionManager)
         {
