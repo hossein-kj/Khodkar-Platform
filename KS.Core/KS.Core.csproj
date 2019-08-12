@@ -419,6 +419,8 @@
     <Compile Include="FileSystemProvide\Uploader\ImageHandler.cs" />
     <Compile Include="GlobalVarioable\Config.cs" />
     <Compile Include="GlobalVarioable\Enumeration.cs" />
+    <Compile Include="Security\Handlers\Error\ErrorAsyncHandler.cs" />
+    <Compile Include="Security\Handlers\Error\ErrorAsynchOperation.cs" />
     <Compile Include="SignalR\Hubs\NotificationHub.cs" />
     <Compile Include="Localization\Adapters\DefaultLanguageAdapter.cs" />
     <Compile Include="Localization\Adapters\ILanguageAdapter.cs" />
