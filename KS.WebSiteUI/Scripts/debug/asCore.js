@@ -1790,7 +1790,7 @@
 
 
 
-        $.asSetWebPageData({ data: params, $holder: $holder, replaceHtml: replaceHtml });
+        $.asSetWebPageData({ data: params, $holder: $holder, replaceHtml: replaceHtml,isModal:isModal });
         if(params.dependentModules === "[]")
             params.dependentModules=[]
         if(params.param === "{}")
