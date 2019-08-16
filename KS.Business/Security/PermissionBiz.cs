@@ -11,6 +11,7 @@ using KS.Core.Security;
 using KS.Model.ContentManagement;
 using Newtonsoft.Json.Linq;
 using KS.DataAccess.Contexts.Base;
+using KS.Core.CacheProvider;
 
 namespace KS.Business.Security
 {
@@ -28,8 +29,9 @@ namespace KS.Business.Security
         {
             dynamic masterDataDto = data;
             int entityId;
-
+            var masterDatakeyValue = new MasterDataKeyValue();
             bool isLeaf = masterDataDto.IsLeaf;
+
             if (isLeaf)
             {
                 try
@@ -39,7 +41,7 @@ namespace KS.Business.Security
                 catch (Exception)
                 {
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Id"));
-            
+
                 }
                 int entityTypeId;
                 try
@@ -49,7 +51,7 @@ namespace KS.Business.Security
                 catch (Exception)
                 {
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Key"));
-                 
+
                 }
                 int actionTypeId;
                 try
@@ -59,11 +61,11 @@ namespace KS.Business.Security
                 catch (Exception)
                 {
                     throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue ForeignKey1"));
-                
+
                 }
                 if (entityTypeId != (int)EntityIdentity.Link)
                 {
-                    var masterDatakeyValue = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == entityId);
+                    masterDatakeyValue = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == entityId);
 
                     if (masterDatakeyValue == null)
                         throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.MasterDataKeyValuesNotFound));
@@ -71,7 +73,7 @@ namespace KS.Business.Security
                     if (!AuthorizeManager.IsAuthorize(masterDatakeyValue.AccessRoleId))
                         throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
                 }
-                else if(actionTypeId == (int)ActionKey.ViewSourceCode)
+                else if (actionTypeId == (int)ActionKey.ViewSourceCode)
                 {
                     var link = await _contentManagementContext.Links.SingleOrDefaultAsync(ln => ln.Id == entityId);
                     var webPages = await _contentManagementContext.WebPages
@@ -85,7 +87,14 @@ namespace KS.Business.Security
                 }
 
             }
-            return await _masterDataKeyValueBiz.Save(data,true);
+            var updatedMd = await _masterDataKeyValueBiz.Save(data, true);
+
+            if (!isLeaf || (updatedMd.Key == (int)EntityIdentity.Link))
+                return updatedMd;
+
+            var key = CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), ((int)ActionKey.RequestService).ToString(), masterDatakeyValue.PathOrUrl);
+            CacheManager.Remove(key);
+            return updatedMd;
         }
 
         public async Task<MasterDataKeyValue> Delete(JObject data)
@@ -100,7 +109,7 @@ namespace KS.Business.Security
             catch (Exception)
             {
                 throw new KhodkarInvalidException(LanguageManager.ToAsErrorMessage(ExceptionKey.FieldMustBeNumeric, "MasterDataKeyValue Id"));
-             
+
             }
             var masterDatakeyValue = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == id)
              ;
@@ -116,7 +125,16 @@ namespace KS.Business.Security
                     throw new UnauthorizedAccessException(LanguageManager.ToAsErrorMessage(ExceptionKey.InvalidGrant));
             }
 
-            return await _masterDataKeyValueBiz.Delete(data,true);
+            var service = await _contentManagementContext.MasterDataKeyValues.SingleOrDefaultAsync(md => md.Id == masterDatakeyValue.ForeignKey3);
+
+            if (service != null)
+            {
+
+                var key = CacheManager.GetAspectKey(CacheKey.Aspect.ToString(), ((int)ActionKey.RequestService).ToString(), service.PathOrUrl);
+                CacheManager.Remove(key);
+            }
+
+            return await _masterDataKeyValueBiz.Delete(data, true);
         }
     }
 }
